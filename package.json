@@ -1,0 +1,20 @@
+{
+  "name": "libshell",
+  "version": "1.0.0",
+  "description": "lib for shell",
+  "main": "index.js",
+  "scripts": {
+    "lint": "shellcheck lib/*.sh libshell.sh",
+    "fix": "shfmt -w lib/*.sh libshell.sh",
+    "test": "bats test/*.test.sh"
+  },
+  "repository": "git@github.com:b2ns/libshell.git",
+  "author": "b2ns <eminemdsp@163.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "bats": "^1.6.0",
+    "bats-assert": "git+https://github.com/bats-core/bats-assert.git",
+    "bats-file": "git+https://github.com/bats-core/bats-file.git",
+    "bats-support": "git+https://github.com/bats-core/bats-support.git"
+  }
+}
