@@ -18,3 +18,8 @@ bats@^1.6.0:
   version "1.6.0"
   resolved "https://registry.npmmirror.com/bats/-/bats-1.6.0.tgz#7210bfcc3e4095b0189a02f189a213d06ac4d08c"
   integrity sha512-DodA14LKCr49ZIVCgv5zWVo/ipySGHOgmJ3YzhDUBNg5k3GKwxhwxoDkErVTPHBgtmqmGswDxayfd161aINmcg==
+
+husky@^7.0.4:
+  version "7.0.4"
+  resolved "https://registry.npmmirror.com/husky/-/husky-7.0.4.tgz#242048245dc49c8fb1bf0cc7cfb98dd722531535"
+  integrity sha512-vbaCKN2QLtP/vD4yvs6iz6hBEo6wkSzs8HpRah1Z6aGmF2KW5PdYuAd7uX5a+OyBZHBhd+TFLqgjUgytQr4RvQ==

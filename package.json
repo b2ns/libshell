@@ -6,7 +6,8 @@
   "scripts": {
     "lint": "shellcheck lib/*.sh libshell.sh",
     "fix": "shfmt -w lib/*.sh libshell.sh",
-    "test": "bats test/*.test.sh"
+    "test": "bats test/*.test.sh",
+    "prepare": "husky install"
   },
   "repository": "git@github.com:b2ns/libshell.git",
   "author": "b2ns <eminemdsp@163.com>",
@@ -15,6 +16,7 @@
     "bats": "^1.6.0",
     "bats-assert": "git+https://github.com/bats-core/bats-assert.git",
     "bats-file": "git+https://github.com/bats-core/bats-file.git",
-    "bats-support": "git+https://github.com/bats-core/bats-support.git"
+    "bats-support": "git+https://github.com/bats-core/bats-support.git",
+    "husky": "^7.0.4"
   }
 }
