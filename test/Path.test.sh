@@ -1,15 +1,9 @@
 #!/usr/bin/env bash
-function setup() {
-  load test_helper.sh
-  load ../lib/Path.sh
+#!/usr/bin/env bash
+load test_helper.sh
+load ../lib/Path.sh
+
+function Path_dirpath() { #@test
+  skip
 }
 
-function path_dirpath() { #@test
-  run Path_dirpath
-  assert_output "TODO"
-}
-
-function path_filepath() { #@test
-  run Path_filepath
-  assert_output "TODO"
-}

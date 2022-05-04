@@ -6,7 +6,7 @@
   "scripts": {
     "lint": "shellcheck lib/*.sh libshell.sh",
     "fix": "shfmt -w lib/*.sh libshell.sh",
-    "test": "bats test/*.test.sh",
+    "test": "bats -T -j 16 test/*.test.sh",
     "prepare": "husky install"
   },
   "repository": "git@github.com:b2ns/libshell.git",

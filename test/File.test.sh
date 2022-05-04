@@ -1,10 +1,9 @@
 #!/usr/bin/env bash
-function setup() {
-  load test_helper.sh
-  load ../lib/File.sh
+#!/usr/bin/env bash
+load test_helper.sh
+load ../lib/File.sh
+
+function File_mkfile() { #@test
+  skip
 }
 
-function file_mkfile() { #@test
-  run File_mkfile
-  assert_output "TODO"
-}
