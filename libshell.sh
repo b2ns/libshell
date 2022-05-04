@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-# shellcheck disable=SC2155
 declare -g LIB_SHELL_PATH="$(cd "${BASH_SOURCE[0]%/*}" && pwd)/lib"
 declare -Ag LIB_SHELL_IMPORTED_LIBS
 declare -g IMPORT_ALL_LIBS="${IMPORT_ALL_LIBS:-1}"
@@ -42,7 +41,6 @@ function __source_file__() {
 
     LIB_SHELL_IMPORTED_LIBS+=(["$lib"]=1)
 
-    # shellcheck disable=SC1090
     source "$lib"
   fi
 }
