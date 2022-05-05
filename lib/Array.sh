@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+import Math
 
 declare -g COMPARATOR="${COMPARATOR:-defaultComparator}"
 
@@ -218,8 +219,7 @@ function Array_sort() {
       fi
 
       # random pivot
-      local range=$((R - L + 1))
-      local randP=$((RANDOM % range + L))
+      local randP="$(Math_random "$L" "$R")"
       local tmp="${arr["$R"]}"
       arr["$R"]="${arr["$randP"]}"
       arr["$randP"]="$tmp"
