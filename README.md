@@ -7,25 +7,22 @@ basic lib functions for shell script
 - [libshell](#libshell)
 - [toc](#toc)
 - [how to use](#how-to-use)
-- [Path](#path)
-  - [Path_dirname](#path_dirname)
-  - [Path_dirpath](#path_dirpath)
-  - [Path_extname](#path_extname)
-  - [Path_filename](#path_filename)
-  - [Path_filepath](#path_filepath)
-  - [Path_isAbs](#path_isabs)
-  - [Path_isRel](#path_isrel)
-- [Acknowledgments](#acknowledgments)
+- [api](#api)
+- [acknowledgment](#acknowledgment)
 
 # how to use
 
-1. add libshell to PATH
+1. download libshell
+```sh
+git clone https://github.com/b2ns/libshell
+```
+2. add libshell to PATH
 
 ```sh
 export PATH="/path/to/libshell:$PATH"
 ```
 
-2. source libshell in your script
+3. source libshell in your script
 ```sh
 #!/usr/bin/env bash
 set -euo pipefail
@@ -46,17 +43,14 @@ import path/to/bar.sh
 import /path/to/x.sh ./path/to/y.sh path/to/z.sh
 
 # import buildin lib
-import File Path Array String
+import Array File Path String
 ```
 
-# Path
-## Path_dirname
-## Path_dirpath
-## Path_extname
-## Path_filename
-## Path_filepath
-## Path_isAbs
-## Path_isRel
+# api
+- Array
+- File
+- Path
+- String
 
-# Acknowledgments
+# acknowledgment
 - [bash-oo-framework](https://github.com/niieani/bash-oo-framework)
