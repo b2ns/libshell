@@ -4,7 +4,7 @@ load ../lib/Array.sh
 
 function setup() {
   function gt5() {
-    [[ $1 -gt 5 ]] && return 0
+    (($1 > 5)) && return 0
     return 1
   }
 
@@ -165,9 +165,9 @@ function Array_sort() { #@test
 
   function foo() {
     function comparator() {
-      if [[ "$1" -gt "$2" ]]; then
+      if (($1 > $2)); then
         echo -1
-      elif [[ "$1" -lt "$2" ]]; then
+      elif (($1 < $2)); then
         echo 1
       else
         echo 0

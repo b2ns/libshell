@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 function String_at() {
-  if [[ $# -ge 2 ]]; then
+  if (($# >= 2)); then
     String_substr "$1" "$2" 1
   else
     echo "$1"
@@ -29,7 +29,7 @@ function String_includes() {
 }
 
 function String_indexOf() {
-  if [[ $# -ge 2 ]]; then
+  if (($# >= 2)); then
     if String_includes "$1" "$2"; then
       local index=-1
       local str=""
@@ -64,7 +64,7 @@ function String_isNotEmpty() {
 }
 
 function String_join() {
-  if [[ $# -ge 3 ]]; then
+  if (($# >= 3)); then
     local delimiter=${@:$#:1}
     delimiter=${delimiter[0]}
     local len=$(($# - 1))
@@ -95,7 +95,7 @@ function String_match() {
 }
 
 function String_padEnd() {
-  if [[ $# -ge 2 ]]; then
+  if (($# >= 2)); then
     local strLen="$(String_length "$1")"
     local maxLen="$2"
     local len=$((maxLen - strLen))
@@ -107,7 +107,7 @@ function String_padEnd() {
 }
 
 function String_padStart() {
-  if [[ $# -ge 2 ]]; then
+  if (($# >= 2)); then
     local strLen="$(String_length "$1")"
     local maxLen="$2"
     local len=$((maxLen - strLen))
@@ -119,7 +119,7 @@ function String_padStart() {
 }
 
 function String_repeat() {
-  if [[ $# -ge 2 ]]; then
+  if (($# >= 2)); then
     local res=""
     for ((i = 0; i < $2; i++)); do
       res="$res$1"
@@ -131,7 +131,7 @@ function String_repeat() {
 }
 
 function String_replace() {
-  if [[ $# -ge 3 ]]; then
+  if (($# >= 3)); then
     echo "${1/$2/$3}"
   else
     echo "$1"
@@ -139,7 +139,7 @@ function String_replace() {
 }
 
 function String_replaceAll() {
-  if [[ $# -ge 3 ]]; then
+  if (($# >= 3)); then
     echo "${1//$2/$3}"
   else
     echo "$1"
@@ -150,7 +150,7 @@ function String_reverse() {
   local str="$1"
   local len="$(String_length "$str")"
   local res=""
-  while [[ "$len" -gt 0 ]]; do
+  while ((len > 0)); do
     len=$((len - 1))
     res="$res$(String_at "$str" "$len")"
   done
@@ -162,9 +162,9 @@ function String_search() {
 }
 
 function String_slice() {
-  if [[ $# -ge 3 ]]; then
+  if (($# >= 3)); then
     String_substr "$1" "$2" "$(($3 - $2))"
-  elif [[ $# -eq 2 ]]; then
+  elif (($# == 2)); then
     echo "${1::$2}"
   else
     echo "$1"
@@ -172,9 +172,9 @@ function String_slice() {
 }
 
 function String_substr() {
-  if [[ $# -ge 3 ]]; then
+  if (($# >= 3)); then
     echo "${1:$2:$3}"
-  elif [[ $# -eq 2 ]]; then
+  elif (($# == 2)); then
     echo "${1::$2}"
   else
     echo "$1"
@@ -183,7 +183,7 @@ function String_substr() {
 
 function String_split() {
   declare -a array=()
-  if [[ $# -ge 1 ]]; then
+  if (($# >= 1)); then
     local str="$1"
     local delmiter="$2"
     if String_isEmpty "$delmiter"; then
@@ -217,13 +217,13 @@ function String_trim() {
 }
 
 function String_trimEnd() {
-  if [[ $# -ge 3 ]]; then
-    if [[ "$3" -eq 1 ]]; then
+  if (($# >= 3)); then
+    if (($3 == 1)); then
       echo "${1%%$2}"
     else
       echo "${1%$2}"
     fi
-  elif [[ $# -eq 2 ]]; then
+  elif (($# == 2)); then
     echo "${1%$2}"
   else
     local res="${1% }"
@@ -237,13 +237,13 @@ function String_trimEnd() {
 }
 
 function String_trimStart() {
-  if [[ $# -ge 3 ]]; then
-    if [[ "$3" -eq 1 ]]; then
+  if (($# >= 3)); then
+    if (($3 == 1)); then
       echo "${1##$2}"
     else
       echo "${1#$2}"
     fi
-  elif [[ $# -eq 2 ]]; then
+  elif (($# == 2)); then
     echo "${1#$2}"
   else
     local res="${1# }"

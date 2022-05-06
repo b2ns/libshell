@@ -3,13 +3,13 @@
 function Math_random() {
   local min="${1:-0}"
   local max="${2:-100}"
-  if [[ "$min" -gt "$max" ]]; then
+  if ((min > max)); then
     local tmp="$min"
     min="$max"
     max="$tmp"
   fi
   local range=$((max - min))
-  if [[ "$range" -eq 0 ]]; then
+  if ((range == 0)); then
     echo "$min"
   else
     local random=$((RANDOM % range))
@@ -21,7 +21,7 @@ function Math_range() {
   local min="${1:-0}"
   local max="${2:-100}"
   local step="${3:-1}"
-  if [[ "$min" -gt "$max" ]]; then
+  if ((min > max)); then
     local tmp="$min"
     min="$max"
     max="$tmp"

@@ -8,7 +8,7 @@ function Array_concat() {
 }
 
 function Array_every() {
-  if [[ $# -ge 2 ]]; then
+  if (($# >= 2)); then
     local fn=$(Array_last "$@")
     local len=$(($# - 1))
     local index=0
@@ -25,7 +25,7 @@ function Array_every() {
 }
 
 function Array_filter() {
-  if [[ $# -ge 2 ]]; then
+  if (($# >= 2)); then
     local fn=$(Array_last "$@")
     local len=$(($# - 1))
     local index=0
@@ -47,7 +47,7 @@ function Array_find() {
 }
 
 function Array_findIndex() {
-  if [[ $# -ge 2 ]]; then
+  if (($# >= 2)); then
     local target=$(Array_last "$@")
     local len=$(($# - 1))
     local index=0
@@ -67,7 +67,7 @@ function Array_findIndex() {
 }
 
 function Array_forEach() {
-  if [[ $# -ge 2 ]]; then
+  if (($# >= 2)); then
     local fn=$(Array_last "$@")
     local len=$(($# - 1))
     local index=0
@@ -83,7 +83,7 @@ function Array_includes() {
 }
 
 function Array_indexOf() {
-  if [[ $# -ge 2 ]]; then
+  if (($# >= 2)); then
     local target=$(Array_last "$@")
     local len=$(($# - 1))
     local index=0
@@ -103,7 +103,7 @@ function Array_indexOf() {
 }
 
 function Array_join() {
-  if [[ $# -ge 3 ]]; then
+  if (($# >= 3)); then
     local delimiter=$(Array_last "$@")
     local len=$(($# - 1))
     local res
@@ -129,7 +129,7 @@ function Array_length() {
 }
 
 function Array_map() {
-  if [[ $# -ge 2 ]]; then
+  if (($# >= 2)); then
     local fn=$(Array_last "$@")
     local len=$(($# - 1))
     local index=0
@@ -160,7 +160,7 @@ function Array_reverse() {
 }
 
 function Array_slice() {
-  if [[ $# -ge 3 ]]; then
+  if (($# >= 3)); then
     local endIndx=$(Array_last "$@")
     local startIndex="${@:-2:1}"
     printf '%s\n' "${@:$startIndex:"$((endIndx - startIndex))"}"
@@ -170,7 +170,7 @@ function Array_slice() {
 }
 
 function Array_some() {
-  if [[ $# -ge 2 ]]; then
+  if (($# >= 2)); then
     local fn=$(Array_last "$@")
     local len=$(($# - 1))
     local index=0
@@ -187,7 +187,7 @@ function Array_some() {
 }
 
 function Array_sort() {
-  if [[ $# -ge 2 ]]; then
+  if (($# >= 2)); then
     local -a arr=("$@")
     local arrLen="$#"
     local smallArraySize=7
@@ -198,7 +198,7 @@ function Array_sort() {
 
       # use insertSort for small arrays
       local size=$((R - L + 1))
-      if [[ "$size" -le "$smallArraySize" ]]; then
+      if ((size <= smallArraySize)); then
         local i=0
         local j=0
         local tmp=""
@@ -207,7 +207,7 @@ function Array_sort() {
           tmp="${arr[i]}"
           for ((j = $((i - 1)); j >= 0; j--)); do
             cmp=$($COMPARATOR "${arr[j]}" "$tmp")
-            if [[ $cmp -gt 0 ]]; then
+            if ((cmp > 0)); then
               arr[$((j + 1))]="${arr[j]}"
             else
               break
@@ -231,14 +231,14 @@ function Array_sort() {
       local tmp=""
       local cmp=""
 
-      while [[ "$i" -lt "$more" ]]; do
+      while ((i < more)); do
         cmp=$($COMPARATOR "${arr["$i"]}" "${arr["$R"]}")
-        if [[ $cmp -gt 0 ]]; then
+        if ((cmp > 0)); then
           more=$((more - 1))
           tmp="${arr["$more"]}"
           arr["$more"]="${arr["$i"]}"
           arr["$i"]="$tmp"
-        elif [[ $cmp -lt 0 ]]; then
+        elif ((cmp < 0)); then
           less=$((less + 1))
           tmp="${arr["$less"]}"
           arr["$less"]="${arr["$i"]}"
@@ -267,9 +267,9 @@ function Array_sort() {
 }
 
 function __defaultComparator__() {
-  if [[ "$1" -gt "$2" ]]; then
+  if (($1 > $2)); then
     echo 1
-  elif [[ "$1" -lt "$2" ]]; then
+  elif (($1 < $2)); then
     echo -1
   else
     echo 0
@@ -277,7 +277,7 @@ function __defaultComparator__() {
 }
 
 function Array_sub() {
-  if [[ $# -ge 3 ]]; then
+  if (($# >= 3)); then
     local subLen=$(Array_last "$@")
     local startIndex="${@:-2:1}"
     printf '%s\n' "${@:$startIndex:"$subLen"}"
