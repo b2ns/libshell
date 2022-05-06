@@ -48,19 +48,11 @@ function String_indexOf() {
 }
 
 function String_isEmpty() {
-  if [[ -z "$1" ]]; then
-    return 0
-  else
-    return 1
-  fi
+  [[ -z "$1" ]]
 }
 
 function String_isNotEmpty() {
-  if [[ -n "$1" ]]; then
-    return 0
-  else
-    return 1
-  fi
+  [[ -n "$1" ]]
 }
 
 function String_join() {

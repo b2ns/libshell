@@ -50,12 +50,7 @@ function Path_filepath() {
 }
 
 function Path_isAbs() {
-  local file="$1"
-  if [[ "$file" == /* ]]; then
-    return 0
-  else
-    return 1
-  fi
+  [[ "$1" == /* ]]
 }
 
 function Path_isRel() {
