@@ -1,18 +1,25 @@
 #!/usr/bin/env bash
 
+declare -g LIBSHELL_SOURCED="${LIBSHELL_SOURCED:-0}"
+
+# libshell has been sourced so we just return
+(("$LIBSHELL_SOURCED" == 1)) && return 0
+
 declare -g LIB_SHELL_PATH="$(cd "${BASH_SOURCE[0]%/*}" && pwd)/lib"
 declare -Ag LIB_SHELL_IMPORTED_LIBS
 declare -g IMPORT_ALL_LIBS="${IMPORT_ALL_LIBS:-1}"
 
 function import() {
-
   local scriptRoot="${BASH_SOURCE[1]:-$0}"
   scriptRoot="$(cd "${scriptRoot%/*}" && pwd)"
   for lib in "$@"; do
     if [[ "$lib" == './'* ]]; then
       lib="${lib:2}"
     fi
-    __source_path__ "${scriptRoot}/${lib}" || __source_path__ "${lib}" || __source_path__ "${LIB_SHELL_PATH}/${lib}"
+    if ! __source_path__ "$scriptRoot/$lib" && ! __source_path__ "$lib" && ! __source_path__ "$LIB_SHELL_PATH/$lib"; then
+      echo "failed to import $lib" >&2
+      return 1
+    fi
   done
 }
 
@@ -34,30 +41,27 @@ function __source_file__() {
 
   lib="$(__abspath__ "$lib")"
 
-  if [[ -f "$lib" ]]; then
-    if [[ ${LIB_SHELL_IMPORTED_LIBS["$lib"]+_} ]]; then
-      return 0
-    fi
-
-    LIB_SHELL_IMPORTED_LIBS+=(["$lib"]=1)
-
-    source "$lib"
+  if [[ ${LIB_SHELL_IMPORTED_LIBS["$lib"]+_} ]]; then
+    return 0
   fi
+
+  LIB_SHELL_IMPORTED_LIBS+=(["$lib"]=1)
+
+  source "$lib"
 }
 
 function __abspath__() {
   local file="$1"
-  if [[ "$file" == "/"* ]]; then
-    echo "$file"
-  else
-    echo "$(cd "$(dirname "$file")" && pwd)/$(basename "$file")"
-  fi
+  echo "$(cd "$(dirname "$file")" && pwd)/$(basename "$file")"
 }
 
 # import all libs
 # use IMPORT_ALL_LIBS=0 to disable this feature
-if [[ "$IMPORT_ALL_LIBS" != 0 ]]; then
-  for lib in "${LIB_SHELL_PATH}"/*.sh; do
+if (("$IMPORT_ALL_LIBS" != 0)); then
+  for lib in "$LIB_SHELL_PATH"/*.sh; do
     import "$lib"
   done
 fi
+
+# libshell has been sourced
+LIBSHELL_SOURCED=1

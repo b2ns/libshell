@@ -29,10 +29,10 @@ set -euo pipefail
 IFS=$'\n\t'
 
 # after source libshell you get a import function and all libs buildin libshell
-source libshell.sh
+source libshell
 
 # use IMPORT_ALL_LIBS=0 to only get the import function
-# IMPORT_ALL_LIBS=0 source libshell.sh
+# IMPORT_ALL_LIBS=0 source libshell
 
 # use import to include your own script
 import /path/to/foo.sh
@@ -49,6 +49,7 @@ import Array File Path String
 # api
 - Array
 - File
+- Math
 - Path
 - String
 

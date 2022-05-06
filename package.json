@@ -4,8 +4,8 @@
   "description": "lib for shell",
   "main": "index.js",
   "scripts": {
-    "lint": "shellcheck lib/*.sh libshell.sh",
-    "fix": "shfmt -w lib/*.sh libshell.sh",
+    "lint": "shellcheck lib/*.sh libshell",
+    "fix": "shfmt -w lib/*.sh libshell",
     "test": "bats -T -j 16 test/*.test.sh",
     "prepare": "husky install"
   },
