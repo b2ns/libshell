@@ -41,15 +41,11 @@ function Path_filepath() {
     return 1
   fi
 
-  local curpwd="$(pwd)"
-  if Path_isAbs "$file"; then
-    echo "$file"
-  elif [[ -f "$file" ]]; then
+  if [[ -f "$file" ]]; then
     echo "$(cd "$(dirname "$file")" && pwd)/$(basename "$file")"
-    cd "$curpwd" || return 0
   elif [[ -d "$file" ]]; then
-    cd "$file" && pwd
-    cd "$curpwd" || return 0
+    # shellcheck disable=SC2005
+    echo "$(cd "$file" && pwd)"
   fi
 }
 
