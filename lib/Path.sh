@@ -1,29 +1,89 @@
 #!/usr/bin/env bash
 
-function Path_dirpath() {
-  echo TODO
-}
-
-function Path_filepath() {
-  echo TODO
-}
-
-function Path_filename() {
-  echo TODO
-}
+import String
 
 function Path_dirname() {
-  echo TODO
+  basename "$(dirname "$1")"
+}
+
+function Path_dirpath() {
+  local filepath=""
+  if filepath="$(Path_filepath "$@")"; then
+    dirname "$filepath"
+  else
+    return 1
+  fi
+}
+
+function Path_expandTilde() {
+  local file="$1"
+  String_replace "$file" "#\~" "$HOME"
 }
 
 function Path_extname() {
-  echo TODO
+  local filename="$(Path_filename "$@")"
+  if String_match "$filename" "\.[^./]+$"; then
+    echo ".$(String_trimStart "$filename" "*." 1)"
+  else
+    echo ""
+  fi
+}
+
+function Path_filename() {
+  basename "$1"
+}
+
+function Path_filepath() {
+  local file="$(Path_expandTilde "$1")"
+
+  if ! [[ -e "$file" ]]; then
+    echo "$1" not exist >&2
+    return 1
+  fi
+
+  local curpwd="$(pwd)"
+  if Path_isAbs "$file"; then
+    echo "$file"
+  elif [[ -f "$file" ]]; then
+    echo "$(cd "$(dirname "$file")" && pwd)/$(basename "$file")"
+    cd "$curpwd" || return 0
+  elif [[ -d "$file" ]]; then
+    cd "$file" && pwd
+    cd "$curpwd" || return 0
+  fi
 }
 
 function Path_isAbs() {
-  echo TODO
+  local file="$1"
+  if [[ "$file" == /* ]]; then
+    return 0
+  else
+    return 1
+  fi
 }
 
 function Path_isRel() {
-  echo TODO
+  ! Path_isAbs "$@"
+}
+
+function Path_filenoext() {
+  local filename="$(Path_filename "$@")"
+  if String_match "$filename" "\.[^./]+$"; then
+    String_trimEnd "$filename" ".*"
+  else
+    echo "$filename"
+  fi
+}
+
+function Path_pathnoext() {
+  local pathname=""
+  if pathname="$(Path_filepath "$@")"; then
+    if String_match "$pathname" "\.[^./]+$"; then
+      String_trimEnd "$pathname" ".*"
+    else
+      echo "$pathname"
+    fi
+  else
+    return 1
+  fi
 }
