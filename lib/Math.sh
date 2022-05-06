@@ -16,3 +16,19 @@ function Math_random() {
     echo $((min + random))
   fi
 }
+
+function Math_range() {
+  local min="${1:-0}"
+  local max="${2:-100}"
+  local step="${3:-1}"
+  if [[ "$min" -gt "$max" ]]; then
+    local tmp="$min"
+    min="$max"
+    max="$tmp"
+  fi
+  local -a res=()
+  for ((i = min; i <= max; i += step)); do
+    res+=("$i")
+  done
+  echo "${res[@]}"
+}
