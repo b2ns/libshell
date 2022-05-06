@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 import Math
 
-declare -g COMPARATOR="${COMPARATOR:-defaultComparator}"
+declare -g COMPARATOR="${COMPARATOR:-__defaultComparator__}"
 
 function Array_concat() {
   printf '%s\n' "$@"
@@ -266,7 +266,7 @@ function Array_sort() {
   fi
 }
 
-function defaultComparator() {
+function __defaultComparator__() {
   if [[ "$1" -gt "$2" ]]; then
     echo 1
   elif [[ "$1" -lt "$2" ]]; then
