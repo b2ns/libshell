@@ -9,7 +9,7 @@ function String_at() {
 }
 
 function String_capitalize() {
-  echo "${1^}"
+  printf '%s\n' "${1^}"
 }
 
 function String_concat() {
@@ -17,7 +17,7 @@ function String_concat() {
   for str in "$@"; do
     res="$res$str"
   done
-  echo "$res"
+  printf '%s\n' "$res"
 }
 
 function String_includes() {
@@ -68,9 +68,9 @@ function String_join() {
         res="$res$delimiter$str"
       fi
     done
-    echo "$res"
+    printf '%s\n' "$res"
   else
-    echo "$@"
+    printf '%s\n' "$@"
   fi
 }
 
@@ -92,9 +92,9 @@ function String_padEnd() {
     local maxLen="$2"
     local len=$((maxLen - strLen))
     local padStr="${3:- }"
-    echo "$1$(String_repeat "$padStr" "$len")"
+    printf '%s\n' "$1$(String_repeat "$padStr" "$len")"
   else
-    echo "$1"
+    printf '%s\n' "$1"
   fi
 }
 
@@ -104,9 +104,9 @@ function String_padStart() {
     local maxLen="$2"
     local len=$((maxLen - strLen))
     local padStr="${3:- }"
-    echo "$(String_repeat "$padStr" "$len")$1"
+    printf '%s\n' "$(String_repeat "$padStr" "$len")$1"
   else
-    echo "$1"
+    printf '%s\n' "$1"
   fi
 }
 
@@ -116,25 +116,25 @@ function String_repeat() {
     for ((i = 0; i < $2; i++)); do
       res="$res$1"
     done
-    echo "$res"
+    printf '%s\n' "$res"
   else
-    echo "$1"
+    printf '%s\n' "$1"
   fi
 }
 
 function String_replace() {
   if (($# >= 3)); then
-    echo "${1/$2/$3}"
+    printf '%s\n' "${1/$2/$3}"
   else
-    echo "$1"
+    printf '%s\n' "$1"
   fi
 }
 
 function String_replaceAll() {
   if (($# >= 3)); then
-    echo "${1//$2/$3}"
+    printf '%s\n' "${1//$2/$3}"
   else
-    echo "$1"
+    printf '%s\n' "$1"
   fi
 }
 
@@ -146,7 +146,7 @@ function String_reverse() {
     len=$((len - 1))
     res="$res$(String_at "$str" "$len")"
   done
-  echo "$res"
+  printf '%s\n' "$res"
 }
 
 function String_search() {
@@ -157,19 +157,19 @@ function String_slice() {
   if (($# >= 3)); then
     String_substr "$1" "$2" "$(($3 - $2))"
   elif (($# == 2)); then
-    echo "${1::$2}"
+    printf '%s\n' "${1::$2}"
   else
-    echo "$1"
+    printf '%s\n' "$1"
   fi
 }
 
 function String_substr() {
   if (($# >= 3)); then
-    echo "${1:$2:$3}"
+    printf '%s\n' "${1:$2:$3}"
   elif (($# == 2)); then
-    echo "${1::$2}"
+    printf '%s\n' "${1::$2}"
   else
-    echo "$1"
+    printf '%s\n' "$1"
   fi
 }
 
@@ -196,11 +196,11 @@ function String_split() {
 }
 
 function String_toLowerCase() {
-  echo "${1,,}"
+  printf '%s\n' "${1,,}"
 }
 
 function String_toUpperCase() {
-  echo "${1^^}"
+  printf '%s\n' "${1^^}"
 }
 
 function String_trim() {
@@ -211,12 +211,12 @@ function String_trim() {
 function String_trimEnd() {
   if (($# >= 3)); then
     if (($3 == 1)); then
-      echo "${1%%$2}"
+      printf '%s\n' "${1%%$2}"
     else
-      echo "${1%$2}"
+      printf '%s\n' "${1%$2}"
     fi
   elif (($# == 2)); then
-    echo "${1%$2}"
+    printf '%s\n' "${1%$2}"
   else
     local res="${1% }"
     local pre=""
@@ -224,19 +224,19 @@ function String_trimEnd() {
       pre="$res"
       res="${res% }"
     done
-    echo "$res"
+    printf '%s\n' "$res"
   fi
 }
 
 function String_trimStart() {
   if (($# >= 3)); then
     if (($3 == 1)); then
-      echo "${1##$2}"
+      printf '%s\n' "${1##$2}"
     else
-      echo "${1#$2}"
+      printf '%s\n' "${1#$2}"
     fi
   elif (($# == 2)); then
-    echo "${1#$2}"
+    printf '%s\n' "${1#$2}"
   else
     local res="${1# }"
     local pre=""
@@ -244,10 +244,10 @@ function String_trimStart() {
       pre="$res"
       res="${res# }"
     done
-    echo "$res"
+    printf '%s\n' "$res"
   fi
 }
 
 function String_uncapitalize() {
-  echo "${1,}"
+  printf '%s\n' "${1,}"
 }

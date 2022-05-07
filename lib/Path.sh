@@ -23,7 +23,7 @@ function Path_expandTilde() {
 function Path_extname() {
   local filename="$(Path_filename "$@")"
   if String_match "$filename" "\.[^./]+$"; then
-    echo ".$(String_trimStart "$filename" "*." 1)"
+    printf '%s\n' ".$(String_trimStart "$filename" "*." 1)"
   else
     echo ""
   fi
@@ -42,10 +42,10 @@ function Path_filepath() {
   fi
 
   if [[ -f "$file" ]]; then
-    echo "$(cd "$(dirname "$file")" && pwd)/$(basename "$file")"
+    printf '%s\n' "$(cd "$(dirname "$file")" && pwd)/$(basename "$file")"
   elif [[ -d "$file" ]]; then
     # shellcheck disable=SC2005
-    echo "$(cd "$file" && pwd)"
+    printf '%s\n' "$(cd "$file" && pwd)"
   fi
 }
 
@@ -62,7 +62,7 @@ function Path_filenoext() {
   if String_match "$filename" "\.[^./]+$"; then
     String_trimEnd "$filename" ".*"
   else
-    echo "$filename"
+    printf '%s\n' "$filename"
   fi
 }
 
@@ -72,7 +72,7 @@ function Path_pathnoext() {
     if String_match "$pathname" "\.[^./]+$"; then
       String_trimEnd "$pathname" ".*"
     else
-      echo "$pathname"
+      printf '%s\n' "$pathname"
     fi
   else
     return 1

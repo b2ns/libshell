@@ -52,7 +52,7 @@ function __source_file__() {
 
 function __abspath__() {
   local file="$1"
-  echo "$(cd "$(dirname "$file")" && pwd)/$(basename "$file")"
+  printf '%s\n' "$(cd "$(dirname "$file")" && pwd)/$(basename "$file")"
 }
 
 # import all libs

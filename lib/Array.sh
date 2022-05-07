@@ -114,14 +114,14 @@ function Array_join() {
         res="$res$delimiter$str"
       fi
     done
-    echo "$res"
+    printf '%s\n' "$res"
   else
-    echo "$@"
+    printf '%s\n' "$@"
   fi
 }
 
 function Array_last() {
-  echo "${@: -1:1}"
+  printf '%s\n' "${@: -1:1}"
 }
 
 function Array_length() {
@@ -142,7 +142,7 @@ function Array_map() {
     done
     printf '%s\n' "${res[@]}"
   else
-    echo "$1"
+    printf '%s\n' "$1"
   fi
 }
 
@@ -262,7 +262,7 @@ function Array_sort() {
 
     printf '%s\n' "${arr[@]}"
   else
-    echo "$@"
+    printf '%s\n' "$@"
   fi
 }
 
