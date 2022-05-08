@@ -9,7 +9,8 @@ Array_concat() {
 
 Array_every() {
   if (($# >= 2)); then
-    local fn=$(Array_last "$@")
+    local fn=""
+    fn=$(Array_last "$@")
     local len=$(($# - 1))
     local index=0
     for item in "${@:1:$len}"; do
@@ -26,7 +27,8 @@ Array_every() {
 
 Array_filter() {
   if (($# >= 2)); then
-    local fn=$(Array_last "$@")
+    local fn=""
+    fn=$(Array_last "$@")
     local len=$(($# - 1))
     local index=0
     local res=()
@@ -48,7 +50,8 @@ Array_find() {
 
 Array_findIndex() {
   if (($# >= 2)); then
-    local target=$(Array_last "$@")
+    local target=""
+    target=$(Array_last "$@")
     local len=$(($# - 1))
     local index=0
     for item in "${@:1:$len}"; do
@@ -68,7 +71,8 @@ Array_findIndex() {
 
 Array_forEach() {
   if (($# >= 2)); then
-    local fn=$(Array_last "$@")
+    local fn=""
+    fn=$(Array_last "$@")
     local len=$(($# - 1))
     local index=0
     for item in "${@:1:$len}"; do
@@ -84,7 +88,8 @@ Array_includes() {
 
 Array_indexOf() {
   if (($# >= 2)); then
-    local target=$(Array_last "$@")
+    local target=""
+    target=$(Array_last "$@")
     local len=$(($# - 1))
     local index=0
     for item in "${@:1:$len}"; do
@@ -104,7 +109,8 @@ Array_indexOf() {
 
 Array_join() {
   if (($# >= 3)); then
-    local delimiter=$(Array_last "$@")
+    local delimiter=""
+    delimiter=$(Array_last "$@")
     local len=$(($# - 1))
     local res
     for str in "${@:1:$len}"; do
@@ -130,7 +136,8 @@ Array_length() {
 
 Array_map() {
   if (($# >= 2)); then
-    local fn=$(Array_last "$@")
+    local fn=""
+    fn=$(Array_last "$@")
     local len=$(($# - 1))
     local index=0
     local res=()
@@ -161,8 +168,10 @@ Array_reverse() {
 
 Array_slice() {
   if (($# >= 3)); then
-    local endIndx=$(Array_last "$@")
-    local startIndex="${@:-2:1}"
+    local args=("$@")
+    local endIndx=""
+    endIndx=$(Array_last "$@")
+    local startIndex="${args[-2]}"
     printf '%s\n' "${@:$startIndex:"$((endIndx - startIndex))"}"
   else
     printf '%s\n' "$@"
@@ -171,7 +180,8 @@ Array_slice() {
 
 Array_some() {
   if (($# >= 2)); then
-    local fn=$(Array_last "$@")
+    local fn=""
+    fn=$(Array_last "$@")
     local len=$(($# - 1))
     local index=0
     for item in "${@:1:$len}"; do
@@ -219,7 +229,8 @@ Array_sort() {
       fi
 
       # random pivot
-      local randP="$(Math_random "$L" "$R")"
+      local randP=""
+      randP="$(Math_random "$L" "$R")"
       local tmp="${arr["$R"]}"
       arr["$R"]="${arr["$randP"]}"
       arr["$randP"]="$tmp"
@@ -278,8 +289,10 @@ __defaultComparator__() {
 
 Array_sub() {
   if (($# >= 3)); then
-    local subLen=$(Array_last "$@")
-    local startIndex="${@:-2:1}"
+    local args=("$@")
+    local subLen=""
+    subLen=$(Array_last "$@")
+    local startIndex="${args[-2]}"
     printf '%s\n' "${@:$startIndex:"$subLen"}"
   else
     printf '%s\n' "$@"

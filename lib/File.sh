@@ -45,6 +45,7 @@ File_mkdir() {
 }
 
 File_mkfile() {
-  local dir="$(dirname "$1")"
+  local dir=""
+  dir="$(dirname "$1")"
   File_mkdir "$dir" && touch "$1"
 }

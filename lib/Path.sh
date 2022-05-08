@@ -21,7 +21,8 @@ Path_expandTilde() {
 }
 
 Path_extname() {
-  local filename="$(Path_filename "$@")"
+  local filename=""
+  filename="$(Path_filename "$@")"
   if String_match "$filename" "\.[^./]+$"; then
     printf '%s\n' ".$(String_trimStart "$filename" "*." 1)"
   else
@@ -34,7 +35,8 @@ Path_filename() {
 }
 
 Path_filepath() {
-  local file="$(Path_expandTilde "$1")"
+  local file=""
+  file="$(Path_expandTilde "$1")"
 
   if ! [[ -e "$file" ]]; then
     echo "$1" not exist >&2
@@ -58,7 +60,8 @@ Path_isRel() {
 }
 
 Path_filenoext() {
-  local filename="$(Path_filename "$@")"
+  local filename=""
+  filename="$(Path_filename "$@")"
   if String_match "$filename" "\.[^./]+$"; then
     String_trimEnd "$filename" ".*"
   else

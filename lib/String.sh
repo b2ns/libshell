@@ -33,7 +33,8 @@ String_indexOf() {
     if String_includes "$1" "$2"; then
       local index=-1
       local str=""
-      local subStrLen=$(String_length "$2")
+      local subStrLen=""
+      subStrLen=$(String_length "$2")
       while ! String_includes "$str" "$2"; do
         index=$((index + 1))
         str="$(String_slice "$1" "$index")"
@@ -57,11 +58,11 @@ String_isNotEmpty() {
 
 String_join() {
   if (($# >= 3)); then
-    local delimiter=${@:$#:1}
-    delimiter=${delimiter[0]}
-    local len=$(($# - 1))
+    local args=("$@")
+    local delimiter="${args[-1]}"
+    unset "args[-1]"
     local res=""
-    for str in "${@:1:$len}"; do
+    for str in "${args[@]}"; do
       if String_isEmpty "$res"; then
         res="$str"
       else
@@ -88,7 +89,8 @@ String_match() {
 
 String_padEnd() {
   if (($# >= 2)); then
-    local strLen="$(String_length "$1")"
+    local strLen=""
+    strLen="$(String_length "$1")"
     local maxLen="$2"
     local len=$((maxLen - strLen))
     local padStr="${3:- }"
@@ -100,7 +102,8 @@ String_padEnd() {
 
 String_padStart() {
   if (($# >= 2)); then
-    local strLen="$(String_length "$1")"
+    local strLen=""
+    strLen="$(String_length "$1")"
     local maxLen="$2"
     local len=$((maxLen - strLen))
     local padStr="${3:- }"
@@ -140,7 +143,8 @@ String_replaceAll() {
 
 String_reverse() {
   local str="$1"
-  local len="$(String_length "$str")"
+  local len=""
+  len="$(String_length "$str")"
   local res=""
   while ((len > 0)); do
     len=$((len - 1))
@@ -179,7 +183,8 @@ String_split() {
     local str="$1"
     local delmiter="$2"
     if String_isEmpty "$delmiter"; then
-      local strLen=$(String_length "$str")
+      local strLen=""
+      strLen=$(String_length "$str")
       for ((i = 0; i < strLen; i++)); do
         array+=("$(String_substr "$str" "$i" 1)")
       done
@@ -204,7 +209,8 @@ String_toUpperCase() {
 }
 
 String_trim() {
-  local res=$(String_trimStart "$1")
+  local res=""
+  res=$(String_trimStart "$1")
   String_trimEnd "$res"
 }
 

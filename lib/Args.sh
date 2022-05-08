@@ -81,7 +81,8 @@ Args_has() {
 Args_help() {
   local headInfo=${1:-}
   local tailInfo=${2:-}
-  local scriptName="$(String_trimStart "$0" "*/" 1)"
+  local scriptName=""
+  scriptName="$(String_trimStart "$0" "*/" 1)"
 
   String_isNotEmpty "$scriptName" && printf '%s\n' "$scriptName"
 
@@ -94,12 +95,14 @@ Args_help() {
   # get max padding length
   local paddingLen=0
   for key in "${!ARGS_OPTIONS[@]}"; do
-    local len="$(String_length "$key")"
+    local len=""
+    len="$(String_length "$key")"
     ((len > paddingLen)) && paddingLen="$len"
   done
 
   for key in "${!ARGS_OPTIONS[@]}"; do
-    local msg="$(String_padEnd "$key" "$paddingLen")"
+    local msg=""
+    msg="$(String_padEnd "$key" "$paddingLen")"
     local desc="${ARGS_DEFINED_OPTIONS["$key#desc"]}"
     local valueType="${ARGS_DEFINED_OPTIONS["$key#valueType"]}"
     local defaultValue="${ARGS_DEFINED_OPTIONS["$key#defaultValue"]}"
@@ -132,13 +135,17 @@ Args_parse() {
     local arg="${args[$i]}"
     if __validateInputFlag__ "$arg" 2>/dev/null; then
       if String_match "$arg" "^--[^=]+=.*$"; then
-        local flag="$(String_trimEnd "$arg" "=*" 1)"
-        local value="$(String_trimStart "$arg" "*=")"
+        local flag=""
+        flag="$(String_trimEnd "$arg" "=*" 1)"
+        local value=""
+        value="$(String_trimStart "$arg" "*=")"
         unifiedArgs+=("$flag")
         unifiedArgs+=("$value")
       elif String_match "$arg" "^-[^-]+$"; then
-        local value="$(String_trimStart "$arg" "*=")"
-        local arg_="$(String_trimEnd "$arg" "=*" 1)"
+        local value=""
+        value="$(String_trimStart "$arg" "*=")"
+        local arg_=""
+        arg_="$(String_trimEnd "$arg" "=*" 1)"
 
         arg_="$(String_trimStart "$arg_" "-")"
         readarray -t flags <<<"$(String_split "$arg_" "")"

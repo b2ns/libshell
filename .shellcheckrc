@@ -1,4 +1,2 @@
 disable=SC1090
-disable=SC2124
-disable=SC2155
 external-sources=true

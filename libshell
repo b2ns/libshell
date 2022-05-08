@@ -5,7 +5,8 @@ declare -g LIBSHELL_SOURCED="${LIBSHELL_SOURCED:-0}"
 # libshell has been sourced so we just return
 (("$LIBSHELL_SOURCED" == 1)) && return 0
 
-declare -g LIB_SHELL_PATH="$(cd "${BASH_SOURCE[0]%/*}" && pwd)/lib"
+declare -g LIB_SHELL_PATH=""
+LIB_SHELL_PATH="$(cd "${BASH_SOURCE[0]%/*}" && pwd)/lib"
 declare -Ag LIB_SHELL_IMPORTED_LIBS
 declare -g IMPORT_ALL_LIBS="${IMPORT_ALL_LIBS:-1}"
 
