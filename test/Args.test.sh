@@ -71,6 +71,10 @@ function Args_script_test() { #@test
   run ./test/Args.script.sh --format unkownone -p=123
   assert_failure
 
+  run ./test/Args.script.sh -p=123 -c=custxm
+  assert_output "Expected 'custom', got 'custxm'"
+  assert_failure
+
   run ./test/Args.script.sh foo.txt bar.txt --show-input-file -p=123
   assert_output "Input files: foo.txt bar.txt"
 
