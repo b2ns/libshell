@@ -13,16 +13,6 @@ setup() {
   }
 }
 
-Array_concat() { #@test
-  local -a arr1=(1 2)
-  local -a arr2=("foo" " bar")
-  run Array_concat "${arr1[@]}" "${arr2[@]}"
-  assert_line -n 0 1
-  assert_line -n 1 2
-  assert_line -n 2 "foo"
-  assert_line -n 3 " bar"
-}
-
 Array_every() { #@test
   local -a arr=(6 7 8)
   run Array_every "${arr[@]}" gt5
@@ -95,12 +85,6 @@ Array_join() { #@test
   assert_output "123"
 }
 
-Array_last() { #@test
-  local -a arr=(1 2 3)
-  run Array_last "${arr[@]}"
-  assert_output 3
-}
-
 Array_length() { #@test
   local -a arr=(1 2 3)
   run Array_length "${arr[@]}"
@@ -115,35 +99,12 @@ Array_map() { #@test
   assert_line -n 2 6
 }
 
-Array_push() { #@test
-  local -a arr=(1 2)
-  run Array_push "${arr[@]}" 3
-  assert_line -n 0 1
-  assert_line -n 1 2
-  assert_line -n 2 3
-}
-
 Array_reverse() { #@te
   local -a arr=(1 2 3)
   run Array_reverse "${arr[@]}"
   assert_line -n 0 3
   assert_line -n 1 2
   assert_line -n 2 1
-}
-
-Array_slice() { #@te
-  local -a arr=(1 2 3 4 5)
-  run Array_slice "${arr[@]}" 0 1
-  assert_line -n 0 1
-
-  run Array_slice "${arr[@]}" 1 3
-  assert_line -n 0 2
-  assert_line -n 1 3
-  assert_line -n 2 ""
-
-  run Array_slice "${arr[@]}" 3 -1
-  assert_line -n 0 4
-  assert_line -n 1 5
 }
 
 Array_some() { #@test
@@ -179,19 +140,4 @@ Array_sort() { #@test
   # shellcheck disable=SC2154
   readarray -t res <<<"$output"
   assert_equal "${res[*]}" "8 6 5 5 5 3 2 1"
-}
-
-Array_sub() { #@te
-  local -a arr=(1 2 3 4 5)
-  run Array_sub "${arr[@]}" 0 1
-  assert_line -n 0 1
-
-  run Array_sub "${arr[@]}" 1 3
-  assert_line -n 0 2
-  assert_line -n 1 3
-  assert_line -n 2 4
-
-  run Array_sub "${arr[@]}" 3 -1
-  assert_line -n 0 4
-  assert_line -n 1 5
 }

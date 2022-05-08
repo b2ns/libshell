@@ -3,21 +3,18 @@ import Math
 
 declare -g COMPARATOR="${COMPARATOR:-__defaultComparator__}"
 
-Array_concat() {
-  printf '%s\n' "$@"
-}
-
 Array_every() {
   if (($# >= 2)); then
-    local fn=""
-    fn=$(Array_last "$@")
-    local len=$(($# - 1))
-    local index=0
-    for item in "${@:1:$len}"; do
-      if ! ($fn "$item" "$index"); then
+    local args=("$@")
+    local fn="${args[-1]}"
+    unset "args[-1]"
+    local len="${#args[@]}"
+    local item=""
+    for ((i = 0; i < len; i++)); do
+      item="${args[$i]}"
+      if ! ($fn "$item" "$i"); then
         return 1
       fi
-      index=$((index + 1))
     done
     return 0
   else
@@ -27,16 +24,16 @@ Array_every() {
 
 Array_filter() {
   if (($# >= 2)); then
-    local fn=""
-    fn=$(Array_last "$@")
-    local len=$(($# - 1))
-    local index=0
-    local res=()
-    for item in "${@:1:$len}"; do
-      if ($fn "$item" "$index"); then
+    local args=("$@")
+    local fn="${args[-1]}"
+    unset "args[-1]"
+    local len="${#args[@]}"
+    local item=""
+    for ((i = 0; i < len; i++)); do
+      item="${args[$i]}"
+      if ($fn "$item" "$i"); then
         res+=("$item")
       fi
-      index=$((index + 1))
     done
     printf '%s\n' "${res[@]}"
   else
@@ -50,16 +47,17 @@ Array_find() {
 
 Array_findIndex() {
   if (($# >= 2)); then
-    local target=""
-    target=$(Array_last "$@")
-    local len=$(($# - 1))
-    local index=0
-    for item in "${@:1:$len}"; do
+    local args=("$@")
+    local target="${args[-1]}"
+    unset "args[-1]"
+    local len="${#args[@]}"
+    local item=""
+    for ((i = 0; i < len; i++)); do
+      item="${args[$i]}"
       if [[ "$item" =~ $target ]]; then
-        echo "$index"
+        echo "$i"
         return 0
       fi
-      index=$((index + 1))
     done
     echo -1
     return 1
@@ -71,13 +69,14 @@ Array_findIndex() {
 
 Array_forEach() {
   if (($# >= 2)); then
-    local fn=""
-    fn=$(Array_last "$@")
-    local len=$(($# - 1))
-    local index=0
-    for item in "${@:1:$len}"; do
-      ($fn "$item" "$index")
-      index=$((index + 1))
+    local args=("$@")
+    local fn="${args[-1]}"
+    unset "args[-1]"
+    local len="${#args[@]}"
+    local item=""
+    for ((i = 0; i < len; i++)); do
+      item="${args[$i]}"
+      ($fn "$item" "$i")
     done
   fi
 }
@@ -88,16 +87,17 @@ Array_includes() {
 
 Array_indexOf() {
   if (($# >= 2)); then
-    local target=""
-    target=$(Array_last "$@")
-    local len=$(($# - 1))
-    local index=0
-    for item in "${@:1:$len}"; do
+    local args=("$@")
+    local target="${args[-1]}"
+    unset "args[-1]"
+    local len="${#args[@]}"
+    local item=""
+    for ((i = 0; i < len; i++)); do
+      item="${args[$i]}"
       if [[ "$target" == "$item" ]]; then
-        echo "$index"
+        echo "$i"
         return 0
       fi
-      index=$((index + 1))
     done
     echo -1
     return 1
@@ -109,25 +109,24 @@ Array_indexOf() {
 
 Array_join() {
   if (($# >= 3)); then
-    local delimiter=""
-    delimiter=$(Array_last "$@")
-    local len=$(($# - 1))
-    local res
-    for str in "${@:1:$len}"; do
-      if [[ -z "$res" ]]; then
-        res="$str"
+    local args=("$@")
+    local delimiter="${args[-1]}"
+    unset "args[-1]"
+    local len="${#args[@]}"
+    local result=""
+    local str=""
+    for ((i = 0; i < len; i++)); do
+      str="${args[$i]}"
+      if ((i == 0)); then
+        result="$str"
       else
-        res="$res$delimiter$str"
+        result="$result$delimiter$str"
       fi
     done
-    printf '%s\n' "$res"
+    printf '%s\n' "$result"
   else
-    printf '%s\n' "$@"
+    printf '%s\n' "$1"
   fi
-}
-
-Array_last() {
-  printf '%s\n' "${@: -1:1}"
 }
 
 Array_length() {
@@ -136,25 +135,22 @@ Array_length() {
 
 Array_map() {
   if (($# >= 2)); then
-    local fn=""
-    fn=$(Array_last "$@")
-    local len=$(($# - 1))
-    local index=0
+    local args=("$@")
+    local fn="${args[-1]}"
+    unset "args[-1]"
+    local len="${#args[@]}"
     local res=()
     local val=""
-    for item in "${@:1:$len}"; do
-      val=$($fn "$item" "$index")
+    local item=""
+    for ((i = 0; i < len; i++)); do
+      item="${args[$i]}"
+      val=$($fn "$item" "$i")
       res+=("$val")
-      index=$((index + 1))
     done
     printf '%s\n' "${res[@]}"
   else
     printf '%s\n' "$1"
   fi
-}
-
-Array_push() {
-  Array_concat "$@"
 }
 
 Array_reverse() {
@@ -166,29 +162,18 @@ Array_reverse() {
   printf '%s\n' "${res[@]}"
 }
 
-Array_slice() {
-  if (($# >= 3)); then
-    local args=("$@")
-    local endIndx=""
-    endIndx=$(Array_last "$@")
-    local startIndex="${args[-2]}"
-    printf '%s\n' "${@:$startIndex:"$((endIndx - startIndex))"}"
-  else
-    printf '%s\n' "$@"
-  fi
-}
-
 Array_some() {
   if (($# >= 2)); then
-    local fn=""
-    fn=$(Array_last "$@")
-    local len=$(($# - 1))
-    local index=0
-    for item in "${@:1:$len}"; do
-      if ($fn "$item" "$index"); then
+    local args=("$@")
+    local fn="${args[-1]}"
+    unset "args[-1]"
+    local len="${#args[@]}"
+    local item=""
+    for ((i = 0; i < len; i++)); do
+      item="${args[$i]}"
+      if ($fn "$item" "$i"); then
         return 0
       fi
-      index=$((index + 1))
     done
     return 1
   else
@@ -284,17 +269,5 @@ __defaultComparator__() {
     echo -1
   else
     echo 0
-  fi
-}
-
-Array_sub() {
-  if (($# >= 3)); then
-    local args=("$@")
-    local subLen=""
-    subLen=$(Array_last "$@")
-    local startIndex="${args[-2]}"
-    printf '%s\n' "${@:$startIndex:"$subLen"}"
-  else
-    printf '%s\n' "$@"
   fi
 }
