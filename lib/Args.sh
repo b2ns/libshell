@@ -16,8 +16,18 @@ function Args_define() {
   local defaultValue="${4-}"
 
   for singleFlag in "${flags[@]}"; do
+    # check invalid flag
+    __validateDefineFlag__ "$singleFlag" || return 1
+
+    # check duplicate flag
+    if Args_defined "$singleFlag" 2>/dev/null; then
+      echo "Error: duplicate flag defined: [$singleFlag]" >&2
+      return 1
+    fi
+
     ARGS_DEFINED_OPTIONS[$singleFlag]="$allFlag"
   done
+
   ARGS_DEFINED_OPTIONS["${allFlag}#desc"]="$desc"
   ARGS_DEFINED_OPTIONS["${allFlag}#valueType"]="$valueType"
   if String_isNotEmpty "$defaultValue" && String_isEmpty "$valueType"; then
@@ -104,14 +114,31 @@ function Args_parse() {
 
   # unify args
   # --format=json -> --format json
+  # -cvf -> -c -v -f
+  # -cvf=json -> -c -v -f json
   local -a unifiedArgs=()
   for ((i = 0; i < "${#args[@]}"; i++)); do
     local arg="${args[$i]}"
-    if String_match "$arg" "^--?[^=]+=.*"; then
-      local flag="$(String_trimEnd "$arg" "=*" 1)"
-      local value="$(String_trimStart "$arg" "*=")"
-      unifiedArgs+=("$flag")
-      unifiedArgs+=("$value")
+    if __validateInputFlag__ "$arg" 2>/dev/null; then
+      if String_match "$arg" "^--[^=]+=.*$"; then
+        local flag="$(String_trimEnd "$arg" "=*" 1)"
+        local value="$(String_trimStart "$arg" "*=")"
+        unifiedArgs+=("$flag")
+        unifiedArgs+=("$value")
+      elif String_match "$arg" "^-[^-]+$"; then
+        local value="$(String_trimStart "$arg" "*=")"
+        local arg_="$(String_trimEnd "$arg" "=*" 1)"
+
+        arg_="$(String_trimStart "$arg_" "-")"
+        readarray -t flags <<<"$(String_split "$arg_" "")"
+        for singleFlag in "${flags[@]}"; do
+          unifiedArgs+=("-$singleFlag")
+        done
+
+        [[ "$value" != "$arg" ]] && unifiedArgs+=("$value")
+      else
+        unifiedArgs+=("$arg")
+      fi
     else
       unifiedArgs+=("$arg")
     fi
@@ -120,7 +147,7 @@ function Args_parse() {
   for ((i = 0; i < "${#unifiedArgs[@]}"; i++)); do
     local arg="${unifiedArgs[$i]}"
 
-    if String_match "$arg" "^--?[^0-9]"; then
+    if __validateDefineFlag__ "$arg" 2>/dev/null; then
       if ((readingFlagValue == 1)); then
         echo "Error: flag [$singleFlag] expect a value of: $valueType" >&2
         return 1
@@ -161,6 +188,20 @@ function Args_parse() {
 
   if ((readingFlagValue == 1)); then
     echo "Error: flag [$singleFlag] expect a value of: $valueType" >&2
+    return 1
+  fi
+}
+
+function __validateDefineFlag__() {
+  if ! String_match "$1" "^-[a-zA-Z_]$" && ! String_match "$1" "^--[0-9a-zA-Z_-]+$"; then
+    echo "Error: invalid flag defined: [$1]" >&2
+    return 1
+  fi
+}
+
+function __validateInputFlag__() {
+  if ! String_match "$1" "^-[a-zA-Z_]+(=.*)?$" && ! String_match "$1" "^--[0-9a-zA-Z_-]+(=.*)?$"; then
+    echo "Error: invalid flag input: [$1]" >&2
     return 1
   fi
 }
