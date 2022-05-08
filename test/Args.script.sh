@@ -4,7 +4,7 @@ IFS=$'\n\t'
 
 source "$(dirname "${BASH_SOURCE[0]}")/../libshell"
 
-function checkEqualCustom() {
+checkEqualCustom() {
   if [ "$1" != "custom" ]; then
     echo "Expected 'custom', got '$1'"
     return 1

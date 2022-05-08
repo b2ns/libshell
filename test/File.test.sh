@@ -2,7 +2,7 @@
 load test_helper.sh
 load ../lib/File.sh
 
-function File_isDir() { #@test
+File_isDir() { #@test
   run File_isDir "./test"
   assert_success
 
@@ -10,7 +10,7 @@ function File_isDir() { #@test
   assert_failure
 }
 
-function File_isEmpty() { #@test
+File_isEmpty() { #@test
   local tmpFilename="__test_file_isempty__.ext"
   makeFile "$tmpFilename"
 
@@ -23,7 +23,7 @@ function File_isEmpty() { #@test
   cleanFile "$tmpFilename"
 }
 
-function File_isExecutable() { #@test
+File_isExecutable() { #@test
   local tmpFilename="__test_file_isexecutable__.ext"
   makeFile "$tmpFilename"
 
@@ -38,7 +38,7 @@ function File_isExecutable() { #@test
   cleanFile "$tmpFilename"
 }
 
-function File_isExist() { #@test
+File_isExist() { #@test
   run File_isExist "./test"
   assert_success
 
@@ -49,7 +49,7 @@ function File_isExist() { #@test
   assert_failure
 }
 
-function File_isFile() { #@test
+File_isFile() { #@test
   run File_isFile "./test/File.test.sh"
   assert_success
 
@@ -60,7 +60,7 @@ function File_isFile() { #@test
   assert_failure
 }
 
-function File_isNotEmpty() { #@test
+File_isNotEmpty() { #@test
   local tmpFilename="__test_file_isnotempty__.ext"
   makeFile "$tmpFilename"
 
@@ -73,7 +73,7 @@ function File_isNotEmpty() { #@test
   cleanFile "$tmpFilename"
 }
 
-function File_isReadable() { #@test
+File_isReadable() { #@test
   local tmpFilename="__test_file_isreadable__.ext"
   makeFile "$tmpFilename"
 
@@ -87,7 +87,7 @@ function File_isReadable() { #@test
   cleanFile "$tmpFilename"
 }
 
-function File_isSame() { #@test
+File_isSame() { #@test
   run File_isSame "./test/File.test.sh" "./test/File.test.sh"
   assert_success
 
@@ -95,7 +95,7 @@ function File_isSame() { #@test
   assert_failure
 }
 
-function File_isSymlink() { #@test
+File_isSymlink() { #@test
   local tmpFilename="__test_file_issymlink__.ext"
   ln -s "./test/File.test.sh" "$tmpFilename"
 
@@ -108,7 +108,7 @@ function File_isSymlink() { #@test
   cleanFile "$tmpFilename"
 }
 
-function File_isWritable() { #@test
+File_isWritable() { #@test
   local tmpFilename="__test_file_iswritable__.ext"
   makeFile "$tmpFilename"
 
@@ -122,7 +122,7 @@ function File_isWritable() { #@test
   cleanFile "$tmpFilename"
 }
 
-function File_mkdir() { #@test
+File_mkdir() { #@test
   local tmpDirname="__test_file_mkdir_dir__/path/to/dir"
 
   run File_mkdir "$tmpDirname"
@@ -131,7 +131,7 @@ function File_mkdir() { #@test
   rmdir -p "$tmpDirname"
 }
 
-function File_mkfile() { #@test
+File_mkfile() { #@test
   local tmpFilename="__test_file_mkfile__/path/to/foo.ext"
 
   run File_mkfile "$tmpFilename"

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-function Math_random() {
+Math_random() {
   local min="${1:-0}"
   local max="${2:-100}"
   if ((min > max)); then
@@ -17,7 +17,7 @@ function Math_random() {
   fi
 }
 
-function Math_range() {
+Math_range() {
   local min="${1:-0}"
   local max="${2:-100}"
   local step="${3:-1}"

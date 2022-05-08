@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-function String_at() {
+String_at() {
   if (($# >= 2)); then
     String_substr "$1" "$2" 1
   else
@@ -8,11 +8,11 @@ function String_at() {
   fi
 }
 
-function String_capitalize() {
+String_capitalize() {
   printf '%s\n' "${1^}"
 }
 
-function String_concat() {
+String_concat() {
   local res=""
   for str in "$@"; do
     res="$res$str"
@@ -20,7 +20,7 @@ function String_concat() {
   printf '%s\n' "$res"
 }
 
-function String_includes() {
+String_includes() {
   if [[ "$1" == *"$2"* ]]; then
     return 0
   else
@@ -28,7 +28,7 @@ function String_includes() {
   fi
 }
 
-function String_indexOf() {
+String_indexOf() {
   if (($# >= 2)); then
     if String_includes "$1" "$2"; then
       local index=-1
@@ -47,15 +47,15 @@ function String_indexOf() {
   fi
 }
 
-function String_isEmpty() {
+String_isEmpty() {
   [[ -z "$1" ]]
 }
 
-function String_isNotEmpty() {
+String_isNotEmpty() {
   [[ -n "$1" ]]
 }
 
-function String_join() {
+String_join() {
   if (($# >= 3)); then
     local delimiter=${@:$#:1}
     delimiter=${delimiter[0]}
@@ -74,11 +74,11 @@ function String_join() {
   fi
 }
 
-function String_length() {
+String_length() {
   echo "${#1}"
 }
 
-function String_match() {
+String_match() {
   if [[ "$1" =~ $2 ]]; then
     return 0
   else
@@ -86,7 +86,7 @@ function String_match() {
   fi
 }
 
-function String_padEnd() {
+String_padEnd() {
   if (($# >= 2)); then
     local strLen="$(String_length "$1")"
     local maxLen="$2"
@@ -98,7 +98,7 @@ function String_padEnd() {
   fi
 }
 
-function String_padStart() {
+String_padStart() {
   if (($# >= 2)); then
     local strLen="$(String_length "$1")"
     local maxLen="$2"
@@ -110,7 +110,7 @@ function String_padStart() {
   fi
 }
 
-function String_repeat() {
+String_repeat() {
   if (($# >= 2)); then
     local res=""
     for ((i = 0; i < $2; i++)); do
@@ -122,7 +122,7 @@ function String_repeat() {
   fi
 }
 
-function String_replace() {
+String_replace() {
   if (($# >= 3)); then
     printf '%s\n' "${1/$2/$3}"
   else
@@ -130,7 +130,7 @@ function String_replace() {
   fi
 }
 
-function String_replaceAll() {
+String_replaceAll() {
   if (($# >= 3)); then
     printf '%s\n' "${1//$2/$3}"
   else
@@ -138,7 +138,7 @@ function String_replaceAll() {
   fi
 }
 
-function String_reverse() {
+String_reverse() {
   local str="$1"
   local len="$(String_length "$str")"
   local res=""
@@ -149,11 +149,11 @@ function String_reverse() {
   printf '%s\n' "$res"
 }
 
-function String_search() {
+String_search() {
   echo TODO
 }
 
-function String_slice() {
+String_slice() {
   if (($# >= 3)); then
     String_substr "$1" "$2" "$(($3 - $2))"
   elif (($# == 2)); then
@@ -163,7 +163,7 @@ function String_slice() {
   fi
 }
 
-function String_substr() {
+String_substr() {
   if (($# >= 3)); then
     printf '%s\n' "${1:$2:$3}"
   elif (($# == 2)); then
@@ -173,7 +173,7 @@ function String_substr() {
   fi
 }
 
-function String_split() {
+String_split() {
   declare -a array=()
   if (($# >= 1)); then
     local str="$1"
@@ -195,20 +195,20 @@ function String_split() {
   printf "%s\n" "${array[@]}"
 }
 
-function String_toLowerCase() {
+String_toLowerCase() {
   printf '%s\n' "${1,,}"
 }
 
-function String_toUpperCase() {
+String_toUpperCase() {
   printf '%s\n' "${1^^}"
 }
 
-function String_trim() {
+String_trim() {
   local res=$(String_trimStart "$1")
   String_trimEnd "$res"
 }
 
-function String_trimEnd() {
+String_trimEnd() {
   if (($# >= 3)); then
     if (($3 == 1)); then
       printf '%s\n' "${1%%$2}"
@@ -228,7 +228,7 @@ function String_trimEnd() {
   fi
 }
 
-function String_trimStart() {
+String_trimStart() {
   if (($# >= 3)); then
     if (($3 == 1)); then
       printf '%s\n' "${1##$2}"
@@ -248,6 +248,6 @@ function String_trimStart() {
   fi
 }
 
-function String_uncapitalize() {
+String_uncapitalize() {
   printf '%s\n' "${1,}"
 }

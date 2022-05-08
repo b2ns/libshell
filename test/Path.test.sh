@@ -2,7 +2,7 @@
 load test_helper.sh
 load ../lib/Path.sh
 
-function Path_dirname() { #@test
+Path_dirname() { #@test
   run Path_dirname "path/to/foo.sh"
   assert_output "to"
 
@@ -44,7 +44,7 @@ function Path_dirname() { #@test
   assert_output "path"
 }
 
-function Path_dirpath() { #@test
+Path_dirpath() { #@test
   local tmpFilename="__test_path_dirpath__.ext"
   local tmpDirname="__test_path_dirpath_dir__"
 
@@ -97,12 +97,12 @@ function Path_dirpath() { #@test
   cleanFile "../$tmpDirname"
 }
 
-function Path_expandTilde() { #@test
+Path_expandTilde() { #@test
   run Path_expandTilde "~"
   assert_output "$HOME"
 }
 
-function Path_extname() { #@test
+Path_extname() { #@test
   run Path_extname "foo.sh"
   assert_output ".sh"
 
@@ -134,7 +134,7 @@ function Path_extname() { #@test
   assert_output ""
 }
 
-function Path_filename() { #@test
+Path_filename() { #@test
   run Path_filename "foo.sh"
   assert_output "foo.sh"
 
@@ -170,7 +170,7 @@ function Path_filename() { #@test
   assert_output "to"
 }
 
-function Path_filepath() { #@test
+Path_filepath() { #@test
   local tmpFilename="__test_path_filepath__.ext"
   local tmpDirname="__test_path_filepath_dir__"
 
@@ -221,7 +221,7 @@ function Path_filepath() { #@test
   cleanFile "../$tmpDirname"
 }
 
-function Path_isAbs() { #@test
+Path_isAbs() { #@test
   run Path_isAbs "/path/to/file.sh"
   assert_success
 
@@ -239,7 +239,7 @@ function Path_isAbs() { #@test
   assert_failure
 }
 
-function Path_isRel() { #@test
+Path_isRel() { #@test
   run Path_isRel "./path/to/file.sh"
   assert_success
 
@@ -257,7 +257,7 @@ function Path_isRel() { #@test
   assert_failure
 }
 
-function Path_filenoext() { #@test
+Path_filenoext() { #@test
   run Path_filenoext "foo.sh"
   assert_output "foo"
 
@@ -283,7 +283,7 @@ function Path_filenoext() { #@test
   assert_output "to"
 }
 
-function Path_pathnoext() { #@test
+Path_pathnoext() { #@test
   local tmpFilename="__test_path_pathnoext__.ext"
   local tmpFilenoext="__test_path_pathnoext__"
   local tmpDirname="__test_path_pathnoext_dir__"

@@ -9,7 +9,7 @@ declare -g LIB_SHELL_PATH="$(cd "${BASH_SOURCE[0]%/*}" && pwd)/lib"
 declare -Ag LIB_SHELL_IMPORTED_LIBS
 declare -g IMPORT_ALL_LIBS="${IMPORT_ALL_LIBS:-1}"
 
-function import() {
+import() {
   local scriptRoot="${BASH_SOURCE[1]:-$0}"
   scriptRoot="$(cd "${scriptRoot%/*}" && pwd)"
   for lib in "$@"; do
@@ -23,7 +23,7 @@ function import() {
   done
 }
 
-function __source_path__() {
+__source_path__() {
   local lib="$1"
   if [[ -d "$lib" ]]; then
     for file in "$lib"/*.sh; do
@@ -34,7 +34,7 @@ function __source_path__() {
   fi
 }
 
-function __source_file__() {
+__source_file__() {
   local lib="$1"
 
   [[ ! -f "$lib" ]] && return 1
@@ -50,7 +50,7 @@ function __source_file__() {
   source "$lib"
 }
 
-function __abspath__() {
+__abspath__() {
   local file="$1"
   printf '%s\n' "$(cd "$(dirname "$file")" && pwd)/$(basename "$file")"
 }

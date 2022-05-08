@@ -2,7 +2,7 @@
 load test_helper.sh
 load ../lib/String.sh
 
-function String_at() { #@test
+String_at() { #@test
   run String_at "bar" 0
   assert_output "b"
 
@@ -19,17 +19,17 @@ function String_at() { #@test
   assert_output ""
 }
 
-function String_capitalize() { #@test
+String_capitalize() { #@test
   run String_capitalize "foo"
   assert_output "Foo"
 }
 
-function String_concat() { #@test
+String_concat() { #@test
   run String_concat "foo" "bar " "x" "/y" "/z"
   assert_output "foobar x/y/z"
 }
 
-function String_includes() { #@test
+String_includes() { #@test
   run String_includes "foo bar" "bar"
   assert_success
 
@@ -40,7 +40,7 @@ function String_includes() { #@test
   assert_failure
 }
 
-function String_indexOf() { #@test
+String_indexOf() { #@test
   run String_indexOf "foo barbar" "bar"
   assert_output 4
 
@@ -51,7 +51,7 @@ function String_indexOf() { #@test
   assert_output -1
 }
 
-function String_isEmpty() { #@test
+String_isEmpty() { #@test
   run String_isEmpty "foo"
   assert_failure
 
@@ -62,7 +62,7 @@ function String_isEmpty() { #@test
   assert_success
 }
 
-function String_isNotEmpty() { #@test
+String_isNotEmpty() { #@test
   run String_isNotEmpty "foo"
   assert_success
 
@@ -73,7 +73,7 @@ function String_isNotEmpty() { #@test
   assert_failure
 }
 
-function String_join() { #@test
+String_join() { #@test
   run String_join " a" " b" " c " "_"
   assert_output " a_ b_ c "
 
@@ -81,7 +81,7 @@ function String_join() { #@test
   assert_output "abc"
 }
 
-function String_length() { #@test
+String_length() { #@test
   run String_length "foo"
   assert_output 3
 
@@ -92,7 +92,7 @@ function String_length() { #@test
   assert_output 0
 }
 
-function String_match() { #@test
+String_match() { #@test
   run String_match "foo12o bar" "^foo[0-9]+o"
   assert_success
 
@@ -103,7 +103,7 @@ function String_match() { #@test
   assert_failure
 }
 
-function String_padEnd() { #@test
+String_padEnd() { #@test
   run String_padEnd "foo" 5
   assert_output "foo  "
 
@@ -111,7 +111,7 @@ function String_padEnd() { #@test
   assert_output "foo---"
 }
 
-function String_padStart() { #@test
+String_padStart() { #@test
   run String_padStart "foo" 5
   assert_output "  foo"
 
@@ -119,7 +119,7 @@ function String_padStart() { #@test
   assert_output "---foo"
 }
 
-function String_repeat() { #@test
+String_repeat() { #@test
   run String_repeat "a" 3
   assert_output "aaa"
 
@@ -127,7 +127,7 @@ function String_repeat() { #@test
   assert_output "    "
 }
 
-function String_replace() { #@test
+String_replace() { #@test
   run String_replace "foo bar" "bar" "baz"
   assert_output "foo baz"
 
@@ -138,17 +138,17 @@ function String_replace() { #@test
   assert_output "foo baz foobar"
 }
 
-function String_replaceAll() { #@test
+String_replaceAll() { #@test
   run String_replaceAll "foo bar foobar" "bar" "baz"
   assert_output "foo baz foobaz"
 }
 
-function String_reverse() { #@test
+String_reverse() { #@test
   run String_reverse "abcd"
   assert_output "dcba"
 }
 
-function String_slice() { #@test
+String_slice() { #@test
   run String_slice "foobar" 0 3
   assert_output "foo"
 
@@ -174,7 +174,7 @@ function String_slice() { #@test
   assert_output "foobar"
 }
 
-function String_substr() { #@test
+String_substr() { #@test
   run String_substr "foobar" 0 3
   assert_output "foo"
 
@@ -200,7 +200,7 @@ function String_substr() { #@test
   assert_output "foobar"
 }
 
-function String_split() { #@test
+String_split() { #@test
   run String_split "foo" ""
   assert_line -n 0 "f"
   assert_line -n 1 "o"
@@ -222,17 +222,17 @@ function String_split() { #@test
   assert_line -n 2 " o "
 }
 
-function String_toLowerCase() { #@test
+String_toLowerCase() { #@test
   run String_toLowerCase "FOO"
   assert_output "foo"
 }
 
-function String_toUpperCase() { #@test
+String_toUpperCase() { #@test
   run String_toUpperCase "foo"
   assert_output "FOO"
 }
 
-function String_trim() { #@test
+String_trim() { #@test
   run String_trim "foo bar   "
   assert_output "foo bar"
 
@@ -243,7 +243,7 @@ function String_trim() { #@test
   assert_output "foo bar"
 }
 
-function String_trimEnd() { #@test
+String_trimEnd() { #@test
   run String_trimEnd "foo bar   "
   assert_output "foo bar"
 
@@ -257,7 +257,7 @@ function String_trimEnd() { #@test
   assert_output "path"
 }
 
-function String_trimStart() { #@test
+String_trimStart() { #@test
   run String_trimStart "   foo bar"
   assert_output "foo bar"
 
@@ -271,7 +271,7 @@ function String_trimStart() { #@test
   assert_output "foo.sh"
 }
 
-function String_uncapitalize() { #@test
+String_uncapitalize() { #@test
   run String_uncapitalize "FOO"
   assert_output "fOO"
 }

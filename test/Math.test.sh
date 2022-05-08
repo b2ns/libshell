@@ -2,7 +2,7 @@
 load test_helper.sh
 load ../lib/Math.sh
 
-function Math_random() { #@test
+Math_random() { #@test
   run Math_random 10 15
   # shellcheck disable=SC2154
   assert [ "$output" -ge 10 ] && [ "$output" -lt 15 ]
@@ -14,7 +14,7 @@ function Math_random() { #@test
   assert [ "$output" -ge -15 ] && [ "$output" -lt -10 ]
 }
 
-function Math_range() { #@test
+Math_range() { #@test
   run Math_range -10 -5
   assert_output '-10 -9 -8 -7 -6 -5'
 

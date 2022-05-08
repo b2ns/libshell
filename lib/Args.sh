@@ -7,7 +7,7 @@ declare -gA ARGS_REQUIRED_OPTIONS=()
 declare -gA ARGS_OPTIONS=()
 declare -ga ARGS_INPUT=()
 
-function Args_define() {
+Args_define() {
   (($# == 0)) && return 0
 
   local allFlag="$1"
@@ -43,7 +43,7 @@ function Args_define() {
   ARGS_OPTIONS[$allFlag]="$defaultValue"
 }
 
-function Args_defined() {
+Args_defined() {
   if [[ ${ARGS_DEFINED_OPTIONS[$1]+_} ]]; then
     return 0
   else
@@ -52,7 +52,7 @@ function Args_defined() {
   fi
 }
 
-function Args_get() {
+Args_get() {
   if Args_defined "$1"; then
     local allFlag="${ARGS_DEFINED_OPTIONS[$1]}"
     printf '%s\n' "${ARGS_OPTIONS[$allFlag]}"
@@ -61,11 +61,11 @@ function Args_get() {
   fi
 }
 
-function Args_getInput() {
+Args_getInput() {
   printf '%s\n' "${ARGS_INPUT[@]}"
 }
 
-function Args_has() {
+Args_has() {
   local value=""
   if value="$(Args_get "$1" 2>/dev/null)"; then
     if String_isEmpty "$value"; then
@@ -78,11 +78,10 @@ function Args_has() {
   fi
 }
 
-function Args_help() {
+Args_help() {
   local headInfo=${1:-}
   local tailInfo=${2:-}
   local scriptName="$(String_trimStart "$0" "*/" 1)"
-  # local scriptName="${0}"
 
   String_isNotEmpty "$scriptName" && printf '%s\n' "$scriptName"
 
@@ -109,7 +108,7 @@ function Args_help() {
   fi
 }
 
-function Args_parse() {
+Args_parse() {
   local args=("$@")
   local singleFlag=""
   local allFlag=""
@@ -206,14 +205,14 @@ function Args_parse() {
   done
 }
 
-function __validateDefineFlag__() {
+__validateDefineFlag__() {
   if ! String_match "$1" "^-[a-zA-Z_]$" && ! String_match "$1" "^--[0-9a-zA-Z_-]+$"; then
     echo "Error: invalid flag defined: [$1]" >&2
     return 1
   fi
 }
 
-function __validateInputFlag__() {
+__validateInputFlag__() {
   if ! String_match "$1" "^-[a-zA-Z_]+(=.*)?$" && ! String_match "$1" "^--[0-9a-zA-Z_-]+(=.*)?$"; then
     echo "Error: invalid flag input: [$1]" >&2
     return 1

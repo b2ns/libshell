@@ -3,11 +3,11 @@ import Math
 
 declare -g COMPARATOR="${COMPARATOR:-__defaultComparator__}"
 
-function Array_concat() {
+Array_concat() {
   printf '%s\n' "$@"
 }
 
-function Array_every() {
+Array_every() {
   if (($# >= 2)); then
     local fn=$(Array_last "$@")
     local len=$(($# - 1))
@@ -24,7 +24,7 @@ function Array_every() {
   fi
 }
 
-function Array_filter() {
+Array_filter() {
   if (($# >= 2)); then
     local fn=$(Array_last "$@")
     local len=$(($# - 1))
@@ -42,11 +42,11 @@ function Array_filter() {
   fi
 }
 
-function Array_find() {
+Array_find() {
   Array_findIndex "$@"
 }
 
-function Array_findIndex() {
+Array_findIndex() {
   if (($# >= 2)); then
     local target=$(Array_last "$@")
     local len=$(($# - 1))
@@ -66,7 +66,7 @@ function Array_findIndex() {
   fi
 }
 
-function Array_forEach() {
+Array_forEach() {
   if (($# >= 2)); then
     local fn=$(Array_last "$@")
     local len=$(($# - 1))
@@ -78,11 +78,11 @@ function Array_forEach() {
   fi
 }
 
-function Array_includes() {
+Array_includes() {
   Array_indexOf "$@"
 }
 
-function Array_indexOf() {
+Array_indexOf() {
   if (($# >= 2)); then
     local target=$(Array_last "$@")
     local len=$(($# - 1))
@@ -102,7 +102,7 @@ function Array_indexOf() {
   fi
 }
 
-function Array_join() {
+Array_join() {
   if (($# >= 3)); then
     local delimiter=$(Array_last "$@")
     local len=$(($# - 1))
@@ -120,15 +120,15 @@ function Array_join() {
   fi
 }
 
-function Array_last() {
+Array_last() {
   printf '%s\n' "${@: -1:1}"
 }
 
-function Array_length() {
+Array_length() {
   echo "$#"
 }
 
-function Array_map() {
+Array_map() {
   if (($# >= 2)); then
     local fn=$(Array_last "$@")
     local len=$(($# - 1))
@@ -146,11 +146,11 @@ function Array_map() {
   fi
 }
 
-function Array_push() {
+Array_push() {
   Array_concat "$@"
 }
 
-function Array_reverse() {
+Array_reverse() {
   local -a res=()
   local len=$(($# - 1))
   for ((i = len; i > 0; i--)); do
@@ -159,7 +159,7 @@ function Array_reverse() {
   printf '%s\n' "${res[@]}"
 }
 
-function Array_slice() {
+Array_slice() {
   if (($# >= 3)); then
     local endIndx=$(Array_last "$@")
     local startIndex="${@:-2:1}"
@@ -169,7 +169,7 @@ function Array_slice() {
   fi
 }
 
-function Array_some() {
+Array_some() {
   if (($# >= 2)); then
     local fn=$(Array_last "$@")
     local len=$(($# - 1))
@@ -186,13 +186,13 @@ function Array_some() {
   fi
 }
 
-function Array_sort() {
+Array_sort() {
   if (($# >= 2)); then
     local -a arr=("$@")
     local arrLen="$#"
     local smallArraySize=7
 
-    function process() {
+    process() {
       local L="$1"
       local R="$2"
 
@@ -266,7 +266,7 @@ function Array_sort() {
   fi
 }
 
-function __defaultComparator__() {
+__defaultComparator__() {
   if (($1 > $2)); then
     echo 1
   elif (($1 < $2)); then
@@ -276,7 +276,7 @@ function __defaultComparator__() {
   fi
 }
 
-function Array_sub() {
+Array_sub() {
   if (($# >= 3)); then
     local subLen=$(Array_last "$@")
     local startIndex="${@:-2:1}"

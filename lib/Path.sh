@@ -2,11 +2,11 @@
 
 import String
 
-function Path_dirname() {
+Path_dirname() {
   basename "$(dirname "$1")"
 }
 
-function Path_dirpath() {
+Path_dirpath() {
   local filepath=""
   if filepath="$(Path_filepath "$@")"; then
     dirname "$filepath"
@@ -15,12 +15,12 @@ function Path_dirpath() {
   fi
 }
 
-function Path_expandTilde() {
+Path_expandTilde() {
   local file="$1"
   String_replace "$file" "#\~" "$HOME"
 }
 
-function Path_extname() {
+Path_extname() {
   local filename="$(Path_filename "$@")"
   if String_match "$filename" "\.[^./]+$"; then
     printf '%s\n' ".$(String_trimStart "$filename" "*." 1)"
@@ -29,11 +29,11 @@ function Path_extname() {
   fi
 }
 
-function Path_filename() {
+Path_filename() {
   basename "$1"
 }
 
-function Path_filepath() {
+Path_filepath() {
   local file="$(Path_expandTilde "$1")"
 
   if ! [[ -e "$file" ]]; then
@@ -49,15 +49,15 @@ function Path_filepath() {
   fi
 }
 
-function Path_isAbs() {
+Path_isAbs() {
   [[ "$1" == /* ]]
 }
 
-function Path_isRel() {
+Path_isRel() {
   ! Path_isAbs "$@"
 }
 
-function Path_filenoext() {
+Path_filenoext() {
   local filename="$(Path_filename "$@")"
   if String_match "$filename" "\.[^./]+$"; then
     String_trimEnd "$filename" ".*"
@@ -66,7 +66,7 @@ function Path_filenoext() {
   fi
 }
 
-function Path_pathnoext() {
+Path_pathnoext() {
   local pathname=""
   if pathname="$(Path_filepath "$@")"; then
     if String_match "$pathname" "\.[^./]+$"; then

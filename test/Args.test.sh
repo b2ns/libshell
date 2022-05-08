@@ -2,7 +2,7 @@
 load test_helper.sh
 load ../lib/Args.sh
 
-function Args_test() { #@test
+Args_test() { #@test
   # define args accpected
   Args_define "-r --readonly" "Readonly"
   Args_define "-o --output" "Output" "<any>"
@@ -39,7 +39,7 @@ Args_define "-p --pwd" "Password is required" "<any>!"
   assert_output "0.00001"
 }
 
-function Args_script_test() { #@test
+Args_script_test() { #@test
   run ./test/Args.script.sh -r -p 123
   assert_output "Readonly"
 
