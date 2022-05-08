@@ -3,6 +3,7 @@
 import String
 
 declare -gA ARGS_DEFINED_OPTIONS=()
+declare -gA ARGS_REQUIRED_OPTIONS=()
 declare -gA ARGS_OPTIONS=()
 declare -ga ARGS_INPUT=()
 
@@ -29,10 +30,13 @@ function Args_define() {
   done
 
   ARGS_DEFINED_OPTIONS["${allFlag}#desc"]="$desc"
-  ARGS_DEFINED_OPTIONS["${allFlag}#valueType"]="$valueType"
-  if String_isNotEmpty "$defaultValue" && String_isEmpty "$valueType"; then
-    ARGS_DEFINED_OPTIONS["${allFlag}#valueType"]="any"
+
+  if String_match "$valueType" ">!+$"; then
+    valueType="$(String_trimEnd "$valueType" "!*" 1)"
+    ARGS_REQUIRED_OPTIONS[$allFlag]=1
   fi
+  ARGS_DEFINED_OPTIONS["${allFlag}#valueType"]="$valueType"
+
   ARGS_DEFINED_OPTIONS["${allFlag}#defaultValue"]="$defaultValue"
 
   # set default value
@@ -165,6 +169,7 @@ function Args_parse() {
       else
         readingFlagValue=1
       fi
+      unset ARGS_REQUIRED_OPTIONS["$allFlag"]
     else
       if ((readingFlagValue == 1)); then
 
@@ -190,6 +195,11 @@ function Args_parse() {
     echo "Error: flag [$singleFlag] expect a value of: $valueType" >&2
     return 1
   fi
+
+  for key in "${!ARGS_REQUIRED_OPTIONS[@]}"; do
+    echo "Error: flag [$key] is required" >&2
+    return 1
+  done
 }
 
 function __validateDefineFlag__() {
