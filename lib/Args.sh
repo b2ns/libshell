@@ -91,8 +91,15 @@ Args_help() {
 
   echo
 
+  # get max padding length
+  local paddingLen=0
   for key in "${!ARGS_OPTIONS[@]}"; do
-    local msg="[$key]"
+    local len="$(String_length "$key")"
+    ((len > paddingLen)) && paddingLen="$len"
+  done
+
+  for key in "${!ARGS_OPTIONS[@]}"; do
+    local msg="$(String_padEnd "$key" "$paddingLen")"
     local desc="${ARGS_DEFINED_OPTIONS["$key#desc"]}"
     local valueType="${ARGS_DEFINED_OPTIONS["$key#valueType"]}"
     local defaultValue="${ARGS_DEFINED_OPTIONS["$key#defaultValue"]}"
@@ -100,12 +107,13 @@ Args_help() {
     String_isNotEmpty "$valueType" && msg="$msg ($valueType)"
     String_isNotEmpty "$defaultValue" && msg="$msg (default: $defaultValue)"
     printf '  %s\n' "$msg"
-    echo
   done
 
   if String_isNotEmpty "$tailInfo"; then
     printf '%s\n' "$tailInfo"
   fi
+
+  echo
 }
 
 Args_parse() {
