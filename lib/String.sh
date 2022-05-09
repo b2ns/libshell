@@ -31,9 +31,9 @@ String_includes() {
 String_indexOf() {
   if (($# >= 2)); then
     if String_includes "$1" "$2"; then
-      local index=-1
+      local -i index=-1
       local str=""
-      local subStrLen=""
+      local -i subStrLen=""
       subStrLen=$(String_length "$2")
       while ! String_includes "$str" "$2"; do
         index=$((index + 1))
@@ -58,7 +58,7 @@ String_isNotEmpty() {
 
 String_join() {
   if (($# >= 3)); then
-    local args=("$@")
+    local -a args=("$@")
     local delimiter="${args[-1]}"
     unset "args[-1]"
     local res=""
@@ -89,10 +89,10 @@ String_match() {
 
 String_padEnd() {
   if (($# >= 2)); then
-    local strLen=""
+    local -i strLen=""
     strLen="$(String_length "$1")"
-    local maxLen="$2"
-    local len=$((maxLen - strLen))
+    local -i maxLen="$2"
+    local -i len=$((maxLen - strLen))
     local padStr="${3:- }"
     printf '%s\n' "$1$(String_repeat "$padStr" "$len")"
   else
@@ -102,10 +102,10 @@ String_padEnd() {
 
 String_padStart() {
   if (($# >= 2)); then
-    local strLen=""
+    local -i strLen=""
     strLen="$(String_length "$1")"
-    local maxLen="$2"
-    local len=$((maxLen - strLen))
+    local -i maxLen="$2"
+    local -i len=$((maxLen - strLen))
     local padStr="${3:- }"
     printf '%s\n' "$(String_repeat "$padStr" "$len")$1"
   else
@@ -143,7 +143,7 @@ String_replaceAll() {
 
 String_reverse() {
   local str="$1"
-  local len=""
+  local -i len=""
   len="$(String_length "$str")"
   local res=""
   while ((len > 0)); do
@@ -183,7 +183,7 @@ String_split() {
     local str="$1"
     local delmiter="$2"
     if String_isEmpty "$delmiter"; then
-      local strLen=""
+      local -i strLen=""
       strLen=$(String_length "$str")
       for ((i = 0; i < strLen; i++)); do
         array+=("$(String_substr "$str" "$i" 1)")

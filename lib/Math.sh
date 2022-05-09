@@ -1,28 +1,28 @@
 #!/usr/bin/env bash
 
 Math_random() {
-  local min="${1:-0}"
-  local max="${2:-100}"
+  local -i min="${1:-0}"
+  local -i max="${2:-100}"
   if ((min > max)); then
-    local tmp="$min"
+    local -i tmp="$min"
     min="$max"
     max="$tmp"
   fi
-  local range=$((max - min))
+  local -i range=$((max - min))
   if ((range == 0)); then
     echo "$min"
   else
-    local random=$((RANDOM % range))
+    local -i random=$((RANDOM % range))
     echo $((min + random))
   fi
 }
 
 Math_range() {
-  local min="${1:-0}"
-  local max="${2:-100}"
-  local step="${3:-1}"
+  local -i min="${1:-0}"
+  local -i max="${2:-100}"
+  local -i step="${3:-1}"
   if ((min > max)); then
-    local tmp="$min"
+    local -i tmp="$min"
     min="$max"
     max="$tmp"
   fi

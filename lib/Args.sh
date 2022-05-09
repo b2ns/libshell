@@ -93,9 +93,9 @@ Args_help() {
   echo
 
   # get max padding length
-  local paddingLen=0
+  local -i paddingLen=0
   for key in "${!ARGS_OPTIONS[@]}"; do
-    local len=""
+    local -i len=""
     len="$(String_length "$key")"
     ((len > paddingLen)) && paddingLen="$len"
   done
@@ -120,11 +120,11 @@ Args_help() {
 }
 
 Args_parse() {
-  local args=("$@")
+  local -a args=("$@")
   local singleFlag=""
   local allFlag=""
   local valueType=""
-  local readingFlagValue=0
+  local -i readingFlagValue=0
 
   # unify args
   # --format=json -> --format json
