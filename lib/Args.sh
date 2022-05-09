@@ -32,7 +32,7 @@ Args_define() {
   ARGS_DEFINED_OPTIONS["${allFlag}#desc"]="$desc"
 
   if String_match "$valueType" ">!+$"; then
-    valueType="$(String_trimEnd "$valueType" "!*" 1)"
+    valueType="$(String_stripEnd "$valueType" "!*" 1)"
     ARGS_REQUIRED_OPTIONS[$allFlag]=1
   fi
   ARGS_DEFINED_OPTIONS["${allFlag}#valueType"]="$valueType"
@@ -82,7 +82,7 @@ Args_help() {
   local headInfo=${1:-}
   local tailInfo=${2:-}
   local scriptName=""
-  scriptName="$(String_trimStart "$0" "*/" 1)"
+  scriptName="$(String_stripStart "$0" "*/" 1)"
 
   String_isNotEmpty "$scriptName" && printf '%s\n' "$scriptName"
 
@@ -136,18 +136,18 @@ Args_parse() {
     if __validateInputFlag__ "$arg" 2>/dev/null; then
       if String_match "$arg" "^--[^=]+=.*$"; then
         local flag=""
-        flag="$(String_trimEnd "$arg" "=*" 1)"
+        flag="$(String_stripEnd "$arg" "=*" 1)"
         local value=""
-        value="$(String_trimStart "$arg" "*=")"
+        value="$(String_stripStart "$arg" "*=")"
         unifiedArgs+=("$flag")
         unifiedArgs+=("$value")
       elif String_match "$arg" "^-[^-]+$"; then
         local value=""
-        value="$(String_trimStart "$arg" "*=")"
+        value="$(String_stripStart "$arg" "*=")"
         local arg_=""
-        arg_="$(String_trimEnd "$arg" "=*" 1)"
+        arg_="$(String_stripEnd "$arg" "=*" 1)"
 
-        arg_="$(String_trimStart "$arg_" "-")"
+        arg_="$(String_stripStart "$arg_" "-")"
         readarray -t flags <<<"$(String_split "$arg_" "")"
         for singleFlag in "${flags[@]}"; do
           unifiedArgs+=("-$singleFlag")

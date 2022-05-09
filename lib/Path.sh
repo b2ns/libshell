@@ -24,7 +24,7 @@ Path_extname() {
   local filename=""
   filename="$(Path_filename "$@")"
   if String_match "$filename" "\.[^./]+$"; then
-    printf '%s\n' ".$(String_trimStart "$filename" "*." 1)"
+    printf '%s\n' ".$(String_stripStart "$filename" "*." 1)"
   else
     echo ""
   fi
@@ -63,7 +63,7 @@ Path_filenoext() {
   local filename=""
   filename="$(Path_filename "$@")"
   if String_match "$filename" "\.[^./]+$"; then
-    String_trimEnd "$filename" ".*"
+    String_stripEnd "$filename" ".*"
   else
     printf '%s\n' "$filename"
   fi
@@ -73,7 +73,7 @@ Path_pathnoext() {
   local pathname=""
   if pathname="$(Path_filepath "$@")"; then
     if String_match "$pathname" "\.[^./]+$"; then
-      String_trimEnd "$pathname" ".*"
+      String_stripEnd "$pathname" ".*"
     else
       printf '%s\n' "$pathname"
     fi

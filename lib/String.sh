@@ -1,15 +1,14 @@
 #!/usr/bin/env bash
 
 String_at() {
-  if (($# >= 2)); then
-    String_substr "$1" "$2" 1
-  else
-    echo "$1"
-  fi
+  local string="${1:-}"
+  local -i position="${2:-0}"
+  String_substr "$string" "$position" 1
 }
 
 String_capitalize() {
-  printf '%s\n' "${1^}"
+  local string="${1:-}"
+  printf '%s\n' "${string^}"
 }
 
 String_concat() {
@@ -21,51 +20,54 @@ String_concat() {
 }
 
 String_endsWith() {
-  [[ "$1" == *"$2" ]]
+  local string="${1:-}"
+  local suffix="${2:-}"
+  [[ "$string" == *"$suffix" ]]
 }
 
 String_eq() {
-  [[ "$1" == "$2" ]]
+  local string1="${1:-}"
+  local string2="${2:-}"
+  [[ "$string1" == "$string2" ]]
 }
 
 String_includes() {
-  if [[ "$1" == *"$2"* ]]; then
-    return 0
-  else
-    return 1
-  fi
+  local string="${1:-}"
+  local substring="${2:-}"
+  [[ "$string" == *"$substring"* ]]
 }
 
 String_indexOf() {
-  if (($# >= 2)); then
-    if String_includes "$1" "$2"; then
-      local -i index=-1
-      local str=""
-      local -i subStrLen=""
-      subStrLen=$(String_length "$2")
-      while ! String_includes "$str" "$2"; do
-        index=$((index + 1))
-        str="$(String_slice "$1" "$index")"
-      done
-      echo $((index - subStrLen))
-    else
-      echo -1
-    fi
+  (($# < 2)) && echo -1
+  local string="$1"
+  local substring="$2"
+  if String_includes "$string" "$substring"; then
+    local -i index=0
+    local str="$string"
+    while ! String_startsWith "$str" "$substring"; do
+      index=$((index + 1))
+      str="$(String_substr "$string" "$index")"
+    done
+    echo "$index"
   else
     echo -1
   fi
 }
 
 String_isEmpty() {
-  [[ -z "$1" ]]
+  [[ -z "${1:-}" ]]
 }
 
 String_isNotEmpty() {
-  [[ -n "$1" ]]
+  [[ -n "${1:-}" ]]
 }
 
 String_join() {
-  if (($# >= 3)); then
+  if (($# <= 1)); then
+    printf '%s\n' "$@"
+  elif (($# == 2)); then
+    printf '%s\n' "$1$2"
+  else
     local -a args=("$@")
     local delimiter="${args[-1]}"
     unset "args[-1]"
@@ -78,66 +80,69 @@ String_join() {
       fi
     done
     printf '%s\n' "$res"
+  fi
+}
+
+String_length() {
+  local string="${1:-}"
+  echo "${#string}"
+}
+
+String_match() {
+  local string="${1:-}"
+  local pattern="${2:-}"
+  [[ "$string" =~ $pattern ]]
+}
+
+String_notEq() {
+  local string1="${1:-}"
+  local string2="${2:-}"
+  [[ "$string1" != "$string2" ]]
+}
+
+String_padEnd() {
+  if (($# >= 2)); then
+    local string="$1"
+    local -i strLen=""
+    strLen="$(String_length "$string")"
+    local -i maxLen="$2"
+    local -i len=$((maxLen - strLen))
+    local padStr="${3:- }"
+    printf '%s\n' "$string$(String_repeat "$padStr" "$len")"
   else
     printf '%s\n' "$@"
   fi
 }
 
-String_length() {
-  echo "${#1}"
-}
-
-String_match() {
-  if [[ "$1" =~ $2 ]]; then
-    return 0
-  else
-    return 1
-  fi
-}
-
-String_padEnd() {
-  if (($# >= 2)); then
-    local -i strLen=""
-    strLen="$(String_length "$1")"
-    local -i maxLen="$2"
-    local -i len=$((maxLen - strLen))
-    local padStr="${3:- }"
-    printf '%s\n' "$1$(String_repeat "$padStr" "$len")"
-  else
-    printf '%s\n' "$1"
-  fi
-}
-
 String_padStart() {
   if (($# >= 2)); then
+    local string="$1"
     local -i strLen=""
-    strLen="$(String_length "$1")"
+    strLen="$(String_length "$string")"
     local -i maxLen="$2"
     local -i len=$((maxLen - strLen))
     local padStr="${3:- }"
-    printf '%s\n' "$(String_repeat "$padStr" "$len")$1"
+    printf '%s\n' "$(String_repeat "$padStr" "$len")$string"
   else
-    printf '%s\n' "$1"
+    printf '%s\n' "$@"
   fi
 }
 
 String_repeat() {
-  if (($# >= 2)); then
-    local res=""
-    for ((i = 0; i < $2; i++)); do
-      res="$res$1"
-    done
-    printf '%s\n' "$res"
-  else
-    printf '%s\n' "$1"
-  fi
+  local string="${1:-}"
+  local -i count="${2:-1}"
+  local res=""
+  for ((i = 0; i < count; i++)); do
+    res="$res$string"
+  done
+  printf '%s\n' "$res"
 }
 
 String_replace() {
   if (($# >= 3)); then
     printf '%s\n' "${1/$2/$3}"
   else
-    printf '%s\n' "$1"
+    printf '%s\n' "${1:-}"
   fi
 }
 
@@ -145,18 +150,18 @@ String_replaceAll() {
   if (($# >= 3)); then
     printf '%s\n' "${1//$2/$3}"
   else
-    printf '%s\n' "$1"
+    printf '%s\n' "${1:-}"
   fi
 }
 
 String_reverse() {
-  local str="$1"
-  local -i len=""
-  len="$(String_length "$str")"
+  local string="${1:-}"
+  local -i index=""
+  index="$(String_length "$string")"
   local res=""
-  while ((len > 0)); do
-    len=$((len - 1))
-    res="$res$(String_at "$str" "$len")"
+  while ((index > 0)); do
+    index=$((index - 1))
+    res="$res$(String_at "$string" "$index")"
   done
   printf '%s\n' "$res"
 }
@@ -168,104 +173,110 @@ String_search() {
 String_slice() {
   if (($# >= 3)); then
     String_substr "$1" "$2" "$(($3 - $2))"
-  elif (($# == 2)); then
-    printf '%s\n' "${1::$2}"
   else
-    printf '%s\n' "$1"
-  fi
-}
-
-String_substr() {
-  if (($# >= 3)); then
-    printf '%s\n' "${1:$2:$3}"
-  elif (($# == 2)); then
-    printf '%s\n' "${1::$2}"
-  else
-    printf '%s\n' "$1"
+    String_substr "$@"
   fi
 }
 
 String_split() {
-  declare -a array=()
-  if (($# >= 1)); then
-    local str="$1"
-    local delmiter="$2"
-    if String_isEmpty "$delmiter"; then
-      local -i strLen=""
-      strLen=$(String_length "$str")
-      for ((i = 0; i < strLen; i++)); do
-        array+=("$(String_substr "$str" "$i" 1)")
-      done
-    else
-      while [[ "$str" == *"$delmiter"* ]]; do
-        array+=("$(String_trimEnd "$str" "$delmiter*" 1)")
-        str="$(String_trimStart "$str" "*$delmiter")"
-      done
-      array+=("$str")
-    fi
+  local string="${1:-}"
+  local delmiter="${2:-}"
+  local -a array=()
+
+  if String_isEmpty "$delmiter"; then
+    local -i strLen=""
+    strLen=$(String_length "$string")
+    for ((i = 0; i < strLen; i++)); do
+      array+=("$(String_at "$string" "$i")")
+    done
+  else
+    while String_includes "$string" "$delmiter"; do
+      array+=("$(String_stripEnd "$string" "$delmiter*" 1)")
+      string="$(String_stripStart "$string" "*$delmiter")"
+    done
+    array+=("$string")
   fi
 
   printf "%s\n" "${array[@]}"
 }
 
 String_startsWith() {
-  [[ "$1" == "$2"* ]]
+  local string="${1:-}"
+  local prefix="${2:-}"
+  [[ "$string" == "$prefix"* ]]
+}
+
+String_stripEnd() {
+  local string="${1:-}"
+  local pattern="${2:-}"
+  local -i greedy="${3:-0}"
+  if ((greedy == 1)); then
+    printf '%s\n' "${string%%$pattern}"
+  else
+    printf '%s\n' "${string%$pattern}"
+  fi
+}
+
+String_stripStart() {
+  local string="${1:-}"
+  local pattern="${2:-}"
+  local -i greedy="${3:-0}"
+  if ((greedy == 1)); then
+    printf '%s\n' "${string##$pattern}"
+  else
+    printf '%s\n' "${string#$pattern}"
+  fi
+}
+
+String_substr() {
+  if (($# >= 3)); then
+    printf '%s\n' "${1:($2):$3}"
+  elif (($# == 2)); then
+    printf '%s\n' "${1:($2)}"
+  else
+    printf '%s\n' "$@"
+  fi
 }
 
 String_toLowerCase() {
-  printf '%s\n' "${1,,}"
+  local string="${1:-}"
+  printf '%s\n' "${string,,}"
 }
 
 String_toUpperCase() {
-  printf '%s\n' "${1^^}"
+  local string="${1:-}"
+  printf '%s\n' "${string^^}"
 }
 
 String_trim() {
-  local res=""
-  res=$(String_trimStart "$1")
-  String_trimEnd "$res"
+  local string="${1:-}"
+  local pattern="${2:- }"
+  String_trimEnd "$(String_trimStart "$@")" "$pattern"
 }
 
 String_trimEnd() {
-  if (($# >= 3)); then
-    if (($3 == 1)); then
-      printf '%s\n' "${1%%$2}"
-    else
-      printf '%s\n' "${1%$2}"
-    fi
-  elif (($# == 2)); then
-    printf '%s\n' "${1%$2}"
-  else
-    local res="${1% }"
-    local pre=""
-    while [[ "$pre" != "$res" ]]; do
-      pre="$res"
-      res="${res% }"
-    done
-    printf '%s\n' "$res"
-  fi
+  local string="${1:-}"
+  local pattern="${2:- }"
+  local pre=""
+  while String_notEq "$pre" "$string"; do
+    pre="$string"
+    string="$(String_stripEnd "$string" "$pattern")"
+  done
+  printf '%s\n' "$string"
 }
 
 String_trimStart() {
-  if (($# >= 3)); then
-    if (($3 == 1)); then
-      printf '%s\n' "${1##$2}"
-    else
-      printf '%s\n' "${1#$2}"
-    fi
-  elif (($# == 2)); then
-    printf '%s\n' "${1#$2}"
-  else
-    local res="${1# }"
-    local pre=""
-    while [[ "$pre" != "$res" ]]; do
-      pre="$res"
-      res="${res# }"
-    done
-    printf '%s\n' "$res"
-  fi
+  local string="${1:-}"
+  local pattern="${2:- }"
+  local pre=""
+  while String_notEq "$pre" "$string"; do
+    pre="$string"
+    string="$(String_stripStart "$string" "$pattern")"
+  done
+  printf '%s\n' "$string"
 }
 
 String_uncapitalize() {
-  printf '%s\n' "${1,}"
+  local string="${1:-}"
+  printf '%s\n' "${string,}"
 }

@@ -119,6 +119,14 @@ String_match() { #@test
   assert_failure
 }
 
+String_notEq() { #@test
+  run String_notEq "foo" "fox"
+  assert_success
+
+  run String_notEq "foo" "foo"
+  assert_failure
+}
+
 String_padEnd() { #@test
   run String_padEnd "foo" 5
   assert_output "foo  "
@@ -164,6 +172,10 @@ String_reverse() { #@test
   assert_output "dcba"
 }
 
+String_search() { #@test
+  skip TODO
+}
+
 String_slice() { #@test
   run String_slice "foobar" 0 3
   assert_output "foo"
@@ -178,41 +190,15 @@ String_slice() { #@test
   assert_output "oo"
 
   run String_slice "foobar" 3
-  assert_output "foo"
+  assert_output "bar"
 
   run String_slice "foobar" -1
-  assert_output "fooba"
+  assert_output "r"
 
   run String_slice "foobar" -3 -1
   assert_output "ba"
 
   run String_slice "foobar"
-  assert_output "foobar"
-}
-
-String_substr() { #@test
-  run String_substr "foobar" 0 3
-  assert_output "foo"
-
-  run String_substr "foobar" 0 100
-  assert_output "foobar"
-
-  run String_substr "foobar" 0 -1
-  assert_output "fooba"
-
-  run String_substr "foobar" 1 3
-  assert_output "oob"
-
-  run String_substr "foobar" 3
-  assert_output "foo"
-
-  run String_substr "foobar" -1
-  assert_output "fooba"
-
-  run String_substr "foobar" -3 -1
-  assert_output "ba"
-
-  run String_substr "foobar"
   assert_output "foobar"
 }
 
@@ -246,6 +232,54 @@ String_startsWith() { #@test
   assert_failure
 }
 
+String_stripEnd() { #@test
+  run String_stripEnd "path/to/foo.sh" "/*"
+  assert_output "path/to"
+
+  run String_stripEnd "path/to/foo.sh" "/*" 1
+  assert_output "path"
+
+  run String_stripEnd "path/to/foo.sh"
+  assert_output "path/to/foo.sh"
+}
+
+String_stripStart() { #@test
+  run String_stripStart "path/to/foo.sh" "*/"
+  assert_output "to/foo.sh"
+
+  run String_stripStart "path/to/foo.sh" "*/" 1
+  assert_output "foo.sh"
+
+  run String_stripStart "path/to/foo.sh"
+  assert_output "path/to/foo.sh"
+}
+
+String_substr() { #@test
+  run String_substr "foobar" 0 3
+  assert_output "foo"
+
+  run String_substr "foobar" 0 100
+  assert_output "foobar"
+
+  run String_substr "foobar" 0 -1
+  assert_output "fooba"
+
+  run String_substr "foobar" 1 3
+  assert_output "oob"
+
+  run String_substr "foobar" 3
+  assert_output "bar"
+
+  run String_substr "foobar" -1
+  assert_output "r"
+
+  run String_substr "foobar" -3 -1
+  assert_output "ba"
+
+  run String_substr "foobar"
+  assert_output "foobar"
+}
+
 String_toLowerCase() { #@test
   run String_toLowerCase "FOO"
   assert_output "foo"
@@ -257,42 +291,27 @@ String_toUpperCase() { #@test
 }
 
 String_trim() { #@test
-  run String_trim "foo bar   "
-  assert_output "foo bar"
-
-  run String_trim "   foo bar"
-  assert_output "foo bar"
-
   run String_trim "  foo bar   "
   assert_output "foo bar"
+
+  run String_trim "__foo__bar___" "_"
+  assert_output "foo__bar"
 }
 
 String_trimEnd() { #@test
-  run String_trimEnd "foo bar   "
-  assert_output "foo bar"
-
   run String_trimEnd " foo bar   "
   assert_output " foo bar"
 
-  run String_trimEnd "path/to/foo.sh" "/*"
-  assert_output "path/to"
-
-  run String_trimEnd "path/to/foo.sh" "/*" 1
-  assert_output "path"
+  run String_trimEnd " foo--bar---" "-"
+  assert_output " foo--bar"
 }
 
 String_trimStart() { #@test
-  run String_trimStart "   foo bar"
-  assert_output "foo bar"
-
   run String_trimStart "   foo bar "
   assert_output "foo bar "
 
-  run String_trimStart "path/to/foo.sh" "*/"
-  assert_output "to/foo.sh"
-
-  run String_trimStart "path/to/foo.sh" "*/" 1
-  assert_output "foo.sh"
+  run String_trimStart "___foo__bar " "_"
+  assert_output "foo__bar "
 }
 
 String_uncapitalize() { #@test
