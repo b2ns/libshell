@@ -76,6 +76,26 @@ Array_indexOf() { #@test
   assert_output -1
 }
 
+Array_isEmpty() { #@test
+  local -a arr=()
+  run Array_isEmpty "${arr[@]}"
+  assert_success
+
+  arr=(1 2 3)
+  run Array_isEmpty "${arr[@]}" 4
+  assert_failure
+}
+
+Array_isNotEmpty() { #@test
+  local -a arr=()
+  run Array_isNotEmpty "${arr[@]}"
+  assert_failure
+
+  arr=(1 2 3)
+  run Array_isNotEmpty "${arr[@]}" 4
+  assert_success
+}
+
 Array_join() { #@test
   local -a arr=(1 2 3)
   run Array_join "${arr[@]}" ","
@@ -99,7 +119,14 @@ Array_map() { #@test
   assert_line -n 2 6
 }
 
-Array_reverse() { #@te
+Array_random() { #@test
+  run Array_random 2 5 10
+  assert [ "${lines[0]}" -ge 5 ] && [ "${lines[0]}" -lt 10 ]
+  assert [ "${lines[1]}" -ge 5 ] && [ "${lines[1]}" -lt 10 ]
+  assert_line -n 3 ""
+}
+
+Array_reverse() { #@test
   local -a arr=(1 2 3)
   run Array_reverse "${arr[@]}"
   assert_line -n 0 3

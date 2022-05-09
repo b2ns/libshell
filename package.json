@@ -7,6 +7,9 @@
     "lint": "shellcheck lib/*.sh libshell",
     "fix": "shfmt -w -i 2 -ci lib/*.sh libshell",
     "test": "bats -T -j 16 test/*.test.sh",
+    "lintcmd": "shellcheck",
+    "fixcmd": "shfmt -w -i 2 -ci",
+    "testcmd": "bats -T -j 16",
     "prepare": "husky install"
   },
   "repository": "git@github.com:b2ns/libshell.git",

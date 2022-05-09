@@ -5,10 +5,10 @@ declare -g COMPARATOR="${COMPARATOR:-__defaultComparator__}"
 
 Array_every() {
   if (($# >= 2)); then
-    local args=("$@")
+    local -a args=("$@")
     local fn="${args[-1]}"
     unset "args[-1]"
-    local len="${#args[@]}"
+    local -i len="${#args[@]}"
     local item=""
     for ((i = 0; i < len; i++)); do
       item="${args[$i]}"
@@ -24,10 +24,10 @@ Array_every() {
 
 Array_filter() {
   if (($# >= 2)); then
-    local args=("$@")
+    local -a args=("$@")
     local fn="${args[-1]}"
     unset "args[-1]"
-    local len="${#args[@]}"
+    local -i len="${#args[@]}"
     local item=""
     for ((i = 0; i < len; i++)); do
       item="${args[$i]}"
@@ -47,10 +47,10 @@ Array_find() {
 
 Array_findIndex() {
   if (($# >= 2)); then
-    local args=("$@")
+    local -a args=("$@")
     local target="${args[-1]}"
     unset "args[-1]"
-    local len="${#args[@]}"
+    local -i len="${#args[@]}"
     local item=""
     for ((i = 0; i < len; i++)); do
       item="${args[$i]}"
@@ -69,10 +69,10 @@ Array_findIndex() {
 
 Array_forEach() {
   if (($# >= 2)); then
-    local args=("$@")
+    local -a args=("$@")
     local fn="${args[-1]}"
     unset "args[-1]"
-    local len="${#args[@]}"
+    local -i len="${#args[@]}"
     local item=""
     for ((i = 0; i < len; i++)); do
       item="${args[$i]}"
@@ -87,10 +87,10 @@ Array_includes() {
 
 Array_indexOf() {
   if (($# >= 2)); then
-    local args=("$@")
+    local -a args=("$@")
     local target="${args[-1]}"
     unset "args[-1]"
-    local len="${#args[@]}"
+    local -i len="${#args[@]}"
     local item=""
     for ((i = 0; i < len; i++)); do
       item="${args[$i]}"
@@ -107,12 +107,20 @@ Array_indexOf() {
   fi
 }
 
+Array_isEmpty() {
+  ((${#@} == 0))
+}
+
+Array_isNotEmpty() {
+  ! Array_isEmpty "$@"
+}
+
 Array_join() {
   if (($# >= 3)); then
-    local args=("$@")
+    local -a args=("$@")
     local delimiter="${args[-1]}"
     unset "args[-1]"
-    local len="${#args[@]}"
+    local -i len="${#args[@]}"
     local result=""
     local str=""
     for ((i = 0; i < len; i++)); do
@@ -135,11 +143,11 @@ Array_length() {
 
 Array_map() {
   if (($# >= 2)); then
-    local args=("$@")
+    local -a args=("$@")
     local fn="${args[-1]}"
     unset "args[-1]"
-    local len="${#args[@]}"
-    local res=()
+    local -i len="${#args[@]}"
+    local -a res=()
     local val=""
     local item=""
     for ((i = 0; i < len; i++)); do
@@ -153,21 +161,36 @@ Array_map() {
   fi
 }
 
-Array_reverse() {
+Array_random() {
   local -a res=()
-  local len=$(($# - 1))
-  for ((i = len; i > 0; i--)); do
-    res+=("$i")
+  local -i size="${1:-10}"
+  local -i min="${2:-0}"
+  local -i max="${3:-100}"
+  for ((i = 0; i < size; i++)); do
+    res+=("$(Math_random "$min" "$max")")
   done
-  printf '%s\n' "${res[@]}"
+  printf "%s\n" "${res[@]}"
+}
+
+Array_reverse() {
+  local -a arr=("$@")
+  local -i i=0
+  local -i j=$(($# - 1))
+  while ((i < j)); do
+    local tmp="${arr[$i]}"
+    arr[$i]="${arr[$j]}"
+    arr[$j]="$tmp"
+    ((i++, j--))
+  done
+  printf '%s\n' "${arr[@]}"
 }
 
 Array_some() {
   if (($# >= 2)); then
-    local args=("$@")
+    local -a args=("$@")
     local fn="${args[-1]}"
     unset "args[-1]"
-    local len="${#args[@]}"
+    local -i len="${#args[@]}"
     local item=""
     for ((i = 0; i < len; i++)); do
       item="${args[$i]}"
@@ -184,20 +207,20 @@ Array_some() {
 Array_sort() {
   if (($# >= 2)); then
     local -a arr=("$@")
-    local arrLen="$#"
-    local smallArraySize=7
+    local -i arrLen="$#"
+    local -i smallArraySize=7
 
     process() {
-      local L="$1"
-      local R="$2"
+      local -i L="$1"
+      local -i R="$2"
 
       # use insertSort for small arrays
-      local size=$((R - L + 1))
+      local -i size=$((R - L + 1))
       if ((size <= smallArraySize)); then
-        local i=0
-        local j=0
+        local -i i=0
+        local -i j=0
         local tmp=""
-        local cmp=""
+        local -i cmp=""
         for ((i = L; i <= R; i++)); do
           tmp="${arr[i]}"
           for ((j = $((i - 1)); j >= 0; j--)); do
@@ -214,18 +237,18 @@ Array_sort() {
       fi
 
       # random pivot
-      local randP=""
+      local -i randP=""
       randP="$(Math_random "$L" "$R")"
       local tmp="${arr["$R"]}"
       arr["$R"]="${arr["$randP"]}"
       arr["$randP"]="$tmp"
 
       # partition
-      local i="$L"
-      local less=$((L - 1))
-      local more="$R"
+      local -i i="$L"
+      local -i less=$((L - 1))
+      local -i more="$R"
       local tmp=""
-      local cmp=""
+      local -i cmp=""
 
       while ((i < more)); do
         cmp=$($COMPARATOR "${arr["$i"]}" "${arr["$R"]}")
