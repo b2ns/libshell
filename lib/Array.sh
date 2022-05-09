@@ -10,6 +10,7 @@ Array_every() {
     unset "args[-1]"
     local -i len="${#args[@]}"
     local item=""
+    local -i i
     for ((i = 0; i < len; i++)); do
       item="${args[$i]}"
       if ! ($fn "$item" "$i"); then
@@ -29,6 +30,7 @@ Array_filter() {
     unset "args[-1]"
     local -i len="${#args[@]}"
     local item=""
+    local -i i
     for ((i = 0; i < len; i++)); do
       item="${args[$i]}"
       if ($fn "$item" "$i"); then
@@ -52,6 +54,7 @@ Array_findIndex() {
     unset "args[-1]"
     local -i len="${#args[@]}"
     local item=""
+    local -i i
     for ((i = 0; i < len; i++)); do
       item="${args[$i]}"
       if [[ "$item" =~ $target ]]; then
@@ -74,6 +77,7 @@ Array_forEach() {
     unset "args[-1]"
     local -i len="${#args[@]}"
     local item=""
+    local -i i
     for ((i = 0; i < len; i++)); do
       item="${args[$i]}"
       ($fn "$item" "$i")
@@ -92,6 +96,7 @@ Array_indexOf() {
     unset "args[-1]"
     local -i len="${#args[@]}"
     local item=""
+    local -i i
     for ((i = 0; i < len; i++)); do
       item="${args[$i]}"
       if [[ "$target" == "$item" ]]; then
@@ -123,6 +128,7 @@ Array_join() {
     local -i len="${#args[@]}"
     local result=""
     local str=""
+    local -i i
     for ((i = 0; i < len; i++)); do
       str="${args[$i]}"
       if ((i == 0)); then
@@ -150,6 +156,7 @@ Array_map() {
     local -a res=()
     local val=""
     local item=""
+    local -i i
     for ((i = 0; i < len; i++)); do
       item="${args[$i]}"
       val=$($fn "$item" "$i")
@@ -166,6 +173,7 @@ Array_random() {
   local -i size="${1:-10}"
   local -i min="${2:-0}"
   local -i max="${3:-100}"
+  local -i i
   for ((i = 0; i < size; i++)); do
     res+=("$(Math_random "$min" "$max")")
   done
@@ -192,6 +200,7 @@ Array_some() {
     unset "args[-1]"
     local -i len="${#args[@]}"
     local item=""
+    local -i i
     for ((i = 0; i < len; i++)); do
       item="${args[$i]}"
       if ($fn "$item" "$i"); then
@@ -221,8 +230,10 @@ Array_sort() {
         local -i j=0
         local tmp=""
         local -i cmp=""
+        local -i i
         for ((i = L; i <= R; i++)); do
           tmp="${arr[i]}"
+          local -i j
           for ((j = $((i - 1)); j >= 0; j--)); do
             cmp=$($COMPARATOR "${arr[j]}" "$tmp")
             if ((cmp > 0)); then

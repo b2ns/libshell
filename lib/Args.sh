@@ -131,6 +131,7 @@ Args_parse() {
   # -cvf -> -c -v -f
   # -cvf=json -> -c -v -f json
   local -a unifiedArgs=()
+  local -i i
   for ((i = 0; i < "${#args[@]}"; i++)); do
     local arg="${args[$i]}"
     if __validateInputFlag__ "$arg" 2>/dev/null; then
@@ -162,6 +163,7 @@ Args_parse() {
     fi
   done
 
+  local -i i
   for ((i = 0; i < "${#unifiedArgs[@]}"; i++)); do
     local arg="${unifiedArgs[$i]}"
 

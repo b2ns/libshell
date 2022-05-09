@@ -132,6 +132,7 @@ String_repeat() {
   local string="${1:-}"
   local -i count="${2:-1}"
   local res=""
+  local -i i
   for ((i = 0; i < count; i++)); do
     res="$res$string"
   done
@@ -186,6 +187,7 @@ String_split() {
   if String_isEmpty "$delmiter"; then
     local -i strLen=""
     strLen=$(String_length "$string")
+    local -i i
     for ((i = 0; i < strLen; i++)); do
       array+=("$(String_at "$string" "$i")")
     done

@@ -27,6 +27,7 @@ Math_range() {
     max="$tmp"
   fi
   local -a res=()
+  local -i i
   for ((i = min; i <= max; i += step)); do
     res+=("$i")
   done
