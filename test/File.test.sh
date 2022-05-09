@@ -60,14 +60,14 @@ File_isFile() { #@test
   assert_failure
 }
 
-File_isNotEmpty() { #@test
+File_notEmpty() { #@test
   local tmpFilename="__test_file_isnotempty__.ext"
   makeFile "$tmpFilename"
 
-  run File_isNotEmpty "./test/File.test.sh"
+  run File_notEmpty "./test/File.test.sh"
   assert_success
 
-  run File_isNotEmpty "$tmpFilename"
+  run File_notEmpty "$tmpFilename"
   assert_failure
 
   cleanFile "$tmpFilename"

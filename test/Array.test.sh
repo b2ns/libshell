@@ -86,13 +86,13 @@ Array_isEmpty() { #@test
   assert_failure
 }
 
-Array_isNotEmpty() { #@test
+Array_notEmpty() { #@test
   local -a arr=()
-  run Array_isNotEmpty "${arr[@]}"
+  run Array_notEmpty "${arr[@]}"
   assert_failure
 
   arr=(1 2 3)
-  run Array_isNotEmpty "${arr[@]}" 4
+  run Array_notEmpty "${arr[@]}" 4
   assert_success
 }
 

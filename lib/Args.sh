@@ -84,9 +84,9 @@ Args_help() {
   local scriptName=""
   scriptName="$(String_stripStart "$0" "*/" 1)"
 
-  String_isNotEmpty "$scriptName" && printf '%s\n' "$scriptName"
+  String_notEmpty "$scriptName" && printf '%s\n' "$scriptName"
 
-  if String_isNotEmpty "$headInfo"; then
+  if String_notEmpty "$headInfo"; then
     printf '%s\n' "$headInfo"
   fi
 
@@ -106,13 +106,13 @@ Args_help() {
     local desc="${ARGS_DEFINED_OPTIONS["$key#desc"]}"
     local valueType="${ARGS_DEFINED_OPTIONS["$key#valueType"]}"
     local defaultValue="${ARGS_DEFINED_OPTIONS["$key#defaultValue"]}"
-    String_isNotEmpty "$desc" && msg="$msg - $desc"
-    String_isNotEmpty "$valueType" && msg="$msg ($valueType)"
-    String_isNotEmpty "$defaultValue" && msg="$msg (default: $defaultValue)"
+    String_notEmpty "$desc" && msg="$msg - $desc"
+    String_notEmpty "$valueType" && msg="$msg ($valueType)"
+    String_notEmpty "$defaultValue" && msg="$msg (default: $defaultValue)"
     printf '  %s\n' "$msg"
   done
 
-  if String_isNotEmpty "$tailInfo"; then
+  if String_notEmpty "$tailInfo"; then
     printf '%s\n' "$tailInfo"
   fi
 

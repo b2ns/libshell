@@ -37,7 +37,7 @@ Array_filter() {
     done
     printf '%s\n' "${res[@]}"
   else
-    echo "$1"
+    echo "$@"
   fi
 }
 
@@ -111,7 +111,7 @@ Array_isEmpty() {
   ((${#@} == 0))
 }
 
-Array_isNotEmpty() {
+Array_notEmpty() {
   ! Array_isEmpty "$@"
 }
 
@@ -133,7 +133,7 @@ Array_join() {
     done
     printf '%s\n' "$result"
   else
-    printf '%s\n' "$1"
+    printf '%s\n' "${1:-}"
   fi
 }
 
@@ -157,7 +157,7 @@ Array_map() {
     done
     printf '%s\n' "${res[@]}"
   else
-    printf '%s\n' "$1"
+    printf '%s\n' "$@"
   fi
 }
 

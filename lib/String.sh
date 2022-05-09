@@ -58,7 +58,7 @@ String_isEmpty() {
   [[ -z "${1:-}" ]]
 }
 
-String_isNotEmpty() {
+String_notEmpty() {
   [[ -n "${1:-}" ]]
 }
 

@@ -5,7 +5,7 @@ File_isDir() {
 }
 
 File_isEmpty() {
-  ! File_isNotEmpty "$@"
+  ! File_notEmpty "$@"
 }
 
 File_isExecutable() {
@@ -20,7 +20,7 @@ File_isFile() {
   [[ -f "$1" ]]
 }
 
-File_isNotEmpty() {
+File_notEmpty() {
   [[ -s "$1" ]]
 }
 

@@ -78,14 +78,14 @@ String_isEmpty() { #@test
   assert_success
 }
 
-String_isNotEmpty() { #@test
-  run String_isNotEmpty "foo"
+String_notEmpty() { #@test
+  run String_notEmpty "foo"
   assert_success
 
-  run String_isNotEmpty ""
+  run String_notEmpty ""
   assert_failure
 
-  run String_isNotEmpty
+  run String_notEmpty
   assert_failure
 }
 
