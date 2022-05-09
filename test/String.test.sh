@@ -29,6 +29,22 @@ String_concat() { #@test
   assert_output "foobar x/y/z"
 }
 
+String_endsWith() { #@test
+  run String_endsWith "foobar" "bar"
+  assert_success
+
+  run String_endsWith "foobar" "ba"
+  assert_failure
+}
+
+String_eq() { #@test
+  run String_eq "foo" "foo"
+  assert_success
+
+  run String_eq "foo" "fox"
+  assert_failure
+}
+
 String_includes() { #@test
   run String_includes "foo bar" "bar"
   assert_success
@@ -220,6 +236,14 @@ String_split() { #@test
   assert_line -n 0 " f "
   assert_line -n 1 " o "
   assert_line -n 2 " o "
+}
+
+String_startsWith() { #@test
+  run String_startsWith "foobar" "foo"
+  assert_success
+
+  run String_startsWith "foobar" "oo"
+  assert_failure
 }
 
 String_toLowerCase() { #@test

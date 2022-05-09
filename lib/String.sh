@@ -20,6 +20,14 @@ String_concat() {
   printf '%s\n' "$res"
 }
 
+String_endsWith() {
+  [[ "$1" == *"$2" ]]
+}
+
+String_eq() {
+  [[ "$1" == "$2" ]]
+}
+
 String_includes() {
   if [[ "$1" == *"$2"* ]]; then
     return 0
@@ -198,6 +206,10 @@ String_split() {
   fi
 
   printf "%s\n" "${array[@]}"
+}
+
+String_startsWith() {
+  [[ "$1" == "$2"* ]]
 }
 
 String_toLowerCase() {
