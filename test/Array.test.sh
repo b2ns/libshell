@@ -161,7 +161,7 @@ Array_sort() { #@test
         echo 0
       fi
     }
-    COMPARATOR=comparator Array_sort "${arr[@]}"
+    LIBSHELL_COMPARATOR=comparator Array_sort "${arr[@]}"
   }
   run foo
   # shellcheck disable=SC2154

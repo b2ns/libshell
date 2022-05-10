@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 import Math
 
-declare -g COMPARATOR="${COMPARATOR:-__defaultComparator__}"
+declare -g LIBSHELL_COMPARATOR="${LIBSHELL_COMPARATOR:-__defaultComparator__}"
 
 Array_every() {
   if (($# >= 2)); then
@@ -235,7 +235,7 @@ Array_sort() {
           tmp="${arr[i]}"
           local -i j
           for ((j = $((i - 1)); j >= 0; j--)); do
-            cmp=$($COMPARATOR "${arr[j]}" "$tmp")
+            cmp=$($LIBSHELL_COMPARATOR "${arr[j]}" "$tmp")
             if ((cmp > 0)); then
               arr[$((j + 1))]="${arr[j]}"
             else
@@ -262,7 +262,7 @@ Array_sort() {
       local -i cmp=""
 
       while ((i < more)); do
-        cmp=$($COMPARATOR "${arr["$i"]}" "${arr["$R"]}")
+        cmp=$($LIBSHELL_COMPARATOR "${arr["$i"]}" "${arr["$R"]}")
         if ((cmp > 0)); then
           more=$((more - 1))
           tmp="${arr["$more"]}"

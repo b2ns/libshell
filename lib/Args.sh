@@ -2,10 +2,10 @@
 
 import String
 
-declare -gA ARGS_DEFINED_OPTIONS=()
-declare -gA ARGS_REQUIRED_OPTIONS=()
-declare -gA ARGS_OPTIONS=()
-declare -ga ARGS_INPUT=()
+declare -gA LIBSHELL_ARGS_DEFINED_OPTIONS=()
+declare -gA LIBSHELL_ARGS_REQUIRED_OPTIONS=()
+declare -gA LIBSHELL_ARGS_OPTIONS=()
+declare -ga LIBSHELL_ARGS_INPUT=()
 
 Args_define() {
   (($# == 0)) && return 0
@@ -26,25 +26,25 @@ Args_define() {
       return 1
     fi
 
-    ARGS_DEFINED_OPTIONS[$singleFlag]="$allFlag"
+    LIBSHELL_ARGS_DEFINED_OPTIONS[$singleFlag]="$allFlag"
   done
 
-  ARGS_DEFINED_OPTIONS["${allFlag}#desc"]="$desc"
+  LIBSHELL_ARGS_DEFINED_OPTIONS["${allFlag}#desc"]="$desc"
 
   if String_match "$valueType" ">!+$"; then
     valueType="$(String_stripEnd "$valueType" "!*" 1)"
-    ARGS_REQUIRED_OPTIONS[$allFlag]=1
+    LIBSHELL_ARGS_REQUIRED_OPTIONS[$allFlag]=1
   fi
-  ARGS_DEFINED_OPTIONS["${allFlag}#valueType"]="$valueType"
+  LIBSHELL_ARGS_DEFINED_OPTIONS["${allFlag}#valueType"]="$valueType"
 
-  ARGS_DEFINED_OPTIONS["${allFlag}#defaultValue"]="$defaultValue"
+  LIBSHELL_ARGS_DEFINED_OPTIONS["${allFlag}#defaultValue"]="$defaultValue"
 
   # set default value
-  ARGS_OPTIONS[$allFlag]="$defaultValue"
+  LIBSHELL_ARGS_OPTIONS[$allFlag]="$defaultValue"
 }
 
 Args_defined() {
-  if [[ ${ARGS_DEFINED_OPTIONS[$1]+_} ]]; then
+  if [[ ${LIBSHELL_ARGS_DEFINED_OPTIONS[$1]+_} ]]; then
     return 0
   else
     echo "Error: flag [$1] not defined" >&2
@@ -54,15 +54,15 @@ Args_defined() {
 
 Args_get() {
   if Args_defined "$1"; then
-    local allFlag="${ARGS_DEFINED_OPTIONS[$1]}"
-    printf '%s\n' "${ARGS_OPTIONS[$allFlag]}"
+    local allFlag="${LIBSHELL_ARGS_DEFINED_OPTIONS[$1]}"
+    printf '%s\n' "${LIBSHELL_ARGS_OPTIONS[$allFlag]}"
   else
     return 1
   fi
 }
 
 Args_getInput() {
-  printf '%s\n' "${ARGS_INPUT[@]}"
+  printf '%s\n' "${LIBSHELL_ARGS_INPUT[@]}"
 }
 
 Args_has() {
@@ -94,18 +94,18 @@ Args_help() {
 
   # get max padding length
   local -i paddingLen=0
-  for key in "${!ARGS_OPTIONS[@]}"; do
+  for key in "${!LIBSHELL_ARGS_OPTIONS[@]}"; do
     local -i len=""
     len="$(String_length "$key")"
     ((len > paddingLen)) && paddingLen="$len"
   done
 
-  for key in "${!ARGS_OPTIONS[@]}"; do
+  for key in "${!LIBSHELL_ARGS_OPTIONS[@]}"; do
     local msg=""
     msg="$(String_padEnd "$key" "$paddingLen")"
-    local desc="${ARGS_DEFINED_OPTIONS["$key#desc"]}"
-    local valueType="${ARGS_DEFINED_OPTIONS["$key#valueType"]}"
-    local defaultValue="${ARGS_DEFINED_OPTIONS["$key#defaultValue"]}"
+    local desc="${LIBSHELL_ARGS_DEFINED_OPTIONS["$key#desc"]}"
+    local valueType="${LIBSHELL_ARGS_DEFINED_OPTIONS["$key#valueType"]}"
+    local defaultValue="${LIBSHELL_ARGS_DEFINED_OPTIONS["$key#defaultValue"]}"
     String_notEmpty "$desc" && msg="$msg - $desc"
     String_notEmpty "$valueType" && msg="$msg ($valueType)"
     String_notEmpty "$defaultValue" && msg="$msg (default: $defaultValue)"
@@ -178,14 +178,14 @@ Args_parse() {
         return 1
       fi
 
-      allFlag="${ARGS_DEFINED_OPTIONS[$singleFlag]}"
-      valueType="${ARGS_DEFINED_OPTIONS["$allFlag#valueType"]}"
+      allFlag="${LIBSHELL_ARGS_DEFINED_OPTIONS[$singleFlag]}"
+      valueType="${LIBSHELL_ARGS_DEFINED_OPTIONS["$allFlag#valueType"]}"
       if String_isEmpty "$valueType"; then
-        ARGS_OPTIONS["$allFlag"]=1
+        LIBSHELL_ARGS_OPTIONS["$allFlag"]=1
       else
         readingFlagValue=1
       fi
-      unset ARGS_REQUIRED_OPTIONS["$allFlag"]
+      unset LIBSHELL_ARGS_REQUIRED_OPTIONS["$allFlag"]
     else
       if ((readingFlagValue == 1)); then
 
@@ -202,10 +202,10 @@ Args_parse() {
           $valueType "$arg" || return 1
         fi
 
-        ARGS_OPTIONS["$allFlag"]="$arg"
+        LIBSHELL_ARGS_OPTIONS["$allFlag"]="$arg"
         readingFlagValue=0
       else
-        ARGS_INPUT+=("$arg")
+        LIBSHELL_ARGS_INPUT+=("$arg")
       fi
     fi
 
@@ -216,7 +216,7 @@ Args_parse() {
     return 1
   fi
 
-  for key in "${!ARGS_REQUIRED_OPTIONS[@]}"; do
+  for key in "${!LIBSHELL_ARGS_REQUIRED_OPTIONS[@]}"; do
     echo "Error: flag [$key] is required" >&2
     return 1
   done
