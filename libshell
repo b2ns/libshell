@@ -10,9 +10,17 @@ LIBSHELL_PATH="$(cd "${BASH_SOURCE[0]%/*}" && pwd)/lib"
 declare -Ag LIBSHELL_IMPORTED_LIBS
 declare -g IMPORT_ALL_LIBS="${IMPORT_ALL_LIBS:-1}"
 
+# a special variable to store return value of the last function call
+# get the return value of function through this global variable
+# rather than using the echo with subshell, which is poor for performance
+
+# shellcheck disable=SC2034
+declare -g RETVAL=""
+
 import() {
   local scriptRoot="${BASH_SOURCE[1]:-$0}"
   scriptRoot="$(cd "${scriptRoot%/*}" && pwd)"
+  local lib=""
   for lib in "$@"; do
     if [[ "$lib" == './'* ]]; then
       lib="${lib:2}"
@@ -27,6 +35,7 @@ import() {
 __source_path__() {
   local lib="$1"
   if [[ -d "$lib" ]]; then
+    local file=""
     for file in "$lib"/*.sh; do
       __source_file__ "$file"
     done

@@ -154,11 +154,14 @@ Array_sort() { #@test
   foo() {
     comparator() {
       if (($1 > $2)); then
-        echo -1
+        RETVAL=-1
+        # echo -1
       elif (($1 < $2)); then
-        echo 1
+        RETVAL=1
+        # echo 1
       else
-        echo 0
+        RETVAL=0
+        # echo 0
       fi
     }
     LIBSHELL_COMPARATOR=comparator Array_sort "${arr[@]}"

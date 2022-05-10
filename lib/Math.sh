@@ -10,10 +10,13 @@ Math_random() {
   fi
   local -i range=$((max - min))
   if ((range == 0)); then
+    RETVAL="$min"
     echo "$min"
   else
     local -i random=$((RANDOM % range))
-    echo $((min + random))
+    local -i res=$((min + random))
+    RETVAL="$res"
+    echo "$res"
   fi
 }
 
@@ -31,5 +34,7 @@ Math_range() {
   for ((i = min; i <= max; i += step)); do
     res+=("$i")
   done
+  # shellcheck disable=SC2034
+  RETVAL=("${res[@]}")
   echo "${res[@]}"
 }

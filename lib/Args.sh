@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC2128
 
 import String
 
@@ -11,7 +12,9 @@ Args_define() {
   (($# == 0)) && return 0
 
   local allFlag="$1"
-  readarray -t flags <<<"$(String_split "$1" " ")"
+  String_split "$1" " " >/dev/null
+  flags=("${RETVAL[@]}")
+  # readarray -t flags <<<"$RETVAL"
   local desc="${2-}"
   local valueType="${3-}"
   local defaultValue="${4-}"
@@ -33,7 +36,8 @@ Args_define() {
   LIBSHELL_ARGS_DEFINED_OPTIONS["${allFlag}#desc"]="$desc"
 
   if String_match "$valueType" ">!+$"; then
-    valueType="$(String_stripEnd "$valueType" "!*" 1)"
+    String_stripEnd "$valueType" "!*" 1 >/dev/null
+    valueType="$RETVAL"
     LIBSHELL_ARGS_REQUIRED_OPTIONS[$allFlag]=1
   fi
   LIBSHELL_ARGS_DEFINED_OPTIONS["${allFlag}#valueType"]="$valueType"
@@ -54,42 +58,35 @@ Args_defined() {
 }
 
 Args_get() {
-  if Args_defined "$1"; then
-    local allFlag="${LIBSHELL_ARGS_DEFINED_OPTIONS[$1]}"
-    printf '%s\n' "${LIBSHELL_ARGS_OPTIONS[$allFlag]}"
-  else
-    return 1
-  fi
+  Args_defined "$1" || return 1
+  local allFlag="${LIBSHELL_ARGS_DEFINED_OPTIONS[$1]}"
+  local value="${LIBSHELL_ARGS_OPTIONS[$allFlag]}"
+  RETVAL="$value"
+  printf '%s\n' "$value"
 }
 
 Args_getInput() {
+  RETVAL=("${LIBSHELL_ARGS_INPUT[@]}")
   printf '%s\n' "${LIBSHELL_ARGS_INPUT[@]}"
 }
 
 Args_has() {
   local value=""
-  if value="$(Args_get "$1" 2>/dev/null)"; then
-    if String_isEmpty "$value"; then
-      return 1
-    else
-      return 0
-    fi
-  else
-    return 1
-  fi
+  Args_get "$1" >/dev/null || return 1
+  value="$RETVAL"
+  String_notEmpty "$value"
 }
 
 Args_help() {
   local headInfo=${1:-}
   local tailInfo=${2:-}
   local scriptName=""
-  scriptName="$(String_stripStart "$0" "*/" 1)"
+  String_stripStart "$0" "*/" 1 >/dev/null
+  scriptName="$RETVAL"
 
   String_notEmpty "$scriptName" && printf '%s\n' "$scriptName"
 
-  if String_notEmpty "$headInfo"; then
-    printf '%s\n' "$headInfo"
-  fi
+  String_notEmpty "$headInfo" && printf '%s\n' "$headInfo"
 
   echo
 
@@ -98,14 +95,16 @@ Args_help() {
   local key=""
   for key in "${!LIBSHELL_ARGS_OPTIONS[@]}"; do
     local -i len=""
-    len="$(String_length "$key")"
+    String_length "$key" >/dev/null
+    len="$RETVAL"
     ((len > paddingLen)) && paddingLen="$len"
   done
 
   local key=""
   for key in "${!LIBSHELL_ARGS_OPTIONS[@]}"; do
     local msg=""
-    msg="$(String_padEnd "$key" "$paddingLen")"
+    String_padEnd "$key" "$paddingLen" >/dev/null
+    msg="$RETVAL"
     local desc="${LIBSHELL_ARGS_DEFINED_OPTIONS["$key#desc"]}"
     local valueType="${LIBSHELL_ARGS_DEFINED_OPTIONS["$key#valueType"]}"
     local defaultValue="${LIBSHELL_ARGS_DEFINED_OPTIONS["$key#defaultValue"]}"
@@ -115,9 +114,7 @@ Args_help() {
     printf '  %s\n' "$msg"
   done
 
-  if String_notEmpty "$tailInfo"; then
-    printf '%s\n' "$tailInfo"
-  fi
+  String_notEmpty "$tailInfo" && printf '%s\n' "$tailInfo"
 
   echo
 }
@@ -140,19 +137,26 @@ Args_parse() {
     if __validateInputFlag__ "$arg" 2>/dev/null; then
       if String_match "$arg" "^--[^=]+=.*$"; then
         local flag=""
-        flag="$(String_stripEnd "$arg" "=*" 1)"
+        String_stripEnd "$arg" "=*" 1 >/dev/null
+        flag="$RETVAL"
         local value=""
-        value="$(String_stripStart "$arg" "*=")"
+        String_stripStart "$arg" "*=" >/dev/null
+        value="$RETVAL"
         unifiedArgs+=("$flag")
         unifiedArgs+=("$value")
       elif String_match "$arg" "^-[^-]+$"; then
         local value=""
-        value="$(String_stripStart "$arg" "*=")"
+        String_stripStart "$arg" "*=" >/dev/null
+        value="$RETVAL"
         local arg_=""
-        arg_="$(String_stripEnd "$arg" "=*" 1)"
+        String_stripEnd "$arg" "=*" 1 >/dev/null
+        arg_="$RETVAL"
 
-        arg_="$(String_stripStart "$arg_" "-")"
-        readarray -t flags <<<"$(String_split "$arg_" "")"
+        String_stripStart "$arg_" "-" >/dev/null
+        arg_="$RETVAL"
+        String_split "$arg_" "" >/dev/null
+        # readarray -t flags <<<"$RETVAL"
+        flags=("${RETVAL[@]}")
         local singleFlag=""
         for singleFlag in "${flags[@]}"; do
           unifiedArgs+=("-$singleFlag")

@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC2178,SC2128
 
 String_at() {
   local string="${1:-}"
@@ -8,7 +9,9 @@ String_at() {
 
 String_capitalize() {
   local string="${1:-}"
-  printf '%s\n' "${string^}"
+  local res="${string^}"
+  RETVAL="$res"
+  printf '%s\n' "$res"
 }
 
 String_concat() {
@@ -17,6 +20,7 @@ String_concat() {
   for str in "$@"; do
     res="$res$str"
   done
+  RETVAL="$res"
   printf '%s\n' "$res"
 }
 
@@ -39,6 +43,7 @@ String_includes() {
 }
 
 String_indexOf() {
+  RETVAL=-1
   (($# < 2)) && echo -1
   local string="$1"
   local substring="$2"
@@ -47,8 +52,10 @@ String_indexOf() {
     local str="$string"
     while ! String_startsWith "$str" "$substring"; do
       index=$((index + 1))
-      str="$(String_substr "$string" "$index")"
+      String_substr "$string" "$index" >/dev/null
+      str="$RETVAL"
     done
+    RETVAL="$index"
     echo "$index"
   else
     echo -1
@@ -65,8 +72,10 @@ String_notEmpty() {
 
 String_join() {
   if (($# <= 1)); then
-    printf '%s\n' "$@"
+    RETVAL="${1:-}"
+    printf '%s\n' "${1:-}"
   elif (($# == 2)); then
+    RETVAL="$1$2"
     printf '%s\n' "$1$2"
   else
     local -a args=("$@")
@@ -81,13 +90,16 @@ String_join() {
         res="$res$delimiter$str"
       fi
     done
+    RETVAL="$res"
     printf '%s\n' "$res"
   fi
 }
 
 String_length() {
   local string="${1:-}"
-  echo "${#string}"
+  local -i len="${#string}"
+  RETVAL="$len"
+  echo "$len"
 }
 
 String_match() {
@@ -106,13 +118,17 @@ String_padEnd() {
   if (($# >= 2)); then
     local string="$1"
     local -i strLen=""
-    strLen="$(String_length "$string")"
+    strLen="${#string}"
     local -i maxLen="$2"
     local -i len=$((maxLen - strLen))
     local padStr="${3:- }"
-    printf '%s\n' "$string$(String_repeat "$padStr" "$len")"
+    String_repeat "$padStr" "$len" >/dev/null
+    local res="$string$RETVAL"
+    RETVAL="$res"
+    printf '%s\n' "$res"
   else
-    printf '%s\n' "$@"
+    RETVAL="${1:-}"
+    printf '%s\n' "${1:-}"
   fi
 }
 
@@ -120,13 +136,17 @@ String_padStart() {
   if (($# >= 2)); then
     local string="$1"
     local -i strLen=""
-    strLen="$(String_length "$string")"
+    strLen="${#string}"
     local -i maxLen="$2"
     local -i len=$((maxLen - strLen))
     local padStr="${3:- }"
-    printf '%s\n' "$(String_repeat "$padStr" "$len")$string"
+    String_repeat "$padStr" "$len" >/dev/null
+    local res="$RETVAL$string"
+    RETVAL="$res"
+    printf '%s\n' "$res"
   else
-    printf '%s\n' "$@"
+    RETVAL="${1:-}"
+    printf '%s\n' "${1:-}"
   fi
 }
 
@@ -138,34 +158,45 @@ String_repeat() {
   for ((i = 0; i < count; i++)); do
     res="$res$string"
   done
+  RETVAL="$res"
   printf '%s\n' "$res"
 }
 
 String_replace() {
   if (($# >= 3)); then
-    printf '%s\n' "${1/$2/$3}"
+    local res="${1/$2/$3}"
+    RETVAL="$res"
+    printf '%s\n' "$res"
   else
-    printf '%s\n' "${1:-}"
+    local res="${1:-}"
+    RETVAL="$res"
+    printf '%s\n' "$res"
   fi
 }
 
 String_replaceAll() {
   if (($# >= 3)); then
-    printf '%s\n' "${1//$2/$3}"
+    local res="${1//$2/$3}"
+    RETVAL="$res"
+    printf '%s\n' "$res"
   else
-    printf '%s\n' "${1:-}"
+    local res="${1:-}"
+    RETVAL="$res"
+    printf '%s\n' "$res"
   fi
 }
 
 String_reverse() {
   local string="${1:-}"
   local -i index=""
-  index="$(String_length "$string")"
+  index="${#string}"
   local res=""
   while ((index > 0)); do
     index=$((index - 1))
-    res="$res$(String_at "$string" "$index")"
+    String_at "$string" "$index" >/dev/null
+    res="$res$RETVAL"
   done
+  RETVAL="$res"
   printf '%s\n' "$res"
 }
 
@@ -188,20 +219,24 @@ String_split() {
 
   if String_isEmpty "$delmiter"; then
     local -i strLen=""
-    strLen=$(String_length "$string")
+    strLen="${#string}"
     local -i i
     for ((i = 0; i < strLen; i++)); do
-      array+=("$(String_at "$string" "$i")")
+      String_at "$string" "$i" >/dev/null
+      array+=("$RETVAL")
     done
   else
     while String_includes "$string" "$delmiter"; do
-      array+=("$(String_stripEnd "$string" "$delmiter*" 1)")
-      string="$(String_stripStart "$string" "*$delmiter")"
+      String_stripEnd "$string" "$delmiter*" 1 >/dev/null
+      array+=("$RETVAL")
+      String_stripStart "$string" "*$delmiter" >/dev/null
+      string="$RETVAL"
     done
     array+=("$string")
   fi
 
-  printf "%s\n" "${array[@]}"
+  RETVAL=("${array[@]}")
+  printf '%s\n' "${array[@]}"
 }
 
 String_startsWith() {
@@ -215,9 +250,13 @@ String_stripEnd() {
   local pattern="${2:-}"
   local -i greedy="${3:-0}"
   if ((greedy == 1)); then
-    printf '%s\n' "${string%%$pattern}"
+    local res="${string%%$pattern}"
+    RETVAL="$res"
+    printf '%s\n' "$res"
   else
-    printf '%s\n' "${string%$pattern}"
+    local res="${string%$pattern}"
+    RETVAL="$res"
+    printf '%s\n' "$res"
   fi
 }
 
@@ -226,36 +265,51 @@ String_stripStart() {
   local pattern="${2:-}"
   local -i greedy="${3:-0}"
   if ((greedy == 1)); then
-    printf '%s\n' "${string##$pattern}"
+    local res="${string##$pattern}"
+    RETVAL="$res"
+    printf '%s\n' "$res"
   else
-    printf '%s\n' "${string#$pattern}"
+    local res="${string#$pattern}"
+    RETVAL="$res"
+    printf '%s\n' "$res"
   fi
 }
 
 String_substr() {
   if (($# >= 3)); then
-    printf '%s\n' "${1:($2):$3}"
+    local res="${1:($2):$3}"
+    RETVAL="$res"
+    printf '%s\n' "$res"
   elif (($# == 2)); then
-    printf '%s\n' "${1:($2)}"
+    local res="${1:($2)}"
+    RETVAL="$res"
+    printf '%s\n' "$res"
   else
-    printf '%s\n' "$@"
+    RETVAL="${1:-}"
+    printf '%s\n' "${1:-}"
   fi
 }
 
 String_toLowerCase() {
   local string="${1:-}"
-  printf '%s\n' "${string,,}"
+  local res="${string,,}"
+  RETVAL="$res"
+  printf '%s\n' "$res"
 }
 
 String_toUpperCase() {
   local string="${1:-}"
-  printf '%s\n' "${string^^}"
+  local res="${string^^}"
+  RETVAL="$res"
+  printf '%s\n' "$res"
 }
 
 String_trim() {
   local string="${1:-}"
   local pattern="${2:- }"
-  String_trimEnd "$(String_trimStart "$@")" "$pattern"
+  String_trimStart "$@" >/dev/null
+  local tmp="$RETVAL"
+  String_trimEnd "$tmp" "$pattern"
 }
 
 String_trimEnd() {
@@ -264,8 +318,10 @@ String_trimEnd() {
   local pre=""
   while String_notEq "$pre" "$string"; do
     pre="$string"
-    string="$(String_stripEnd "$string" "$pattern")"
+    String_stripEnd "$string" "$pattern" >/dev/null
+    string="$RETVAL"
   done
+  RETVAL="$string"
   printf '%s\n' "$string"
 }
 
@@ -275,12 +331,16 @@ String_trimStart() {
   local pre=""
   while String_notEq "$pre" "$string"; do
     pre="$string"
-    string="$(String_stripStart "$string" "$pattern")"
+    String_stripStart "$string" "$pattern" >/dev/null
+    string="$RETVAL"
   done
+  RETVAL="$string"
   printf '%s\n' "$string"
 }
 
 String_uncapitalize() {
   local string="${1:-}"
-  printf '%s\n' "${string,}"
+  local res="${string,}"
+  RETVAL="$res"
+  printf '%s\n' "$res"
 }

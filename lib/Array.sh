@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC2178,SC2128
 import Math
 
 declare -g LIBSHELL_COMPARATOR="${LIBSHELL_COMPARATOR:-__defaultComparator__}"
@@ -37,9 +38,11 @@ Array_filter() {
         res+=("$item")
       fi
     done
+    RETVAL=("${res[@]}")
     printf '%s\n' "${res[@]}"
   else
-    echo "$@"
+    RETVAL="${1:-}"
+    printf '%s\n' "${1:-}"
   fi
 }
 
@@ -48,6 +51,7 @@ Array_find() {
 }
 
 Array_findIndex() {
+  RETVAL=-1
   if (($# >= 2)); then
     local -a args=("$@")
     local target="${args[-1]}"
@@ -58,6 +62,7 @@ Array_findIndex() {
     for ((i = 0; i < len; i++)); do
       item="${args[$i]}"
       if [[ "$item" =~ $target ]]; then
+        RETVAL="$i"
         echo "$i"
         return 0
       fi
@@ -90,6 +95,7 @@ Array_includes() {
 }
 
 Array_indexOf() {
+  RETVAL=-1
   if (($# >= 2)); then
     local -a args=("$@")
     local target="${args[-1]}"
@@ -100,6 +106,7 @@ Array_indexOf() {
     for ((i = 0; i < len; i++)); do
       item="${args[$i]}"
       if [[ "$target" == "$item" ]]; then
+        RETVAL="$i"
         echo "$i"
         return 0
       fi
@@ -137,14 +144,18 @@ Array_join() {
         result="$result$delimiter$str"
       fi
     done
+    RETVAL="$result"
     printf '%s\n' "$result"
   else
+    RETVAL="${1:-}"
     printf '%s\n' "${1:-}"
   fi
 }
 
 Array_length() {
-  echo "$#"
+  local -i len="$#"
+  RETVAL="$len"
+  echo "$len"
 }
 
 Array_map() {
@@ -159,12 +170,21 @@ Array_map() {
     local -i i
     for ((i = 0; i < len; i++)); do
       item="${args[$i]}"
-      val=$($fn "$item" "$i")
+      RETVAL="__reset_retval__"
+      $fn "$item" "$i" >/dev/null
+      # check if fn use the RETVAL to return value
+      if [[ "$RETVAL" != "__reset_retval__" ]]; then
+        val="$RETVAL"
+      else
+        val="$($fn "$item" "$i")"
+      fi
       res+=("$val")
     done
+    RETVAL=("${res[@]}")
     printf '%s\n' "${res[@]}"
   else
-    printf '%s\n' "$@"
+    RETVAL="${1:-}"
+    printf '%s\n' "${1:-}"
   fi
 }
 
@@ -175,9 +195,11 @@ Array_random() {
   local -i max="${3:-100}"
   local -i i
   for ((i = 0; i < size; i++)); do
-    res+=("$(Math_random "$min" "$max")")
+    Math_random "$min" "$max" >/dev/null
+    res+=("$RETVAL")
   done
-  printf "%s\n" "${res[@]}"
+  RETVAL=("${res[@]}")
+  printf '%s\n' "${res[@]}"
 }
 
 Array_reverse() {
@@ -190,6 +212,7 @@ Array_reverse() {
     arr[$j]="$tmp"
     ((i++, j--))
   done
+  RETVAL=("${arr[@]}")
   printf '%s\n' "${arr[@]}"
 }
 
@@ -235,7 +258,8 @@ Array_sort() {
           tmp="${arr[i]}"
           local -i j
           for ((j = $((i - 1)); j >= 0; j--)); do
-            cmp=$($LIBSHELL_COMPARATOR "${arr[j]}" "$tmp")
+            $LIBSHELL_COMPARATOR "${arr[j]}" "$tmp" >/dev/null
+            cmp="$RETVAL"
             if ((cmp > 0)); then
               arr[$((j + 1))]="${arr[j]}"
             else
@@ -249,7 +273,8 @@ Array_sort() {
 
       # random pivot
       local -i randP=""
-      randP="$(Math_random "$L" "$R")"
+      Math_random "$L" "$R" >/dev/null
+      randP="$RETVAL"
       local tmp="${arr["$R"]}"
       arr["$R"]="${arr["$randP"]}"
       arr["$randP"]="$tmp"
@@ -262,7 +287,8 @@ Array_sort() {
       local -i cmp=""
 
       while ((i < more)); do
-        cmp=$($LIBSHELL_COMPARATOR "${arr["$i"]}" "${arr["$R"]}")
+        $LIBSHELL_COMPARATOR "${arr["$i"]}" "${arr["$R"]}" >/dev/null
+        cmp="$RETVAL"
         if ((cmp > 0)); then
           more=$((more - 1))
           tmp="${arr["$more"]}"
@@ -290,18 +316,23 @@ Array_sort() {
 
     process 0 $((arrLen - 1))
 
+    RETVAL=("${arr[@]}")
     printf '%s\n' "${arr[@]}"
   else
-    printf '%s\n' "$@"
+    RETVAL="${1:-}"
+    printf '%s\n' "${1:-}"
   fi
 }
 
 __defaultComparator__() {
   if (($1 > $2)); then
-    echo 1
+    RETVAL=1
+    # echo 1
   elif (($1 < $2)); then
-    echo -1
+    RETVAL=-1
+    # echo -1
   else
-    echo 0
+    RETVAL=0
+    # echo 0
   fi
 }
