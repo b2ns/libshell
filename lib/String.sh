@@ -315,27 +315,27 @@ String_trim() {
 String_trimEnd() {
   local string="${1:-}"
   local pattern="${2:- }"
-  local pre=""
-  while String_notEq "$pre" "$string"; do
-    pre="$string"
-    String_stripEnd "$string" "$pattern" >/dev/null
-    string="$RETVAL"
-  done
-  RETVAL="$string"
-  printf '%s\n' "$string"
+  local tmp=""
+  local res=""
+  String_stripStart "$string" "*[^$pattern]" 1 >/dev/null
+  tmp="$RETVAL"
+  String_stripEnd "$string" "$tmp" >/dev/null
+  res="$RETVAL"
+  RETVAL="$res"
+  printf '%s\n' "$res"
 }
 
 String_trimStart() {
   local string="${1:-}"
   local pattern="${2:- }"
-  local pre=""
-  while String_notEq "$pre" "$string"; do
-    pre="$string"
-    String_stripStart "$string" "$pattern" >/dev/null
-    string="$RETVAL"
-  done
-  RETVAL="$string"
-  printf '%s\n' "$string"
+  local tmp=""
+  local res=""
+  String_stripEnd "$string" "[^$pattern]*" 1 >/dev/null
+  tmp="$RETVAL"
+  String_stripStart "$string" "$tmp" >/dev/null
+  res="$RETVAL"
+  RETVAL="$res"
+  printf '%s\n' "$res"
 }
 
 String_uncapitalize() {
