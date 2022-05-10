@@ -252,15 +252,12 @@ Array_sort() {
         local -i i=0
         local -i j=0
         local tmp=""
-        local -i cmp=""
         local -i i
         for ((i = L; i <= R; i++)); do
           tmp="${arr[i]}"
           local -i j
           for ((j = $((i - 1)); j >= 0; j--)); do
-            $LIBSHELL_COMPARATOR "${arr[j]}" "$tmp" >/dev/null
-            cmp="$RETVAL"
-            if ((cmp > 0)); then
+            if $LIBSHELL_COMPARATOR "${arr[j]}" ">" "$tmp"; then
               arr[$((j + 1))]="${arr[j]}"
             else
               break
@@ -284,17 +281,15 @@ Array_sort() {
       local -i less=$((L - 1))
       local -i more="$R"
       local tmp=""
-      local -i cmp=""
 
       while ((i < more)); do
-        $LIBSHELL_COMPARATOR "${arr["$i"]}" "${arr["$R"]}" >/dev/null
-        cmp="$RETVAL"
-        if ((cmp > 0)); then
+
+        if $LIBSHELL_COMPARATOR "${arr["$i"]}" ">" "${arr["$R"]}"; then
           more=$((more - 1))
           tmp="${arr["$more"]}"
           arr["$more"]="${arr["$i"]}"
           arr["$i"]="$tmp"
-        elif ((cmp < 0)); then
+        elif $LIBSHELL_COMPARATOR "${arr["$i"]}" "<" "${arr["$R"]}"; then
           less=$((less + 1))
           tmp="${arr["$less"]}"
           arr["$less"]="${arr["$i"]}"
@@ -325,14 +320,14 @@ Array_sort() {
 }
 
 __defaultComparator__() {
-  if (($1 > $2)); then
-    RETVAL=1
-    # echo 1
-  elif (($1 < $2)); then
-    RETVAL=-1
-    # echo -1
+  local a="$1"
+  local op="$2"
+  local b="$3"
+  if [[ "$op" == ">" ]]; then
+    ((a > b))
+  elif [[ "$op" == "<" ]]; then
+    ((a < b))
   else
-    RETVAL=0
-    # echo 0
+    ((a == b))
   fi
 }

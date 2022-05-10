@@ -153,15 +153,15 @@ Array_sort() { #@test
 
   foo() {
     comparator() {
-      if (($1 > $2)); then
-        RETVAL=-1
-        # echo -1
-      elif (($1 < $2)); then
-        RETVAL=1
-        # echo 1
+      local a="$1"
+      local op="$2"
+      local b="$3"
+      if [[ "$op" == ">" ]]; then
+        ((a < b))
+      elif [[ "$op" == "<" ]]; then
+        ((a > b))
       else
-        RETVAL=0
-        # echo 0
+        ((a == b))
       fi
     }
     LIBSHELL_COMPARATOR=comparator Array_sort "${arr[@]}"
