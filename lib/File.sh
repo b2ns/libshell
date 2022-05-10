@@ -50,5 +50,5 @@ File_mkfile() {
   local dir=""
   Path_dirName "$1"
   dir="$RETVAL"
-  File_mkdir "$dir" && touch "$1"
+  File_mkdir "$dir" && : >"$1"
 }
