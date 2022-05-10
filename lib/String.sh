@@ -13,6 +13,7 @@ String_capitalize() {
 
 String_concat() {
   local res=""
+  local str=""
   for str in "$@"; do
     res="$res$str"
   done
@@ -72,6 +73,7 @@ String_join() {
     local delimiter="${args[-1]}"
     unset "args[-1]"
     local res=""
+    local str=""
     for str in "${args[@]}"; do
       if String_isEmpty "$res"; then
         res="$str"

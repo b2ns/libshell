@@ -16,6 +16,7 @@ Args_define() {
   local valueType="${3-}"
   local defaultValue="${4-}"
 
+  local singleFlag=""
   for singleFlag in "${flags[@]}"; do
     # check invalid flag
     __validateDefineFlag__ "$singleFlag" || return 1
@@ -94,12 +95,14 @@ Args_help() {
 
   # get max padding length
   local -i paddingLen=0
+  local key=""
   for key in "${!LIBSHELL_ARGS_OPTIONS[@]}"; do
     local -i len=""
     len="$(String_length "$key")"
     ((len > paddingLen)) && paddingLen="$len"
   done
 
+  local key=""
   for key in "${!LIBSHELL_ARGS_OPTIONS[@]}"; do
     local msg=""
     msg="$(String_padEnd "$key" "$paddingLen")"
@@ -150,6 +153,7 @@ Args_parse() {
 
         arg_="$(String_stripStart "$arg_" "-")"
         readarray -t flags <<<"$(String_split "$arg_" "")"
+        local singleFlag=""
         for singleFlag in "${flags[@]}"; do
           unifiedArgs+=("-$singleFlag")
         done
@@ -216,6 +220,7 @@ Args_parse() {
     return 1
   fi
 
+  local key=""
   for key in "${!LIBSHELL_ARGS_REQUIRED_OPTIONS[@]}"; do
     echo "Error: flag [$key] is required" >&2
     return 1
