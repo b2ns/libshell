@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+import Path
+
 File_isDir() {
   [[ -d "$1" ]]
 }
@@ -46,6 +48,7 @@ File_mkdir() {
 
 File_mkfile() {
   local dir=""
-  dir="$(dirname "$1")"
+  Path_dirName "$1"
+  dir="$RETVAL"
   File_mkdir "$dir" && touch "$1"
 }

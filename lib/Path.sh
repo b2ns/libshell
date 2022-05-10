@@ -2,19 +2,64 @@
 
 import String
 
-Path_dirname() {
+Path_dirName() {
+  local file="$1"
   local res=""
-  res="$(basename "$(dirname "$1")")"
+  if String_eq "$file" "/"; then
+    res="/"
+  elif String_isEmpty "$file"; then
+    res="."
+  else
+    file="./$file"
+    String_stripEnd "${file}" "/" >/dev/null
+    file="$RETVAL"
+    String_stripEnd "${file}" "/*" >/dev/null
+    file="$RETVAL"
+    String_stripStart "${file}" "./" >/dev/null
+    file="$RETVAL"
+    if String_isEmpty "$file"; then
+      res="/"
+    else
+      res="$file"
+    fi
+  fi
+  RETVAL="$res"
+  printf "%s" "$res"
+}
+
+Path_dirname() {
+  local file="$1"
+  local res=""
+  if String_eq "$file" "/"; then
+    res="/"
+  elif String_isEmpty "$file"; then
+    res="."
+  else
+    file="/$file"
+    String_stripEnd "${file}" "/" >/dev/null
+    file="$RETVAL"
+    String_stripEnd "${file}" "/*" >/dev/null
+    file="$RETVAL"
+    Path_filename "$file" >/dev/null
+    res="$RETVAL"
+  fi
   RETVAL="$res"
   printf "%s" "$res"
 }
 
 Path_dirpath() {
-  local filepath=""
-  Path_filepath "$@" >/dev/null || return 1
-  filepath="$RETVAL"
+  local file=""
   local res=""
-  res="$(dirname "$filepath")"
+  Path_filepath "$@" >/dev/null || return 1
+  file="$RETVAL"
+  if String_eq "$file" "/"; then
+    res="/"
+  else
+    String_stripEnd "${file}" "/" >/dev/null
+    file="$RETVAL"
+    String_stripEnd "${file}" "/*" >/dev/null
+    res="$RETVAL"
+  fi
   RETVAL="$res"
   printf "%s" "$res"
 }
@@ -40,8 +85,18 @@ Path_extname() {
 }
 
 Path_filename() {
+  local file="$1"
   local res=""
-  res="$(basename "$1")"
+  if String_eq "$file" "/"; then
+    res="/"
+  elif String_isEmpty "$file"; then
+    res="."
+  else
+    String_stripEnd "${file}" "/" >/dev/null
+    file="$RETVAL"
+    String_stripStart "${file}" "*/" 1 >/dev/null
+    res="$RETVAL"
+  fi
   RETVAL="$res"
   printf "%s" "$res"
 }
@@ -58,7 +113,13 @@ Path_filepath() {
 
   if [[ -f "$file" ]]; then
     local res=""
-    res="$(cd "$(dirname "$file")" && pwd)/$(basename "$file")"
+    local dir=""
+    local name=""
+    Path_dirName "$file" >/dev/null
+    dir="$RETVAL"
+    Path_filename "$file" >/dev/null
+    name="$RETVAL"
+    res="$(cd "$dir" && pwd)/$name"
     RETVAL="$res"
     printf '%s\n' "$res"
   elif [[ -d "$file" ]]; then
