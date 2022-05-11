@@ -85,13 +85,13 @@ Color() {
       String_stripEnd "$color" "|*" 1 >/dev/null
       color="$RETVAL"
 
-      # #f0f0f0
+      # hex
       if String_startsWith "$color" "#"; then
         __hex2rgb__ "$color" >/dev/null
         color="$RETVAL"
       fi
 
-      # rgb(1,1,1)
+      # rgb
       local -i r=0
       local -i g=0
       local -i b=0

@@ -37,7 +37,7 @@ Color_print() { #@test
   run Color_print "foo"
   assert_output "foo"
 
-  run Color "foo" "blueBright" "strikethrough"
+  run Color_print "foo" "blueBright" "strikethrough"
   output="$(echo -e "\e[44;9mfoo\e[39;29m")"
   assert_output "$output"
 }
