@@ -192,6 +192,9 @@ Path_extname() { #@test
 
   run Path_extname "path/to"
   assert_output ""
+
+  run Path_extname "path/.to/.foo"
+  assert_output ""
 }
 
 Path_filename() { #@test
@@ -350,6 +353,9 @@ Path_filenoext() { #@test
 
   run Path_filenoext "path/to/"
   assert_output "to"
+
+  run Path_filenoext "path/.to"
+  assert_output ".to"
 }
 
 Path_pathnoext() { #@test

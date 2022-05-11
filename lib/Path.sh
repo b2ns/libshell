@@ -3,79 +3,66 @@
 import String
 
 Path_dirName() {
-  local file="$1"
-  local res=""
-  if String_eq "$file" "/"; then
-    res="/"
-  elif String_isEmpty "$file"; then
-    res="."
-  else
+  local file="${1:-.}"
+  if String_notEq "$file" "/"; then
     file="./$file"
+
     String_stripEnd "${file}" "/" >/dev/null
     file="$RETVAL"
+
     String_stripEnd "${file}" "/*" >/dev/null
     file="$RETVAL"
+
     String_stripStart "${file}" "./" >/dev/null
     file="$RETVAL"
-    if String_isEmpty "$file"; then
-      res="/"
-    else
-      res="$file"
-    fi
   fi
-  RETVAL="$res"
-  printf "%s" "$res"
+  RETVAL="${file:-/}"
+  printf '%s\n' "${file:-/}"
 }
 
 Path_dirname() {
-  local file="$1"
-  local res=""
-  if String_eq "$file" "/"; then
-    res="/"
-  elif String_isEmpty "$file"; then
-    res="."
-  else
+  local file="${1:-.}"
+  if String_notEq "$file" "/"; then
     file="/$file"
+
     String_stripEnd "${file}" "/" >/dev/null
     file="$RETVAL"
+
     String_stripEnd "${file}" "/*" >/dev/null
     file="$RETVAL"
+
     Path_filename "$file" >/dev/null
-    res="$RETVAL"
+    file="$RETVAL"
   fi
-  RETVAL="$res"
-  printf "%s" "$res"
+  RETVAL="${file:-/}"
+  printf '%s\n' "${file:-/}"
 }
 
 Path_dirpath() {
   local file=""
-  local res=""
   Path_filepath "$@" >/dev/null || return 1
   file="$RETVAL"
-  if String_eq "$file" "/"; then
-    res="/"
-  else
-    String_stripEnd "${file}" "/" >/dev/null
-    file="$RETVAL"
-    String_stripEnd "${file}" "/*" >/dev/null
-    res="$RETVAL"
-  fi
-  RETVAL="$res"
-  printf "%s" "$res"
+
+  Path_dirName "$file" >/dev/null
+  file="$RETVAL"
+
+  RETVAL="$file"
+  printf '%s\n' "$file"
 }
 
 Path_expandTilde() {
-  local file="$1"
-  String_replace "$file" "#\~" "$HOME"
+  String_replace "$1" "#\~" "$HOME"
 }
 
 Path_extname() {
   local filename=""
+  local res=""
   Path_filename "$@" >/dev/null
   filename="$RETVAL"
-  if String_match "$filename" "\.[^./]+$"; then
+  if String_match "$filename" "[^./]+\.[^./]+$"; then
     String_stripStart "$filename" "*." 1 >/dev/null
-    local res=".$RETVAL"
+    res=".$RETVAL"
+
     RETVAL="$res"
     printf '%s\n' "$res"
   else
@@ -85,24 +72,21 @@ Path_extname() {
 }
 
 Path_filename() {
-  local file="$1"
-  local res=""
-  if String_eq "$file" "/"; then
-    res="/"
-  elif String_isEmpty "$file"; then
-    res="."
-  else
+  local file="${1:-.}"
+  if String_notEq "$file" "/"; then
     String_stripEnd "${file}" "/" >/dev/null
     file="$RETVAL"
+
     String_stripStart "${file}" "*/" 1 >/dev/null
-    res="$RETVAL"
+    file="$RETVAL"
   fi
-  RETVAL="$res"
-  printf "%s" "$res"
+  RETVAL="$file"
+  printf '%s\n' "$file"
 }
 
 Path_filepath() {
   local file=""
+
   Path_expandTilde "$1" >/dev/null
   file="$RETVAL"
 
@@ -111,27 +95,32 @@ Path_filepath() {
     return 1
   fi
 
+  local res=""
+  local pwd="$PWD"
+
   if [[ -f "$file" ]]; then
-    local res=""
     local dir=""
     local name=""
+
     Path_dirName "$file" >/dev/null
     dir="$RETVAL"
+
     Path_filename "$file" >/dev/null
     name="$RETVAL"
-    res="$(cd "$dir" && pwd)/$name"
-    RETVAL="$res"
-    printf '%s\n' "$res"
+
+    cd "$dir" || return 1
+    res="$PWD/$name"
   elif [[ -d "$file" ]]; then
-    local res=""
-    res="$(cd "$file" && pwd)"
-    RETVAL="$res"
-    printf '%s\n' "$res"
+    cd "$file" || return 1
+    res="$PWD"
   fi
+  cd "$pwd" || return 1
+  RETVAL="$res"
+  printf '%s\n' "$res"
 }
 
 Path_isAbs() {
-  [[ "$1" == /* ]]
+  String_startsWith "$1" "/"
 }
 
 Path_isRel() {
@@ -140,24 +129,32 @@ Path_isRel() {
 
 Path_filenoext() {
   local filename=""
+  local ext=""
   Path_filename "$@" >/dev/null
   filename="$RETVAL"
-  if String_match "$filename" "\.[^./]+$"; then
-    String_stripEnd "$filename" ".*"
-  else
-    RETVAL="$filename"
-    printf '%s\n' "$filename"
-  fi
+
+  Path_extname "$filename" >/dev/null
+  ext="$RETVAL"
+
+  String_stripEnd "$filename" "$ext" >/dev/null
+  filename="$RETVAL"
+
+  RETVAL="$filename"
+  printf '%s\n' "$filename"
 }
 
 Path_pathnoext() {
   local pathname=""
+  local ext=""
   Path_filepath "$@" >/dev/null || return 1
   pathname="$RETVAL"
-  if String_match "$pathname" "\.[^./]+$"; then
-    String_stripEnd "$pathname" ".*"
-  else
-    RETVAL="$pathname"
-    printf '%s\n' "$pathname"
-  fi
+
+  Path_extname "$pathname" >/dev/null
+  ext="$RETVAL"
+
+  String_stripEnd "$pathname" "$ext" >/dev/null
+  pathname="$RETVAL"
+
+  RETVAL="$pathname"
+  printf '%s\n' "$pathname"
 }
