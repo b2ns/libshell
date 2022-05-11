@@ -2,6 +2,34 @@
 load test_helper.sh
 load ../lib/Path.sh
 
+declare -ga files=(
+  "[dir]:$HOME/__Path_dirpath"
+  "$HOME/__Path_dirpath/__Path_dirpath.ext"
+  "[dir]:__Path_dirpath"
+  "__Path_dirpath/__Path_dirpath.ext"
+  "[dir]:../__Path_dirpath"
+  "../__Path_dirpath/__Path_dirpath.ext"
+
+  "[dir]:$HOME/__Path_filepath"
+  "$HOME/__Path_filepath/__Path_filepath.ext"
+  "[dir]:__Path_filepath"
+  "__Path_filepath/__Path_filepath.ext"
+  "[dir]:../__Path_filepath"
+  "../__Path_filepath/__Path_filepath.ext"
+
+  "[dir]:__Path_pathnoext"
+  "__Path_pathnoext/__Path_pathnoext.ext"
+  "__Path_pathnoext/.__Path_pathnoext"
+)
+
+setup_file() {
+  setupFiles "${files[@]}"
+}
+
+teardown_file() {
+  teardownFiles "${files[@]}"
+}
+
 Path_dirName() { #@test
   run Path_dirName "path/to/foo.sh"
   assert_output "path/to"
@@ -105,56 +133,30 @@ Path_dirname() { #@test
 }
 
 Path_dirpath() { #@test
-  local tmpFilename="__test_path_dirpath__.ext"
-  local tmpDirname="__test_path_dirpath_dir__"
-
-  makeDir "$HOME/$tmpDirname"
-  makeFile "$HOME/$tmpDirname/$tmpFilename"
-  makeDir "$tmpDirname"
-  makeFile "$tmpDirname/$tmpFilename"
-  makeDir "../$tmpDirname"
-  makeFile "../$tmpDirname/$tmpFilename"
-  
-  local parentDir=$(cd .. && pwd)
-
-  local file="$HOME/$tmpDirname"
-  run Path_dirpath "$file"
+  run Path_dirpath "$HOME/__Path_dirpath"
   assert_output "$HOME"
 
   # shellcheck disable=SC2088
-  run Path_dirpath "~/$tmpDirname/$tmpFilename"
-  assert_output "$HOME/$tmpDirname"
+  run Path_dirpath "~/__Path_dirpath/__Path_dirpath.ext"
+  assert_output "$HOME/__Path_dirpath"
 
-  file="$tmpDirname"
-  run Path_dirpath "$file"
-  assert_output "$(cd "$file/.." && pwd)"
+  run Path_dirpath "__Path_dirpath"
+  assert_output "$(cd "__Path_dirpath/.." && pwd)"
 
-  file="./$tmpDirname/$tmpFilename"
-  run Path_dirpath "$file"
-  assert_output "$(cd "$(dirname "$file")" && pwd)"
+  run Path_dirpath "__Path_dirpath/__Path_dirpath.ext"
+  assert_output "$(cd "__Path_dirpath" && pwd)"
 
-  file="../$tmpDirname"
-  run Path_dirpath "$file"
-  assert_output "$(cd "$file/.." && pwd)"
+  run Path_dirpath "../__Path_dirpath"
+  assert_output "$(cd ".." && pwd)"
 
-  file="../$tmpDirname/$tmpFilename"
-  run Path_dirpath "$file"
-  assert_output "$(cd "$(dirname "$file")" && pwd)"
+  run Path_dirpath "../__Path_dirpath/__Path_dirpath.ext"
+  assert_output "$(cd "../__Path_dirpath" && pwd)"
 
   run Path_dirpath "."
-  assert_output "$parentDir"
-  # assert_output "pwd"
+  assert_output "$(cd .. && pwd)"
 
   run Path_dirpath "$HOME/file/not/exist"
   assert_failure
-
-
-  cleanFile "$HOME/$tmpDirname/$tmpFilename"
-  cleanFile "$HOME/$tmpDirname"
-  cleanFile "$tmpDirname/$tmpFilename"
-  cleanFile "$tmpDirname"
-  cleanFile "../$tmpDirname/$tmpFilename"
-  cleanFile "../$tmpDirname"
 }
 
 Path_expandTilde() { #@test
@@ -243,54 +245,30 @@ Path_filename() { #@test
 }
 
 Path_filepath() { #@test
-  local tmpFilename="__test_path_filepath__.ext"
-  local tmpDirname="__test_path_filepath_dir__"
-
-  makeDir "$HOME/$tmpDirname"
-  makeFile "$HOME/$tmpDirname/$tmpFilename"
-  makeDir "$tmpDirname"
-  makeFile "$tmpDirname/$tmpFilename"
-  makeDir "../$tmpDirname"
-  makeFile "../$tmpDirname/$tmpFilename"
-  
-  local curpwd=$(pwd)
-
-  local file="$HOME/$tmpDirname"
-  run Path_filepath "$file"
-  assert_output "$file"
+  run Path_filepath "$HOME/__Path_filepath"
+  assert_output "$HOME/__Path_filepath"
 
   # shellcheck disable=SC2088
-  run Path_filepath "~/$tmpDirname/$tmpFilename"
-  assert_output "$HOME/$tmpDirname/$tmpFilename"
+  run Path_filepath "~/__Path_filepath/__Path_filepath.ext"
+  assert_output "$HOME/__Path_filepath/__Path_filepath.ext"
 
-  file="$tmpDirname"
-  run Path_filepath "$file"
-  assert_output "$(cd "$file" && pwd)"
+  run Path_filepath "__Path_filepath"
+  assert_output "$(cd "__Path_filepath" && pwd)"
 
-  file="./$tmpDirname/$tmpFilename"
-  run Path_filepath "$file"
-  assert_output "$(cd "$(dirname "$file")" && pwd)/$(basename "$file")"
+  run Path_filepath "__Path_filepath/__Path_filepath.ext"
+  assert_output "$(cd "__Path_filepath" && pwd)/__Path_filepath.ext"
 
-  file="../$tmpDirname"
-  run Path_filepath "$file"
-  assert_output "$(cd "$file" && pwd)"
+  run Path_filepath "../__Path_filepath"
+  assert_output "$(cd ".." && pwd)/__Path_filepath"
 
-  file="../$tmpDirname/$tmpFilename"
-  run Path_filepath "$file"
-  assert_output "$(cd "$(dirname "$file")" && pwd)/$(basename "$file")"
+  run Path_filepath "../__Path_filepath/__Path_filepath.ext"
+  assert_output "$(cd "../__Path_filepath" && pwd)/__Path_filepath.ext"
 
   run Path_filepath "."
-  assert_output "$curpwd"
+  assert_output "$(pwd)"
 
   run Path_filepath "$HOME/file/not/exist"
   assert_failure
-
-  cleanFile "$HOME/$tmpDirname/$tmpFilename"
-  cleanFile "$HOME/$tmpDirname"
-  cleanFile "$tmpDirname/$tmpFilename"
-  cleanFile "$tmpDirname"
-  cleanFile "../$tmpDirname/$tmpFilename"
-  cleanFile "../$tmpDirname"
 }
 
 Path_isAbs() { #@test
@@ -359,28 +337,15 @@ Path_filenoext() { #@test
 }
 
 Path_pathnoext() { #@test
-  local tmpFilename="__test_path_pathnoext__.ext"
-  local tmpFilenoext="__test_path_pathnoext__"
-  local tmpDirname="__test_path_pathnoext_dir__"
+  run Path_pathnoext "__Path_pathnoext"
+  assert_output "$(cd "__Path_pathnoext" && pwd)"
 
-  makeDir "$HOME/$tmpDirname"
-  makeFile "$HOME/$tmpDirname/$tmpFilename"
-  makeDir "$tmpDirname"
-  makeFile "$tmpDirname/$tmpFilename"
+  run Path_pathnoext "__Path_pathnoext/__Path_pathnoext.ext"
+  assert_output "$(cd "__Path_pathnoext" && pwd)/__Path_pathnoext"
 
-  local file="$HOME/$tmpDirname"
-  run Path_pathnoext "$file"
-  assert_output "$file"
-
-  file="./$tmpDirname/$tmpFilename"
-  run Path_pathnoext "$file"
-  assert_output "$(cd "$(dirname "$file")" && pwd)/$tmpFilenoext"
+  run Path_pathnoext "__Path_pathnoext/.__Path_pathnoext"
+  assert_output "$(cd "__Path_pathnoext" && pwd)/.__Path_pathnoext"
 
   run Path_pathnoext "$HOME/file/not/exist"
   assert_failure
-
-  cleanFile "$HOME/$tmpDirname/$tmpFilename"
-  cleanFile "$HOME/$tmpDirname"
-  cleanFile "$tmpDirname/$tmpFilename"
-  cleanFile "$tmpDirname"
 }

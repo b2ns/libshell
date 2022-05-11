@@ -10,7 +10,7 @@ Args_test() { #@test
   Args_define "--te" "Truncation error" "<float>" 0.00001
   Args_define "-l --level" "Level of parse" "<num>" 3
   Args_define "-f --format" "Output format" "[json yaml toml xml csv]" "json"
-Args_define "-p --pwd" "Password is required" "<any>!"
+  Args_define "-p --pwd" "Password is required" "<any>!"
   Args_define "-v -V --version" "Show version"
   Args_define "-h --help" "Show help"
 

@@ -33,7 +33,8 @@ if Args_has "-r"; then
 fi
 
 if Args_has "--output"; then
-  declare output="$(Args_get "-o")"
+  declare output=""
+  output="$(Args_get "-o")"
   echo "Output: ${output}"
 fi
 

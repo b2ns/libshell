@@ -2,6 +2,26 @@
 load test_helper.sh
 load ../lib/File.sh
 
+declare -ga files=(
+  "__File_isEmpty.ext"
+  "__File_isExecutable.ext"
+  "__File_notEmpty.ext"
+  "__File_isReadable.ext"
+  "[nocreate]:__File_isSymlink.ext"
+  "__File_isWritable.ext"
+  "[nocreate]:__File_mkdir/path/to"
+  "[nocreate]:__File_mkfile/path/to"
+  "[nocreate]:__File_mkfile/path/to/file.ext"
+)
+
+setup_file() {
+  setupFiles "${files[@]}"
+}
+
+teardown_file() {
+  teardownFiles "${files[@]}"
+}
+
 File_isDir() { #@test
   run File_isDir "./test"
   assert_success
@@ -11,31 +31,25 @@ File_isDir() { #@test
 }
 
 File_isEmpty() { #@test
-  local tmpFilename="__test_file_isempty__.ext"
-  makeFile "$tmpFilename"
+  local file="__File_isEmpty.ext"
 
-  run File_isEmpty "$tmpFilename"
+  run File_isEmpty "$file"
   assert_success
 
   run File_isEmpty "./test/File.test.sh"
   assert_failure
-
-  cleanFile "$tmpFilename"
 }
 
 File_isExecutable() { #@test
-  local tmpFilename="__test_file_isexecutable__.ext"
-  makeFile "$tmpFilename"
+  local file="__File_isExecutable.ext"
 
-  chmod +x "$tmpFilename"
-  run File_isExecutable "$tmpFilename"
+  chmod +x "$file"
+  run File_isExecutable "$file"
   assert_success
 
-  chmod -x "$tmpFilename"
-  run File_isExecutable "$tmpFilename"
+  chmod -x "$file"
+  run File_isExecutable "$file"
   assert_failure
-
-  cleanFile "$tmpFilename"
 }
 
 File_isExist() { #@test
@@ -61,30 +75,24 @@ File_isFile() { #@test
 }
 
 File_notEmpty() { #@test
-  local tmpFilename="__test_file_isnotempty__.ext"
-  makeFile "$tmpFilename"
+  local file="__File_notEmpty.ext"
 
   run File_notEmpty "./test/File.test.sh"
   assert_success
 
-  run File_notEmpty "$tmpFilename"
+  run File_notEmpty "$file"
   assert_failure
-
-  cleanFile "$tmpFilename"
 }
 
 File_isReadable() { #@test
-  local tmpFilename="__test_file_isreadable__.ext"
-  makeFile "$tmpFilename"
+  local file="__File_isReadable.ext"
 
-  run File_isReadable "$tmpFilename"
+  run File_isReadable "$file"
   assert_success
 
-  chmod -r "$tmpFilename"
-  run File_isReadable "$tmpFilename"
+  chmod a-r "$file"
+  run File_isReadable "$file"
   assert_failure
-
-  cleanFile "$tmpFilename"
 }
 
 File_isSame() { #@test
@@ -96,48 +104,38 @@ File_isSame() { #@test
 }
 
 File_isSymlink() { #@test
-  local tmpFilename="__test_file_issymlink__.ext"
-  ln -s "./test/File.test.sh" "$tmpFilename"
+  local file="__File_isSymlink.ext"
+  ln -s "./test/File.test.sh" "$file"
 
-  run File_isSymlink "$tmpFilename"
+  run File_isSymlink "$file"
   assert_success
 
   run File_isSymlink "./test/File.test.sh"
   assert_failure
-
-  cleanFile "$tmpFilename"
 }
 
 File_isWritable() { #@test
-  local tmpFilename="__test_file_iswritable__.ext"
-  makeFile "$tmpFilename"
+  local file="__File_isWritable.ext"
 
-  run File_isWritable "$tmpFilename"
+  chmod +w "$file"
+  run File_isWritable "$file"
   assert_success
 
-  chmod -w "$tmpFilename"
-  run File_isWritable "$tmpFilename"
+  chmod -w "$file"
+  run File_isWritable "$file"
   assert_failure
-
-  cleanFile "$tmpFilename"
 }
 
 File_mkdir() { #@test
-  local tmpDirname="__test_file_mkdir_dir__/path/to/dir"
+  local dir="__File_mkdir/path/to"
 
-  run File_mkdir "$tmpDirname"
-  assert_dir_exists "$tmpDirname"
-
-  rmdir -p "$tmpDirname"
+  run File_mkdir "$dir"
+  assert_dir_exists "$dir"
 }
 
 File_mkfile() { #@test
-  local tmpFilename="__test_file_mkfile__/path/to/foo.ext"
+  local file="__File_mkfile/path/to/file.ext"
 
-  run File_mkfile "$tmpFilename"
-  assert_exists "$tmpFilename"
-
-  cleanFile "$tmpFilename"
-  rmdir -p "${tmpFilename%/*}"
+  run File_mkfile "$file"
+  assert_exists "$file"
 }
-

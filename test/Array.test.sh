@@ -121,6 +121,7 @@ Array_map() { #@test
 
 Array_random() { #@test
   run Array_random 2 5 10
+  # shellcheck disable=SC2154
   assert [ "${lines[0]}" -ge 5 ] && [ "${lines[0]}" -lt 10 ]
   assert [ "${lines[1]}" -ge 5 ] && [ "${lines[1]}" -lt 10 ]
   assert_line -n 3 ""
