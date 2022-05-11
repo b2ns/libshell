@@ -9,7 +9,11 @@ declare -ga files=(
   "__File_isReadable.ext"
   "[nocreate]:__File_isSymlink.ext"
   "__File_isWritable.ext"
+  "[nocreate]:__File_mkdir"
+  "[nocreate]:__File_mkdir/path"
   "[nocreate]:__File_mkdir/path/to"
+  "[nocreate]:__File_mkfile"
+  "[nocreate]:__File_mkfile/path"
   "[nocreate]:__File_mkfile/path/to"
   "[nocreate]:__File_mkfile/path/to/file.ext"
 )
