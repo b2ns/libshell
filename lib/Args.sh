@@ -12,9 +12,9 @@ Args_define() {
   (($# == 0)) && return 0
 
   local allFlag="$1"
-  String_split "$1" " " >/dev/null
-  flags=("${RETVAL[@]}")
-  # readarray -t flags <<<"$RETVAL"
+  String_split "$allFlag" " " >/dev/null
+  local -a flags=("${RETVAL[@]}")
+
   local desc="${2-}"
   local valueType="${3-}"
   local defaultValue="${4-}"
@@ -38,8 +38,10 @@ Args_define() {
   if String_match "$valueType" ">!+$"; then
     String_stripEnd "$valueType" "!*" 1 >/dev/null
     valueType="$RETVAL"
+
     LIBSHELL_ARGS_REQUIRED_OPTIONS[$allFlag]=1
   fi
+
   LIBSHELL_ARGS_DEFINED_OPTIONS["${allFlag}#valueType"]="$valueType"
 
   LIBSHELL_ARGS_DEFINED_OPTIONS["${allFlag}#defaultValue"]="$defaultValue"
@@ -59,8 +61,10 @@ Args_defined() {
 
 Args_get() {
   Args_defined "$1" || return 1
+
   local allFlag="${LIBSHELL_ARGS_DEFINED_OPTIONS[$1]}"
   local value="${LIBSHELL_ARGS_OPTIONS[$allFlag]}"
+
   RETVAL="$value"
   printf '%s\n' "$value"
 }
@@ -72,8 +76,10 @@ Args_getInput() {
 
 Args_has() {
   local value=""
+
   Args_get "$1" >/dev/null || return 1
   value="$RETVAL"
+
   String_notEmpty "$value"
 }
 
@@ -81,6 +87,7 @@ Args_help() {
   local headInfo=${1:-}
   local tailInfo=${2:-}
   local scriptName=""
+
   String_stripStart "$0" "*/" 1 >/dev/null
   scriptName="$RETVAL"
 
@@ -97,6 +104,7 @@ Args_help() {
     local -i len=""
     String_length "$key" >/dev/null
     len="$RETVAL"
+
     ((len > paddingLen)) && paddingLen="$len"
   done
 
@@ -105,6 +113,7 @@ Args_help() {
     local msg=""
     String_padEnd "$key" "$paddingLen" >/dev/null
     msg="$RETVAL"
+
     local desc="${LIBSHELL_ARGS_DEFINED_OPTIONS["$key#desc"]}"
     local valueType="${LIBSHELL_ARGS_DEFINED_OPTIONS["$key#valueType"]}"
     local defaultValue="${LIBSHELL_ARGS_DEFINED_OPTIONS["$key#defaultValue"]}"
@@ -125,6 +134,7 @@ Args_parse() {
   local allFlag=""
   local valueType=""
   local -i readingFlagValue=0
+  local -i escapeFlag=0
 
   # unify args
   # --format=json -> --format json
@@ -134,35 +144,53 @@ Args_parse() {
   local -i i
   for ((i = 0; i < "${#args[@]}"; i++)); do
     local arg="${args[$i]}"
+
+    # use '--' to prevserve args
+    if String_eq "$arg" "--"; then
+      escapeFlag=1
+      unifiedArgs+=("$arg")
+      continue
+    fi
+    if ((escapeFlag)); then
+      escapeFlag=0
+      unifiedArgs+=("$arg")
+      continue
+    fi
+
     if __validateInputFlag__ "$arg" 2>/dev/null; then
       if String_match "$arg" "^--[^=]+=.*$"; then
         local flag=""
         String_stripEnd "$arg" "=*" 1 >/dev/null
         flag="$RETVAL"
+
         local value=""
         String_stripStart "$arg" "*=" >/dev/null
         value="$RETVAL"
+
         unifiedArgs+=("$flag")
         unifiedArgs+=("$value")
       elif String_match "$arg" "^-[^-]+$"; then
         local value=""
         String_stripStart "$arg" "*=" >/dev/null
         value="$RETVAL"
+
         local arg_=""
         String_stripEnd "$arg" "=*" 1 >/dev/null
         arg_="$RETVAL"
 
         String_stripStart "$arg_" "-" >/dev/null
         arg_="$RETVAL"
+
+        local -a flags=()
         String_split "$arg_" "" >/dev/null
-        # readarray -t flags <<<"$RETVAL"
         flags=("${RETVAL[@]}")
+
         local singleFlag=""
         for singleFlag in "${flags[@]}"; do
           unifiedArgs+=("-$singleFlag")
         done
 
-        [[ "$value" != "$arg" ]] && unifiedArgs+=("$value")
+        String_notEq "$value" "$arg" && unifiedArgs+=("$value")
       else
         unifiedArgs+=("$arg")
       fi
@@ -171,12 +199,26 @@ Args_parse() {
     fi
   done
 
+  # must reset it to
+  escapeFlag=0
+
   local -i i
   for ((i = 0; i < "${#unifiedArgs[@]}"; i++)); do
     local arg="${unifiedArgs[$i]}"
 
+    # while filename start with '-', use '--' to solve it
+    if String_eq "$arg" "--"; then
+      escapeFlag=1
+      continue
+    fi
+    if ((escapeFlag)); then
+      LIBSHELL_ARGS_INPUT+=("$arg")
+      escapeFlag=0
+      continue
+    fi
+
     if __validateDefineFlag__ "$arg" 2>/dev/null; then
-      if ((readingFlagValue == 1)); then
+      if ((readingFlagValue)); then
         echo "Error: flag [$singleFlag] expect a value" >&2
         return 1
       fi
@@ -193,9 +235,10 @@ Args_parse() {
       else
         readingFlagValue=1
       fi
+
       unset LIBSHELL_ARGS_REQUIRED_OPTIONS["$allFlag"]
     else
-      if ((readingFlagValue == 1)); then
+      if ((readingFlagValue)); then
 
         # check value type
         if String_match "$valueType" "^(<|\[)"; then
@@ -219,7 +262,7 @@ Args_parse() {
 
   done
 
-  if ((readingFlagValue == 1)); then
+  if ((readingFlagValue)); then
     echo "Error: flag [$singleFlag] expect a value" >&2
     return 1
   fi

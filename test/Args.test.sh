@@ -75,8 +75,8 @@ Args_script_test() { #@test
   assert_output "Expected 'custom', got 'custxm'"
   assert_failure
 
-  run ./test/Args.script.sh foo.txt bar.txt --show-input-file -p=123
-  assert_output "Input files: foo.txt bar.txt"
+  run ./test/Args.script.sh foo.txt bar.txt --show-input-file -p=123 -- --job
+  assert_output "Input files: foo.txt bar.txt --job"
 
   run ./test/Args.script.sh --not-defined-flag
   assert_failure
