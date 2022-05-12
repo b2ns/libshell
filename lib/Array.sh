@@ -240,77 +240,51 @@ Array_some() {
 Array_sort() {
   if (($# >= 2)); then
     local -a arr=("$@")
-    local -i arrLen="$#"
-    local -i smallArraySize=7
+    local -i len="$#"
+    local -i step=1
 
-    process() {
-      local -i L="$1"
-      local -i R="$2"
+    while ((step < len)); do
+      local -i lStart=0
+      while ((lStart < len)); do
+        local -i rStart=$((lStart + step))
+        local -i lEnd=$((rStart - 1))
+        ((lEnd >= len)) && break
+        local -i rEnd=$((lEnd + step))
+        ((rEnd >= len)) && rEnd=$((len - 1))
 
-      # use insertSort for small arrays
-      local -i size=$((R - L + 1))
-      if ((size <= smallArraySize)); then
-        local -i i=0
-        local -i j=0
-        local tmp=""
-        local -i i
-        for ((i = L; i <= R; i++)); do
-          tmp="${arr[i]}"
-          local -i j
-          for ((j = $((i - 1)); j >= 0; j--)); do
-            if $LIBSHELL_COMPARATOR "${arr[j]}" ">" "$tmp"; then
-              arr[$((j + 1))]="${arr[j]}"
-            else
-              break
-            fi
-          done
-          arr[$((j + 1))]="$tmp"
+        local -a tmpArr=()
+        local -i i="$lStart"
+        local -i j="$rStart"
+
+        while ((i <= lEnd)) && ((j <= rEnd)); do
+          if $LIBSHELL_COMPARATOR "${arr[i]}" ">" "${arr[j]}"; then
+            tmpArr+=("${arr[j]}")
+            j=$((j + 1))
+          else
+            tmpArr+=("${arr[i]}")
+            i=$((i + 1))
+          fi
         done
-        return 0
-      fi
 
-      # random pivot
-      local -i randP=""
-      Math_random "$L" "$R" >/dev/null
-      randP="$RETVAL"
-      local tmp="${arr["$R"]}"
-      arr["$R"]="${arr["$randP"]}"
-      arr["$randP"]="$tmp"
-
-      # partition
-      local -i i="$L"
-      local -i less=$((L - 1))
-      local -i more="$R"
-      local tmp=""
-
-      while ((i < more)); do
-
-        if $LIBSHELL_COMPARATOR "${arr["$i"]}" ">" "${arr["$R"]}"; then
-          more=$((more - 1))
-          tmp="${arr["$more"]}"
-          arr["$more"]="${arr["$i"]}"
-          arr["$i"]="$tmp"
-        elif $LIBSHELL_COMPARATOR "${arr["$i"]}" "<" "${arr["$R"]}"; then
-          less=$((less + 1))
-          tmp="${arr["$less"]}"
-          arr["$less"]="${arr["$i"]}"
-          arr["$i"]="$tmp"
+        while ((i <= lEnd)); do
+          tmpArr+=("${arr[i]}")
           i=$((i + 1))
-        else
-          i=$((i + 1))
-        fi
+        done
+
+        while ((j <= rEnd)); do
+          tmpArr+=("${arr[j]}")
+          j=$((j + 1))
+        done
+
+        local k=0
+        for ((k = 0; k < ${#tmpArr[@]}; k++)); do
+          arr[k + lStart]="${tmpArr[k]}"
+        done
+
+        lStart=$((lStart + 2 * step))
       done
-
-      tmp="${arr["$more"]}"
-      arr["$more"]="${arr["$R"]}"
-      arr["$R"]="$tmp"
-
-      # recurse
-      process "$L" "$less"
-      process $((more + 1)) "$R"
-    }
-
-    process 0 $((arrLen - 1))
+      step=$((step * 2))
+    done
 
     RETVAL=("${arr[@]}")
     printf '%s\n' "${arr[@]}"
