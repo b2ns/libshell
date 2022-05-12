@@ -7,8 +7,14 @@ declare -gA LIBSHELL_ARGS_DEFINED_OPTIONS=()
 declare -gA LIBSHELL_ARGS_REQUIRED_OPTIONS=()
 declare -gA LIBSHELL_ARGS_OPTIONS=()
 declare -ga LIBSHELL_ARGS_INPUT=()
+declare -gi LIBSHELL_ARGS_HAS_PARSED=0
 
 Args_define() {
+  if ((LIBSHELL_ARGS_HAS_PARSED)); then
+    echo "Error: Args_define() cannot define options after Args_parse()" >&2
+    return 1
+  fi
+
   (($# == 0)) && return 0
 
   local allFlag="$1"
@@ -282,6 +288,9 @@ Args_parse() {
     echo "Error: flag [$key] is required" >&2
     return 1
   done
+
+  #shellcheck disable=SC2178
+  LIBSHELL_ARGS_HAS_PARSED=1
 }
 
 __validateDefineFlag__() {
