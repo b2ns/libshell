@@ -249,7 +249,7 @@ String_stripEnd() {
   local string="${1:-}"
   local pattern="${2:-}"
   local -i greedy="${3:-0}"
-  if ((greedy == 1)); then
+  if ((greedy)); then
     local res="${string%%$pattern}"
     RETVAL="$res"
     printf '%s\n' "$res"
@@ -264,7 +264,7 @@ String_stripStart() {
   local string="${1:-}"
   local pattern="${2:-}"
   local -i greedy="${3:-0}"
-  if ((greedy == 1)); then
+  if ((greedy)); then
     local res="${string##$pattern}"
     RETVAL="$res"
     printf '%s\n' "$res"
