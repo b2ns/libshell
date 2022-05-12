@@ -60,12 +60,12 @@ Args_script_test() { #@test
   assert_line -n 1 "Too many jobs"
   assert_line -n 2 "Version: 1.0.0"
 
-  run ./test/Args.script.sh -rvj=9 -p=123
+  run ./test/Args.script.sh -rvj9 -p=123
   assert_line -n 0 "Readonly"
   assert_line -n 1 "Too many jobs"
   assert_line -n 2 "Version: 1.0.0"
 
-  run ./test/Args.script.sh -f csv -p=123
+  run ./test/Args.script.sh -f csv -p123
   assert_success
 
   run ./test/Args.script.sh --format unkownone -p=123

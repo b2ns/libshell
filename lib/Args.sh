@@ -169,20 +169,29 @@ Args_parse() {
 
         unifiedArgs+=("$flag")
         unifiedArgs+=("$value")
-      elif String_match "$arg" "^-[^-]+$"; then
+      elif String_match "$arg" "^-[^-].+$"; then
         local value=""
-        String_stripStart "$arg" "*=" >/dev/null
-        value="$RETVAL"
+        local num=""
 
-        local arg_=""
-        String_stripEnd "$arg" "=*" 1 >/dev/null
-        arg_="$RETVAL"
+        String_stripStart "$arg" "-" >/dev/null
+        arg="$RETVAL"
 
-        String_stripStart "$arg_" "-" >/dev/null
-        arg_="$RETVAL"
+        if String_includes "$arg" "="; then
+          String_stripStart "$arg" "*=" >/dev/null
+          value="$RETVAL"
+
+          String_stripEnd "$arg" "=*" 1 >/dev/null
+          arg="$RETVAL"
+        elif String_match "$arg" "[0-9]$"; then
+          String_stripStart "$arg" "*[^.0-9-]" 1 >/dev/null
+          num="$RETVAL"
+
+          String_stripEnd "$arg" "[.0-9-]*" 1 >/dev/null
+          arg="$RETVAL"
+        fi
 
         local -a flags=()
-        String_split "$arg_" "" >/dev/null
+        String_split "$arg" "" >/dev/null
         flags=("${RETVAL[@]}")
 
         local singleFlag=""
@@ -190,7 +199,8 @@ Args_parse() {
           unifiedArgs+=("-$singleFlag")
         done
 
-        String_notEq "$value" "$arg" && unifiedArgs+=("$value")
+        String_notEmpty "$value" && unifiedArgs+=("$value")
+        String_notEmpty "$num" && unifiedArgs+=("$num")
       else
         unifiedArgs+=("$arg")
       fi
@@ -275,14 +285,20 @@ Args_parse() {
 }
 
 __validateDefineFlag__() {
-  if ! String_match "$1" "^-[a-zA-Z_]$" && ! String_match "$1" "^--[0-9a-zA-Z_-]+$"; then
+  if String_match "$1" "^-[a-zA-Z_]$" || String_match "$1" "^--[0-9a-zA-Z_-]+$"; then
+    :
+  else
     echo "Error: invalid flag defined: [$1]" >&2
     return 1
   fi
 }
 
 __validateInputFlag__() {
-  if ! String_match "$1" "^-[a-zA-Z_]+(=.*)?$" && ! String_match "$1" "^--[0-9a-zA-Z_-]+(=.*)?$"; then
+  if String_match "$1" "^-[a-zA-Z_]+(=.*)?$" ||
+    String_match "$1" "^-[a-zA-Z_]+(-?([1-9][0-9]*|0)(\.[0-9]+)?)?$" ||
+    String_match "$1" "^--[0-9a-zA-Z_-]+(=.*)?$"; then
+    :
+  else
     echo "Error: invalid flag input: [$1]" >&2
     return 1
   fi
