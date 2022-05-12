@@ -107,9 +107,7 @@ Args_help() {
   local -i paddingLen=0
   local key=""
   for key in "${!LIBSHELL_ARGS_OPTIONS[@]}"; do
-    local -i len=""
-    String_length "$key" >/dev/null
-    len="$RETVAL"
+    local -i len="${#key}"
 
     ((len > paddingLen)) && paddingLen="$len"
   done

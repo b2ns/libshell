@@ -152,6 +152,7 @@ Array_join() {
   fi
 }
 
+# @deprecated
 Array_length() {
   local -i len="$#"
   RETVAL="$len"

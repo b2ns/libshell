@@ -95,6 +95,7 @@ String_join() {
   fi
 }
 
+# @deprecated
 String_length() {
   local string="${1:-}"
   local -i len="${#string}"
