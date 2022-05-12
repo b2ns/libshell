@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 IFS=$'\n\t'
-
-source "$(dirname "${BASH_SOURCE[0]}")/../libshell"
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/../libshell.sh"
 
 checkEqualCustom() {
   if [ "$1" != "custom" ]; then

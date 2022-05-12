@@ -19,7 +19,7 @@ git clone https://github.com/b2ns/libshell
 ```
 2. add libshell to PATH
 ```sh
-export PATH="/path/to/libshell:$PATH"
+export PATH="/path/to/libshell/bin:$PATH"
 ```
 3. source libshell in your script
 ```sh
@@ -49,6 +49,7 @@ import Array File Path String
 
 - Args
 - Array
+- Color
 - File
 - Math
 - Path

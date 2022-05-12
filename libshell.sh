@@ -6,7 +6,7 @@ declare -gi LIBSHELL_SOURCED="${LIBSHELL_SOURCED:-0}"
 ((LIBSHELL_SOURCED)) && return 0
 
 declare -g LIBSHELL_PATH=""
-LIBSHELL_PATH="$(cd "${BASH_SOURCE[0]%/*}" && pwd)/lib"
+LIBSHELL_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/lib"
 declare -Ag LIBSHELL_IMPORTED_LIBS
 declare -gi IMPORT_ALL_LIBS="${IMPORT_ALL_LIBS:-1}"
 
@@ -18,8 +18,8 @@ declare -gi IMPORT_ALL_LIBS="${IMPORT_ALL_LIBS:-1}"
 declare -g RETVAL=""
 
 import() {
-  local scriptRoot="${BASH_SOURCE[1]:-$0}"
-  scriptRoot="$(cd "${scriptRoot%/*}" && pwd)"
+  local scriptRoot=""
+  scriptRoot="$(cd "$(dirname "${BASH_SOURCE[1]}")" && pwd)"
   local lib=""
   for lib in "$@"; do
     if [[ "$lib" == './'* ]]; then
