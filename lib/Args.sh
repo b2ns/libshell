@@ -199,7 +199,7 @@ Args_parse() {
 
         # check value type
         if String_match "$valueType" "^(<|\[)"; then
-          if (String_match "$valueType" "^\[.+\]$" && ! String_match "$valueType" " $arg ") ||
+          if (String_match "$valueType" "^\[.+\]$" && (String_isEmpty "$arg" || ! String_match "$valueType" "(\[| )$arg( |\])")) ||
             (String_match "$valueType" "<int" && ! String_match "$arg" "^-?([1-9][0-9]*|0)$") ||
             (String_match "$valueType" "<float" && ! String_match "$arg" "^-?([1-9][0-9]*|0)\.[0-9]+$") ||
             (String_match "$valueType" "<num" && ! String_match "$arg" "^-?([1-9][0-9]*|0)(\.[0-9]+)?$"); then

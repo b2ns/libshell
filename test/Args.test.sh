@@ -65,7 +65,7 @@ Args_script_test() { #@test
   assert_line -n 1 "Too many jobs"
   assert_line -n 2 "Version: 1.0.0"
 
-  run ./test/Args.script.sh -f yaml -p=123
+  run ./test/Args.script.sh -f csv -p=123
   assert_success
 
   run ./test/Args.script.sh --format unkownone -p=123
