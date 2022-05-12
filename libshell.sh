@@ -26,7 +26,7 @@ import() {
       lib="${lib:2}"
     fi
     if ! __source_path__ "$scriptRoot/$lib" && ! __source_path__ "$lib" && ! __source_path__ "$LIBSHELL_PATH/$lib"; then
-      echo "failed to import $lib" >&2
+      echo "Error: failed to import $lib" >&2
       return 1
     fi
   done

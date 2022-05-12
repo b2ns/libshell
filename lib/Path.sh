@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 import String
+import IO
 
 Path_dirName() {
   local file="${1:-.}"
@@ -91,7 +92,7 @@ Path_filepath() {
   file="$RETVAL"
 
   if ! [[ -e "$file" ]]; then
-    echo "$1" not exist >&2
+    IO_error "$1 not exist" >&2
     return 1
   fi
 

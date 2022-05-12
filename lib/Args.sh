@@ -2,6 +2,7 @@
 # shellcheck disable=SC2128
 
 import String
+import IO
 
 declare -gA LIBSHELL_ARGS_DEFINED_OPTIONS=()
 declare -gA LIBSHELL_ARGS_REQUIRED_OPTIONS=()
@@ -11,7 +12,7 @@ declare -gi LIBSHELL_ARGS_HAS_PARSED=0
 
 Args_define() {
   if ((LIBSHELL_ARGS_HAS_PARSED)); then
-    echo "Error: Args_define() cannot define options after Args_parse()" >&2
+    IO_error "Error: Args_define() cannot define options after Args_parse()" >&2
     return 1
   fi
 
@@ -32,7 +33,7 @@ Args_define() {
 
     # check duplicate flag
     if Args_defined "$singleFlag" 2>/dev/null; then
-      echo "Error: duplicate flag defined: [$singleFlag]" >&2
+      IO_error "Error: duplicate flag defined: [$singleFlag]" >&2
       return 1
     fi
 
@@ -60,7 +61,7 @@ Args_defined() {
   if [[ ${LIBSHELL_ARGS_DEFINED_OPTIONS[$1]+_} ]]; then
     return 0
   else
-    echo "Error: flag [$1] not defined" >&2
+    IO_error "Error: flag [$1] not defined" >&2
     return 1
   fi
 }
@@ -96,6 +97,8 @@ Args_help() {
 
   String_stripStart "$0" "*/" 1 >/dev/null
   scriptName="$RETVAL"
+
+  echo
 
   String_notEmpty "$scriptName" && printf '%s\n' "$scriptName"
 
@@ -233,7 +236,7 @@ Args_parse() {
 
     if __validateDefineFlag__ "$arg" 2>/dev/null; then
       if ((readingFlagValue)); then
-        echo "Error: flag [$singleFlag] expect a value" >&2
+        IO_error "Error: flag [$singleFlag] expect a value" >&2
         return 1
       fi
 
@@ -260,7 +263,7 @@ Args_parse() {
             (String_match "$valueType" "<int" && ! String_match "$arg" "^-?([1-9][0-9]*|0)$") ||
             (String_match "$valueType" "<float" && ! String_match "$arg" "^-?([1-9][0-9]*|0)\.[0-9]+$") ||
             (String_match "$valueType" "<num" && ! String_match "$arg" "^-?([1-9][0-9]*|0)(\.[0-9]+)?$"); then
-            echo "Error: flag [$singleFlag] expect a value of: $valueType" >&2
+            IO_error "Error: flag [$singleFlag] expect a value of: $valueType" >&2
             return 1
           fi
         else
@@ -277,13 +280,13 @@ Args_parse() {
   done
 
   if ((readingFlagValue)); then
-    echo "Error: flag [$singleFlag] expect a value" >&2
+    IO_error "Error: flag [$singleFlag] expect a value" >&2
     return 1
   fi
 
   local key=""
   for key in "${!LIBSHELL_ARGS_REQUIRED_OPTIONS[@]}"; do
-    echo "Error: flag [$key] is required" >&2
+    IO_error "Error: flag [$key] is required" >&2
     return 1
   done
 
@@ -295,7 +298,7 @@ __validateDefineFlag__() {
   if String_match "$1" "^-[a-zA-Z_]$" || String_match "$1" "^--[0-9a-zA-Z_-]+$"; then
     :
   else
-    echo "Error: invalid flag defined: [$1]" >&2
+    IO_error "Error: invalid flag defined: [$1]" >&2
     return 1
   fi
 }
@@ -306,7 +309,7 @@ __validateInputFlag__() {
     String_match "$1" "^--[0-9a-zA-Z_-]+(=.*)?$"; then
     :
   else
-    echo "Error: invalid flag input: [$1]" >&2
+    IO_error "Error: invalid flag input: [$1]" >&2
     return 1
   fi
 }
