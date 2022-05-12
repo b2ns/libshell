@@ -3,6 +3,7 @@
 
 import String
 import IO
+import Array
 
 declare -gA LIBSHELL_ARGS_DEFINED_OPTIONS=()
 declare -gA LIBSHELL_ARGS_REQUIRED_OPTIONS=()
@@ -108,15 +109,34 @@ Args_help() {
 
   # get max padding length
   local -i paddingLen=0
+  local -a keys=()
   local key=""
   for key in "${!LIBSHELL_ARGS_OPTIONS[@]}"; do
+    keys+=("$key")
+
     local -i len="${#key}"
 
     ((len > paddingLen)) && paddingLen="$len"
   done
 
+  # sort keys
+  sortMethod() {
+    local a="$1"
+    local op="$2"
+    local b="$3"
+    if [[ "$op" == ">" ]]; then
+      [[ "$a" > "$b" ]]
+    elif [[ "$op" == "<" ]]; then
+      [[ "$a" < "$b" ]]
+    else
+      [[ "$a" == "$b" ]]
+    fi
+  }
+  LIBSHELL_COMPARATOR=sortMethod Array_sort "${keys[@]}" >/dev/null
+  keys=("${RETVAL[@]}")
+
   local key=""
-  for key in "${!LIBSHELL_ARGS_OPTIONS[@]}"; do
+  for key in "${keys[@]}"; do
     local msg=""
     String_padEnd "$key" "$paddingLen" >/dev/null
     msg="$RETVAL"
