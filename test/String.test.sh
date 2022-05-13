@@ -78,17 +78,6 @@ String_isEmpty() { #@test
   assert_success
 }
 
-String_notEmpty() { #@test
-  run String_notEmpty "foo"
-  assert_success
-
-  run String_notEmpty ""
-  assert_failure
-
-  run String_notEmpty
-  assert_failure
-}
-
 String_join() { #@test
   run String_join " a" " b" " c " "_"
   assert_output " a_ b_ c "
@@ -116,6 +105,17 @@ String_match() { #@test
   assert_success
 
   run String_match "foo1 bar" "^foo$"
+  assert_failure
+}
+
+String_notEmpty() { #@test
+  run String_notEmpty "foo"
+  assert_success
+
+  run String_notEmpty ""
+  assert_failure
+
+  run String_notEmpty
   assert_failure
 }
 

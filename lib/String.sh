@@ -66,10 +66,6 @@ String_isEmpty() {
   [[ -z "${1:-}" ]]
 }
 
-String_notEmpty() {
-  [[ -n "${1:-}" ]]
-}
-
 String_join() {
   if (($# <= 1)); then
     RETVAL="${1:-}"
@@ -107,6 +103,10 @@ String_match() {
   local string="${1:-}"
   local pattern="${2:-}"
   [[ "$string" =~ $pattern ]]
+}
+
+String_notEmpty() {
+  [[ -n "${1:-}" ]]
 }
 
 String_notEq() {
