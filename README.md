@@ -1,24 +1,38 @@
 # libshell🚀
 
+**warning⚠: libshell is not stable now, api may change, use at your owen risk.**
+
 basic lib functions for shell script
 
-**warning⚠: libshell is not stable now, api may change, use at your owen risk.**
+> write readable shell code with understandable api
 
 <!-- vim-markdown-toc GFM -->
 
+- [features](#features)
 - [how to use](#how-to-use)
 - [api](#api)
   - [Args](#args)
   - [Array](#array)
   - [Color](#color)
   - [File](#file)
+  - [IO](#io)
   - [Math](#math)
   - [Path](#path)
   - [String](#string)
+- [FAQ](#faq)
 - [acknowledgments](#acknowledgments)
+- [build with](#build-with)
 - [links](#links)
 
 <!-- vim-markdown-toc -->
+
+## features
+
+- mean to be basic, small and easy to use
+- pure bash, no magic, no external dependences
+- ECMAScript(Javascript) style like api
+- well tested
+- well documented
 
 ## how to use
 
@@ -83,7 +97,7 @@ if Args_has "-v"; then
 fi
 
 if Args_has "-h"; then
-  # auto help info based on what you defined earlier
+  # get help info based on what you defined above
   Args_help
 fi
 
@@ -103,6 +117,7 @@ echo "hello world" > "foo.$format"
 ./hello-world.sh -j=8
 ./hello-world.sh -j8
 ```
+
 more details in the [doc](doc/Args.md)
 
 ### [Array](doc/Array.md)
@@ -111,16 +126,33 @@ more details in the [doc](doc/Args.md)
 
 ### [File](doc/File.md)
 
+### [IO](doc/IO.md)
+
 ### [Math](doc/Math.md)
 
 ### [Path](doc/Path.md)
 
 ### [String](doc/String.md)
 
+## FAQ
+
+- why this repo?
+- why it is slow when running in a loop?
+- why xxx not included?
+
 ## acknowledgments
 
 - [bash-oo-framework](https://github.com/niieani/bash-oo-framework)
 - [pure-sh-bible](https://github.com/dylanaraps/pure-sh-bible)
+- [chalk](https://github.com/chalk/chalk)
+- [commander](https://github.com/tj/commander.js)
+
+## build with
+
+- editor: [neovim](https://github.com/neovim/neovim)
+- linter: [shellcheck](https://github.com/koalaman/shellcheck)
+- fixer: [shfmt](https://github.com/mvdan/sh)
+- unit test: [bats](https://github.com/bats-core/bats-core)
 
 ## links
 
