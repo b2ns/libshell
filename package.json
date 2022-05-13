@@ -13,6 +13,24 @@
     "doc": "./build/buildDoc.sh",
     "prepare": "husky install"
   },
+  "lint-staged": {
+    "*.sh": [
+      "yarn lintcmd",
+      "yarn fixcmd"
+    ],
+    "./libshell.sh": [
+      "yarn test"
+    ],
+    "./lib/*.sh": [
+      "yarn test"
+    ],
+    "./test/!(*test).sh": [
+      "yarn test"
+    ],
+    "./test/*test.sh": [
+      "yarn testcmd"
+    ]
+  },
   "repository": "git@github.com:b2ns/libshell.git",
   "author": "b2ns <eminemdsp@163.com>",
   "license": "MIT",
@@ -21,6 +39,7 @@
     "bats-assert": "git+https://github.com/bats-core/bats-assert.git",
     "bats-file": "git+https://github.com/bats-core/bats-file.git",
     "bats-support": "git+https://github.com/bats-core/bats-support.git",
-    "husky": "^7.0.4"
+    "husky": "^7.0.4",
+    "lint-staged": "^12.4.1"
   }
 }
