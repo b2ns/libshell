@@ -16,19 +16,8 @@
   "lint-staged": {
     "*.sh": [
       "yarn lintcmd",
-      "yarn fixcmd"
-    ],
-    "./libshell.sh": [
-      "yarn test"
-    ],
-    "./lib/*.sh": [
-      "yarn test"
-    ],
-    "./test/!(*test).sh": [
-      "yarn test"
-    ],
-    "./test/*test.sh": [
-      "yarn testcmd"
+      "yarn fixcmd",
+      "./testOnlyStaged.sh"
     ]
   },
   "repository": "git@github.com:b2ns/libshell.git",
