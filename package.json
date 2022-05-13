@@ -10,6 +10,7 @@
     "lintcmd": "shellcheck",
     "fixcmd": "shfmt -w -i 2 -ci",
     "testcmd": "bats -T -j 16",
+    "doc": "./build/buildDoc.sh",
     "prepare": "husky install"
   },
   "repository": "git@github.com:b2ns/libshell.git",
