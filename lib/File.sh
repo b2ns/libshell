@@ -22,10 +22,6 @@ File_isFile() {
   [[ -f "$1" ]]
 }
 
-File_notEmpty() {
-  [[ -s "$1" ]]
-}
-
 File_isReadable() {
   [[ -r "$1" ]]
 }
@@ -51,4 +47,8 @@ File_mkfile() {
   Path_dirName "$1"
   dir="$RETVAL"
   File_mkdir "$dir" && : >"$1"
+}
+
+File_notEmpty() {
+  [[ -s "$1" ]]
 }

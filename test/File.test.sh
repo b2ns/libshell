@@ -78,16 +78,6 @@ File_isFile() { #@test
   assert_failure
 }
 
-File_notEmpty() { #@test
-  local file="__File_notEmpty.ext"
-
-  run File_notEmpty "./test/File.test.sh"
-  assert_success
-
-  run File_notEmpty "$file"
-  assert_failure
-}
-
 File_isReadable() { #@test
   local file="__File_isReadable.ext"
 
@@ -142,4 +132,14 @@ File_mkfile() { #@test
 
   run File_mkfile "$file"
   assert_exists "$file"
+}
+
+File_notEmpty() { #@test
+  local file="__File_notEmpty.ext"
+
+  run File_notEmpty "./test/File.test.sh"
+  assert_success
+
+  run File_notEmpty "$file"
+  assert_failure
 }

@@ -123,10 +123,6 @@ Array_isEmpty() {
   ((${#@} == 0))
 }
 
-Array_notEmpty() {
-  ! Array_isEmpty "$@"
-}
-
 Array_join() {
   if (($# >= 3)); then
     local -a args=("$@")
@@ -187,6 +183,10 @@ Array_map() {
     RETVAL="${1:-}"
     printf '%s\n' "${1:-}"
   fi
+}
+
+Array_notEmpty() {
+  ! Array_isEmpty "$@"
 }
 
 Array_random() {

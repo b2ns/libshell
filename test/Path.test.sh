@@ -30,57 +30,6 @@ teardown_file() {
   teardownFiles "${files[@]}"
 }
 
-Path_dirName() { #@test
-  run Path_dirName "path/to/foo.sh"
-  assert_output "path/to"
-
-  run Path_dirName "foo.sh"
-  assert_output "."
-
-  run Path_dirName "./foo.sh"
-  assert_output "."
-
-  run Path_dirName "../foo.sh"
-  assert_output ".."
-
-  run Path_dirName "/foo.sh"
-  assert_output "/"
-
-  # shellcheck disable=SC2088
-  run Path_dirName "~/foo.sh"
-  assert_output "~"
-
-  run Path_dirName "."
-  assert_output "."
-
-  run Path_dirName "./"
-  assert_output "."
-
-  run Path_dirName ".."
-  assert_output "."
-
-  run Path_dirName "../"
-  assert_output "."
-
-  run Path_dirName "./.."
-  assert_output "."
-
-  run Path_dirName "./../"
-  assert_output "."
-
-  run Path_dirName "../../"
-  assert_output ".."
-
-  run Path_dirName "~"
-  assert_output "."
-
-  run Path_dirName "/"
-  assert_output "/"
-
-  run Path_dirName "path/to/foo/"
-  assert_output "path/to"
-}
-
 Path_dirname() { #@test
   run Path_dirname "path/to/foo.sh"
   assert_output "to"
@@ -130,6 +79,57 @@ Path_dirname() { #@test
 
   run Path_dirname "path/to/foo/"
   assert_output "to"
+}
+
+Path_dirName() { #@test
+  run Path_dirName "path/to/foo.sh"
+  assert_output "path/to"
+
+  run Path_dirName "foo.sh"
+  assert_output "."
+
+  run Path_dirName "./foo.sh"
+  assert_output "."
+
+  run Path_dirName "../foo.sh"
+  assert_output ".."
+
+  run Path_dirName "/foo.sh"
+  assert_output "/"
+
+  # shellcheck disable=SC2088
+  run Path_dirName "~/foo.sh"
+  assert_output "~"
+
+  run Path_dirName "."
+  assert_output "."
+
+  run Path_dirName "./"
+  assert_output "."
+
+  run Path_dirName ".."
+  assert_output "."
+
+  run Path_dirName "../"
+  assert_output "."
+
+  run Path_dirName "./.."
+  assert_output "."
+
+  run Path_dirName "./../"
+  assert_output "."
+
+  run Path_dirName "../../"
+  assert_output ".."
+
+  run Path_dirName "~"
+  assert_output "."
+
+  run Path_dirName "/"
+  assert_output "/"
+
+  run Path_dirName "path/to/foo/"
+  assert_output "path/to"
 }
 
 Path_dirpath() { #@test
@@ -244,6 +244,35 @@ Path_filename() { #@test
   assert_output "to"
 }
 
+Path_filenoext() { #@test
+  run Path_filenoext "foo.sh"
+  assert_output "foo"
+
+  run Path_filenoext "./foo.test.sh"
+  assert_output "foo.test"
+
+  run Path_filenoext "."
+  assert_output "."
+
+  run Path_filenoext "./"
+  assert_output "."
+
+  run Path_filenoext ".."
+  assert_output ".."
+
+  run Path_filenoext "~"
+  assert_output "~"
+
+  run Path_filenoext "/"
+  assert_output "/"
+
+  run Path_filenoext "path/to/"
+  assert_output "to"
+
+  run Path_filenoext "path/.to"
+  assert_output ".to"
+}
+
 Path_filepath() { #@test
   run Path_filepath "$HOME/__Path_filepath"
   assert_output "$HOME/__Path_filepath"
@@ -305,35 +334,6 @@ Path_isRel() { #@test
 
   run Path_isRel "$HOME/path/to/file.sh"
   assert_failure
-}
-
-Path_filenoext() { #@test
-  run Path_filenoext "foo.sh"
-  assert_output "foo"
-
-  run Path_filenoext "./foo.test.sh"
-  assert_output "foo.test"
-
-  run Path_filenoext "."
-  assert_output "."
-
-  run Path_filenoext "./"
-  assert_output "."
-
-  run Path_filenoext ".."
-  assert_output ".."
-
-  run Path_filenoext "~"
-  assert_output "~"
-
-  run Path_filenoext "/"
-  assert_output "/"
-
-  run Path_filenoext "path/to/"
-  assert_output "to"
-
-  run Path_filenoext "path/.to"
-  assert_output ".to"
 }
 
 Path_pathnoext() { #@test

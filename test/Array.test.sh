@@ -86,16 +86,6 @@ Array_isEmpty() { #@test
   assert_failure
 }
 
-Array_notEmpty() { #@test
-  local -a arr=()
-  run Array_notEmpty "${arr[@]}"
-  assert_failure
-
-  arr=(1 2 3)
-  run Array_notEmpty "${arr[@]}" 4
-  assert_success
-}
-
 Array_join() { #@test
   local -a arr=(1 2 3)
   run Array_join "${arr[@]}" ","
@@ -117,6 +107,16 @@ Array_map() { #@test
   assert_line -n 0 2
   assert_line -n 1 4
   assert_line -n 2 6
+}
+
+Array_notEmpty() { #@test
+  local -a arr=()
+  run Array_notEmpty "${arr[@]}"
+  assert_failure
+
+  arr=(1 2 3)
+  run Array_notEmpty "${arr[@]}" 4
+  assert_success
 }
 
 Array_random() { #@test
