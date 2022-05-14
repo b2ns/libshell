@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 import String
 
-declare -gA LIBSHELL_COLOR_CODES=(
+# bash 4.2 bug: https://lists.gnu.org/archive/html/bug-bash/2013-09/msg00025.html
+declare -gA LIBSHELL_COLOR_CODES
+LIBSHELL_COLOR_CODES=(
   [black]="30 39"
   [red]="31 39"
   [green]="32 39"
