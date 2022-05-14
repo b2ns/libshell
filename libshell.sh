@@ -7,7 +7,7 @@ declare -gi LIBSHELL_SOURCED="${LIBSHELL_SOURCED:-0}"
 
 declare -g LIBSHELL_PATH=""
 LIBSHELL_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/lib"
-declare -Ag LIBSHELL_IMPORTED_LIBS
+declare -gA LIBSHELL_IMPORTED_LIBS=()
 declare -gi IMPORT_ALL_LIBS="${IMPORT_ALL_LIBS:-1}"
 
 # a special variable to store return value of the last function call
