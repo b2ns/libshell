@@ -7,8 +7,8 @@ declare -g LIBSHELL_COMPARATOR="${LIBSHELL_COMPARATOR:-__defaultComparator__}"
 Array_every() {
   if (($# >= 2)); then
     local -a args=("$@")
-    local fn="${args[-1]}"
-    unset "args[-1]"
+    local fn="${args[$# - 1]}"
+    unset "args[$# - 1]"
     local -i len="${#args[@]}"
     local item=""
     local -i i
@@ -27,8 +27,8 @@ Array_every() {
 Array_filter() {
   if (($# >= 2)); then
     local -a args=("$@")
-    local fn="${args[-1]}"
-    unset "args[-1]"
+    local fn="${args[$# - 1]}"
+    unset "args[$# - 1]"
     local -i len="${#args[@]}"
     local item=""
     local -i i
@@ -54,8 +54,8 @@ Array_findIndex() {
   RETVAL=-1
   if (($# >= 2)); then
     local -a args=("$@")
-    local target="${args[-1]}"
-    unset "args[-1]"
+    local target="${args[$# - 1]}"
+    unset "args[$# - 1]"
     local -i len="${#args[@]}"
     local item=""
     local -i i
@@ -78,8 +78,8 @@ Array_findIndex() {
 Array_forEach() {
   if (($# >= 2)); then
     local -a args=("$@")
-    local fn="${args[-1]}"
-    unset "args[-1]"
+    local fn="${args[$# - 1]}"
+    unset "args[$# - 1]"
     local -i len="${#args[@]}"
     local item=""
     local -i i
@@ -98,8 +98,8 @@ Array_indexOf() {
   RETVAL=-1
   if (($# >= 2)); then
     local -a args=("$@")
-    local target="${args[-1]}"
-    unset "args[-1]"
+    local target="${args[$# - 1]}"
+    unset "args[$# - 1]"
     local -i len="${#args[@]}"
     local item=""
     local -i i
@@ -126,8 +126,8 @@ Array_isEmpty() {
 Array_join() {
   if (($# >= 3)); then
     local -a args=("$@")
-    local delimiter="${args[-1]}"
-    unset "args[-1]"
+    local delimiter="${args[$# - 1]}"
+    unset "args[$# - 1]"
     local -i len="${#args[@]}"
     local result=""
     local str=""
@@ -158,8 +158,8 @@ Array_length() {
 Array_map() {
   if (($# >= 2)); then
     local -a args=("$@")
-    local fn="${args[-1]}"
-    unset "args[-1]"
+    local fn="${args[$# - 1]}"
+    unset "args[$# - 1]"
     local -i len="${#args[@]}"
     local -a res=()
     local val=""
@@ -220,8 +220,8 @@ Array_reverse() {
 Array_some() {
   if (($# >= 2)); then
     local -a args=("$@")
-    local fn="${args[-1]}"
-    unset "args[-1]"
+    local fn="${args[$# - 1]}"
+    unset "args[$# - 1]"
     local -i len="${#args[@]}"
     local item=""
     local -i i

@@ -75,8 +75,8 @@ String_join() {
     printf '%s\n' "$1$2"
   else
     local -a args=("$@")
-    local delimiter="${args[-1]}"
-    unset "args[-1]"
+    local delimiter="${args[$# - 1]}"
+    unset "args[$# - 1]"
     local res=""
     local str=""
     for str in "${args[@]}"; do
