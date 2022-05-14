@@ -2,7 +2,8 @@
 load test_helper.sh
 load ../lib/File.sh
 
-declare -ga files=(
+declare -ga files
+files=(
   "__File_isEmpty.ext"
   "__File_isExecutable.ext"
   "__File_notEmpty.ext"

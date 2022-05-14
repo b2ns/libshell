@@ -2,7 +2,8 @@
 load test_helper.sh
 load ../lib/Path.sh
 
-declare -ga files=(
+declare -ga files
+files=(
   "[dir]:$HOME/__Path_dirpath"
   "$HOME/__Path_dirpath/__Path_dirpath.ext"
   "[dir]:__Path_dirpath"
