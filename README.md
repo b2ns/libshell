@@ -29,7 +29,7 @@ basic lib functions for shell script
 ## features
 
 - mean to be basic, small and easy to use
-- pure bash, no magic, no external dependences
+- pure bash(4.2+), no magic, no external dependences
 - ECMAScript(Javascript) style like api
 - well tested
 - well documented

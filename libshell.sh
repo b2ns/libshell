@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+# check bash version 4.2+
+if ((${BASH_VERSINFO[0]:-0} < 4)) || ((BASH_VERSINFO[0] == 4 && BASH_VERSINFO[1] < 2)); then
+  echo "libshell requires bash version 4.2 or higher"
+  exit 1
+fi
+
 declare -gi LIBSHELL_SOURCED="${LIBSHELL_SOURCED:-0}"
 
 # libshell has been sourced so we just return
@@ -12,8 +18,7 @@ declare -gi IMPORT_ALL_LIBS="${IMPORT_ALL_LIBS:-1}"
 
 # a special variable to store return value of the last function call
 # get the return value of function through this global variable
-# rather than using the echo with subshell, which is poor for performance
-
+# rather than using stdout with subshell, which is poor for performance
 # shellcheck disable=SC2034
 declare -g RETVAL=""
 
