@@ -1,4 +1,12 @@
+<img src="assets/logo.svg" alt="logo" style="width: 100%; max-height: 250px">
+
 # libshell🚀
+
+![GitHub top language](https://img.shields.io/github/languages/top/b2ns/libshell?color=brightgreen&style=flat-square)
+![GitHub repo file count (custom path)](https://img.shields.io/github/directory-file-count/b2ns/libshell/lib?label=libs&logo=libs&style=flat-square)
+![GitHub repo size](https://img.shields.io/github/repo-size/b2ns/libshell?style=flat-square)
+![GitHub package.json version](https://img.shields.io/github/package-json/v/b2ns/libshell?style=flat-square)
+![GitHub](https://img.shields.io/github/license/b2ns/libshell?style=flat-square)
 
 **warning⚠: libshell is not stable now, api may change, use at your owen risk.**
 
@@ -32,7 +40,7 @@ basic lib functions for shell script
 - pure bash(4.2+), no magic, no external dependences
 - ECMAScript(Javascript) style like api
 - well tested
-- well documented
+- ~~well documented~~
 
 ## how to use
 
