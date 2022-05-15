@@ -1,4 +1,4 @@
-![](assets/logo.png)
+![](https://s3.bmp.ovh/imgs/2022/05/15/3e402bf04e352816.png)
 
 # libshell🚀
 
