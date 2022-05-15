@@ -1,4 +1,4 @@
-![](https://s3.bmp.ovh/imgs/2022/05/15/3e402bf04e352816.png)
+<img src="https://cdn.jsdelivr.net/gh/b2ns/assets/images/libshell/logo.svg" alt="logo" style="width: 100%; height: 350px; margin-bottom: -100px;">
 
 # libshell🚀
 
@@ -12,7 +12,7 @@
 
 basic lib functions for shell script
 
-> write readable shell code with understandable api
+write readable shell with understandable api
 
 <!-- vim-markdown-toc GFM -->
 
