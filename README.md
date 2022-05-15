@@ -1,4 +1,4 @@
-<img src="assets/logo.svg" alt="logo" style="width: 100%; max-height: 250px">
+![](assets/logo.png)
 
 # libshell🚀
 
