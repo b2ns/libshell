@@ -66,31 +66,6 @@ String_isEmpty() {
   [[ -z "${1:-}" ]]
 }
 
-String_join() {
-  if (($# <= 1)); then
-    RETVAL="${1:-}"
-    printf '%s\n' "${1:-}"
-  elif (($# == 2)); then
-    RETVAL="$1$2"
-    printf '%s\n' "$1$2"
-  else
-    local -a args=("$@")
-    local delimiter="${args[$# - 1]}"
-    unset "args[$# - 1]"
-    local res=""
-    local str=""
-    for str in "${args[@]}"; do
-      if String_isEmpty "$res"; then
-        res="$str"
-      else
-        res="$res$delimiter$str"
-      fi
-    done
-    RETVAL="$res"
-    printf '%s\n' "$res"
-  fi
-}
-
 # @deprecated
 String_length() {
   local string="${1:-}"

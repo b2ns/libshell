@@ -78,14 +78,6 @@ String_isEmpty() { #@test
   assert_success
 }
 
-String_join() { #@test
-  run String_join " a" " b" " c " "_"
-  assert_output " a_ b_ c "
-
-  run String_join "a" "b" "c" ""
-  assert_output "abc"
-}
-
 String_length() { #@test
   run String_length "foo"
   assert_output 3
