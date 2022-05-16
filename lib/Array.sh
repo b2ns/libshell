@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC2178,SC2128
 import Math
+import String
 
 declare -g LIBSHELL_COMPARATOR="${LIBSHELL_COMPARATOR:-__defaultComparator__}"
 
@@ -134,12 +135,12 @@ Array_join() {
     local -i i
     for ((i = 0; i < len; i++)); do
       str="${args[$i]}"
-      if ((i == 0)); then
-        result="$str"
-      else
-        result="$result$delimiter$str"
-      fi
+      result="$result$delimiter$str"
     done
+
+    String_stripStart "$result" "$delimiter" >/dev/null
+    result="$RETVAL"
+
     RETVAL="$result"
     printf '%s\n' "$result"
   else
