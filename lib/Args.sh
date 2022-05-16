@@ -11,6 +11,31 @@ declare -gA LIBSHELL_ARGS_OPTIONS=()
 declare -ga LIBSHELL_ARGS_INPUT=()
 declare -gi LIBSHELL_ARGS_HAS_PARSED=0
 
+# @desc define command arguments options
+# @param argName <string> - e.g.; "-h --help"
+# @param desc <string> - description of the argument
+# @param argType <string> - type of the argument. must be one of <any> | <int> | <float> | <number> | [choice1 choice2 ...]. use a suffix ! (i.e.; <any>!) to indicate the argument is required. can also define a custom type check function here.
+# @param defaultValue <any> - default value of the argument
+
+# @example
+# Args_define "-r --readonly" "Readonly"
+# Args_define "-o --output" "Output" "<any>"
+# Args_define "-j --job" "Running jobs" "<int>" 2
+# Args_define "--te" "Truncation error" "<float>" 0.00001
+# Args_define "-f --format" "Output format" "[json yaml toml xml csv]" "json"
+# Args_define "-p --pwd" "Password is required" "<any>!"
+
+# checkEqualCustom() {
+# if [ "$1" != "custom" ]; then
+# echo "Expected 'custom', got '$1'"
+# return 1
+# fi
+# }
+# Args_define "-c --custom" "Custom" checkEqualCustom
+
+# Args_define "-v -V --version" "Show version"
+# Args_define "-h --help" "Show help"
+# @end
 Args_define() {
   if ((LIBSHELL_ARGS_HAS_PARSED)); then
     IO_error "Error: Args_define() cannot define options after Args_parse()" >&2
@@ -33,7 +58,7 @@ Args_define() {
     __validateDefineFlag__ "$singleFlag" || return 1
 
     # check duplicate flag
-    if Args_defined "$singleFlag" 2>/dev/null; then
+    if __Args_defined__ "$singleFlag" 2>/dev/null; then
       IO_error "Error: duplicate flag defined: [$singleFlag]" >&2
       return 1
     fi
@@ -58,17 +83,17 @@ Args_define() {
   LIBSHELL_ARGS_OPTIONS[$allFlag]="$defaultValue"
 }
 
-Args_defined() {
-  if [[ ${LIBSHELL_ARGS_DEFINED_OPTIONS[$1]+_} ]]; then
-    return 0
-  else
-    IO_error "Error: flag [$1] not defined" >&2
-    return 1
-  fi
-}
+# @desc get command arguments value passed in
+# @param argName <string> e.g.; "-j" or "--job"
+# @return <any> value passed in
 
+# @example
+# Args_get "-j"
+# # equivalent
+# Args_get "--job"
+# @end
 Args_get() {
-  Args_defined "$1" || return 1
+  __Args_defined__ "$1" || return 1
 
   local allFlag="${LIBSHELL_ARGS_DEFINED_OPTIONS[$1]}"
   local value="${LIBSHELL_ARGS_OPTIONS[$allFlag]}"
@@ -77,10 +102,30 @@ Args_get() {
   printf '%s\n' "$value"
 }
 
+# @desc get all input text other than command arguments value
+# @return <array>
+
+# @example
+# # pass arguments to the ./script.sh
+# ./script.sh -f toml ./file1 ../file2 path/to/file3
+# ######################
+# # then get the files to process
+# Args_getInput
+# # output: "./file1 ../file2 path/to/file3"
+# @end
 Args_getInput() {
   RETVAL=("${LIBSHELL_ARGS_INPUT[@]}")
   printf '%s\n' "${LIBSHELL_ARGS_INPUT[@]}"
 }
+
+# @desc check if command argument is passed
+# @param argName <string> e.g.; "-j" or "--job"
+
+# @example
+# Args_has "-j"
+# # equivalent
+# Args_has "--job"
+# @end
 
 Args_has() {
   local value=""
@@ -91,6 +136,14 @@ Args_has() {
   String_notEmpty "$value"
 }
 
+# @desc show help info based on what you have defined
+# @param insertBefore <string> insert text before this help info
+# @param insertAfter <string> insert text after this help info
+
+# @example
+# Args_help
+# Args_help "Usage: foo [options]" "more info here..."
+# @end
 Args_help() {
   local headInfo=${1:-}
   local tailInfo=${2:-}
@@ -155,6 +208,13 @@ Args_help() {
   echo
 }
 
+# @desc parse command arguments
+# @param argv <array> command arguments
+
+# @example
+# #must be called after Args_define()
+# Args_parse "$@"
+# @end
 Args_parse() {
   local -a args=("$@")
   local singleFlag=""
@@ -261,7 +321,7 @@ Args_parse() {
       fi
 
       singleFlag="$arg"
-      if ! Args_defined "$singleFlag"; then
+      if ! __Args_defined__ "$singleFlag"; then
         return 1
       fi
 
@@ -312,6 +372,15 @@ Args_parse() {
 
   #shellcheck disable=SC2178
   LIBSHELL_ARGS_HAS_PARSED=1
+}
+
+__Args_defined__() {
+  if [[ ${LIBSHELL_ARGS_DEFINED_OPTIONS[$1]+_} ]]; then
+    return 0
+  else
+    IO_error "Error: flag [$1] not defined" >&2
+    return 1
+  fi
 }
 
 __validateDefineFlag__() {

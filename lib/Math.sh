@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 
-# @desc get a random number
+# @desc generate a random number
 # @param min <number> (default 0)
 # @param max <number> (default 100)
 # @return <number> a random integer between [min, max)
+
 # @example
 # Math_random 1 10
 # Math_random -10 10
@@ -28,14 +29,17 @@ Math_random() {
   fi
 }
 
-# @desc generate a sequence of numbers, like {0..100..1} in bash
+# @desc generate a sequence of numbers
 # @param min <number> (default 0)
 # @param max <number> (default 100)
 # @param step <number> (default 1)
 # @return <array>
+
 # @example
 # Math_range 1 10
+# # output: 1 2 3 4 5 6 7 8 9 10
 # Math_random -10 10 3
+# # output: -10 -7 -4 1 4 7 10
 # @end
 Math_range() {
   local -i min="${1:-0}"

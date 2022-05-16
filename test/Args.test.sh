@@ -3,43 +3,6 @@ load test_helper.sh
 load ../lib/Args.sh
 
 Args_test() { #@test
-  # define args accpected
-  Args_define "-r --readonly" "Readonly"
-  Args_define "-o --output" "Output" "<any>"
-  Args_define "-j --job" "Running jobs" "<int>" 2
-  Args_define "--te" "Truncation error" "<float>" 0.00001
-  Args_define "-l --level" "Level of parse" "<num>" 3
-  Args_define "-f --format" "Output format" "[json yaml toml xml csv]" "json"
-  Args_define "-p --pwd" "Password is required" "<any>!"
-  Args_define "-v -V --version" "Show version"
-  Args_define "-h --help" "Show help"
-
-  run Args_define "-ab" "invalid flag"
-  assert_failure
-
-  run Args_define "-8" "invalid flag"
-  assert_failure
-
-  run Args_defined "-r"
-  assert_success
-
-  run Args_defined "--help"
-  assert_success
-
-  run Args_defined "--not-defined-flag"
-  assert_failure
-
-  run Args_has "-j"
-  assert_success
-
-  run Args_has "--readonly"
-  assert_failure
-
-  run Args_get "--te"
-  assert_output "0.00001"
-}
-
-Args_script_test() { #@test
   run ./test/Args.script.sh -r -p 123
   assert_output "Readonly"
 

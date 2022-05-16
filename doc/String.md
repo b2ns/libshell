@@ -8,10 +8,9 @@
 - [String_includes](#String_includes)
 - [String_indexOf](#String_indexOf)
 - [String_isEmpty](#String_isEmpty)
-- [String_notEmpty](#String_notEmpty)
-- [String_join](#String_join)
 - [String_length](#String_length)
 - [String_match](#String_match)
+- [String_notEmpty](#String_notEmpty)
 - [String_notEq](#String_notEq)
 - [String_padEnd](#String_padEnd)
 - [String_padStart](#String_padStart)
@@ -65,19 +64,17 @@ ___
 
 ___
 
-#### String_notEmpty
-
-___
-
-#### String_join
-
-___
-
 #### String_length (deprecated)
+
+use ${#string} instead
 
 ___
 
 #### String_match
+
+___
+
+#### String_notEmpty
 
 ___
 

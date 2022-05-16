@@ -66,7 +66,7 @@ String_isEmpty() {
   [[ -z "${1:-}" ]]
 }
 
-# @deprecated
+# @deprecated use ${#string} instead
 String_length() {
   local string="${1:-}"
   local -i len="${#string}"

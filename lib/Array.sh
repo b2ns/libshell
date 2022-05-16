@@ -5,6 +5,24 @@ import String
 
 declare -g LIBSHELL_COMPARATOR="${LIBSHELL_COMPARATOR:-__defaultComparator__}"
 
+# @desc check if all elements in array meets the condition
+# @param array <array>
+# @param condition <function>
+
+# @example
+# gt5() {
+#   (($1 > 5)) && return 0
+#   return 1
+# }
+#
+# arr=(6 7 8)
+# Array_every "${arr[@]}" gt5
+# # assert success
+#
+# arr=(6 5 8)
+# Array_every "${arr[@]}" gt5
+# # assert failure
+# @end
 Array_every() {
   if (($# >= 2)); then
     local -a args=("$@")
@@ -25,6 +43,20 @@ Array_every() {
   fi
 }
 
+# @desc filter the array by condition
+# @param array <array>
+# @param condition <function>
+
+# @example
+# gt5() {
+#   (($1 > 5)) && return 0
+#   return 1
+# }
+#
+# arr=(6 1 8)
+# Array_filter "${arr[@]}" gt5
+# # output: 6 8
+# @end
 Array_filter() {
   if (($# >= 2)); then
     local -a args=("$@")
@@ -47,10 +79,37 @@ Array_filter() {
   fi
 }
 
+# @desc check if array has element match the regexp
+# @param array <array>
+# @param regexp <regexp>
+
+# @example
+# arr=("foo" "bar111" "baz")
+# Array_find "${arr[@]}" "[a-z]+[0-9]+"
+# # assert success
+#
+# arr=("foo" "bar" "baz")
+# Array_find "${arr[@]}" "[a-z]+[0-9]+"
+# # assert failure
+# @end
 Array_find() {
   Array_findIndex "$@"
 }
 
+# @desc return the index of the first element match the regexp
+# @param array <array>
+# @param regexp <regexp>
+# @return index <int> or -1 when not found
+
+# @example
+# arr=("foo" "bar111" "baz")
+# Array_find "${arr[@]}" "[a-z]+[0-9]+"
+# # output: 1
+#
+# arr=("foo" "bar" "baz")
+# Array_find "${arr[@]}" "[a-z]+[0-9]+"
+# output: -1
+# @end
 Array_findIndex() {
   RETVAL=-1
   if (($# >= 2)); then
@@ -218,6 +277,24 @@ Array_reverse() {
   printf '%s\n' "${arr[@]}"
 }
 
+# @desc check if array has element meets the condition
+# @param array <array>
+# @param condition <function>
+
+# @example
+# gt5() {
+#   (($1 > 5)) && return 0
+#   return 1
+# }
+#
+# arr=(1 2 6)
+# Array_some "${arr[@]}" gt5
+# # assert success
+#
+# arr=(1 2 3)
+# Array_some "${arr[@]}" gt5
+# # assert failure
+# @end
 Array_some() {
   if (($# >= 2)); then
     local -a args=("$@")

@@ -82,7 +82,7 @@ parse() {
 
       # escape special characters
       local symbol=""
-      for symbol in \\ \` \~ \* \+ - \. \[ \]; do
+      for symbol in \\ \` \~ \* \+ - \. \[ \] \< \>; do
         String_replaceAll "$value" "\\$symbol" "\\$symbol" >/dev/null
         value="$RETVAL"
       done
@@ -129,10 +129,15 @@ genDoc() {
     local name="$funcName"
 
     # @deprecated
+    local deprecatedInfo=""
     if [[ ${LIBSHELL_FUNC["${funcName}#deprecated"]+_} ]]; then
+      deprecatedInfo="${LIBSHELL_FUNC["${funcName}#deprecated"]}"
       name="$name (deprecated)"
     fi
     outputText="$outputText\n\n#### $name"
+    if String_notEmpty "$deprecatedInfo"; then
+      outputText="$outputText\n\n$deprecatedInfo"
+    fi
     outputText="$outputText\n\n___"
 
     # @desc
@@ -159,13 +164,13 @@ genDoc() {
       local tmpStr=""
       local item=""
       for item in "${params[@]}"; do
-        if String_match "$item" "<(.*)>"; then
-          String_replace "$item" "<${BASH_REMATCH[1]}>" "<*${BASH_REMATCH[1]}*>" >/dev/null
+        if String_match "$item" "^([^ ]*) \\\<"; then
+          String_replace "$item" "${BASH_REMATCH[1]} \\\<" "**${BASH_REMATCH[1]}** \\<" >/dev/null
           item="$RETVAL"
         fi
 
-        if String_match "$item" "^([^ ]*) <"; then
-          String_replace "$item" "${BASH_REMATCH[1]} <" "**${BASH_REMATCH[1]}** <" >/dev/null
+        if String_match "$item" "\\\<([^ ]*)\\\>"; then
+          String_replace "$item" "<${BASH_REMATCH[1]}\\\>" "<*${BASH_REMATCH[1]}*\\>" >/dev/null
           item="$RETVAL"
         fi
 
@@ -184,8 +189,8 @@ genDoc() {
       local tmpStr=""
       local item=""
       for item in "${ret[@]}"; do
-        if String_match "$item" "<(.*)>"; then
-          String_replace "$item" "<${BASH_REMATCH[1]}>" "<*${BASH_REMATCH[1]}*>" >/dev/null
+        if String_match "$item" "\\\<([^ ]*)\\\>"; then
+          String_replace "$item" "<${BASH_REMATCH[1]}\\\>" "<*${BASH_REMATCH[1]}*\\>" >/dev/null
           item="$RETVAL"
         fi
 
