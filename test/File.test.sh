@@ -10,13 +10,6 @@ files=(
   "__File_isReadable.ext"
   "[nocreate]:__File_isSymlink.ext"
   "__File_isWritable.ext"
-  "[nocreate]:__File_mkdir"
-  "[nocreate]:__File_mkdir/path"
-  "[nocreate]:__File_mkdir/path/to"
-  "[nocreate]:__File_mkfile"
-  "[nocreate]:__File_mkfile/path"
-  "[nocreate]:__File_mkfile/path/to"
-  "[nocreate]:__File_mkfile/path/to/file.ext"
 )
 
 setup_file() {
@@ -119,20 +112,6 @@ File_isWritable() { #@test
   chmod -w "$file"
   run File_isWritable "$file"
   assert_failure
-}
-
-File_mkdir() { #@test
-  local dir="__File_mkdir/path/to"
-
-  run File_mkdir "$dir"
-  assert_dir_exists "$dir"
-}
-
-File_mkfile() { #@test
-  local file="__File_mkfile/path/to/file.ext"
-
-  run File_mkfile "$file"
-  assert_exists "$file"
 }
 
 File_notEmpty() { #@test

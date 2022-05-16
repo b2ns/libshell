@@ -38,17 +38,6 @@ File_isWritable() {
   [[ -w "$1" ]]
 }
 
-File_mkdir() {
-  mkdir -p "$1"
-}
-
-File_mkfile() {
-  local dir=""
-  Path_dirName "$1"
-  dir="$RETVAL"
-  File_mkdir "$dir" && : >"$1"
-}
-
 File_notEmpty() {
   [[ -s "$1" ]]
 }
