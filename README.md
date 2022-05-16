@@ -229,9 +229,7 @@ Path_extname "../foo/bar.sh" # .sh
 
 Path_dirpath "../foo/bar.sh" # /abs/path/to/foo
 
-Path_dirname "../foo/bar.sh" # foo
-
-Path_dirName "../foo/bar.sh" # ../foo
+Path_dirname "../foo/bar.sh" # ../foo
 ```
 
 more details in the [doc](doc/Path.md)

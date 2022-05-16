@@ -33,7 +33,7 @@ teardown_file() {
 
 Path_dirname() { #@test
   run Path_dirname "path/to/foo.sh"
-  assert_output "to"
+  assert_output "path/to"
 
   run Path_dirname "foo.sh"
   assert_output "."
@@ -79,57 +79,6 @@ Path_dirname() { #@test
   assert_output "/"
 
   run Path_dirname "path/to/foo/"
-  assert_output "to"
-}
-
-Path_dirName() { #@test
-  run Path_dirName "path/to/foo.sh"
-  assert_output "path/to"
-
-  run Path_dirName "foo.sh"
-  assert_output "."
-
-  run Path_dirName "./foo.sh"
-  assert_output "."
-
-  run Path_dirName "../foo.sh"
-  assert_output ".."
-
-  run Path_dirName "/foo.sh"
-  assert_output "/"
-
-  # shellcheck disable=SC2088
-  run Path_dirName "~/foo.sh"
-  assert_output "~"
-
-  run Path_dirName "."
-  assert_output "."
-
-  run Path_dirName "./"
-  assert_output "."
-
-  run Path_dirName ".."
-  assert_output "."
-
-  run Path_dirName "../"
-  assert_output "."
-
-  run Path_dirName "./.."
-  assert_output "."
-
-  run Path_dirName "./../"
-  assert_output "."
-
-  run Path_dirName "../../"
-  assert_output ".."
-
-  run Path_dirName "~"
-  assert_output "."
-
-  run Path_dirName "/"
-  assert_output "/"
-
-  run Path_dirName "path/to/foo/"
   assert_output "path/to"
 }
 

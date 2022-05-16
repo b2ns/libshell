@@ -6,24 +6,6 @@ import IO
 Path_dirname() {
   local file="${1:-.}"
   if String_notEq "$file" "/"; then
-    file="/$file"
-
-    String_stripEnd "${file}" "/" >/dev/null
-    file="$RETVAL"
-
-    String_stripEnd "${file}" "/*" >/dev/null
-    file="$RETVAL"
-
-    Path_filename "$file" >/dev/null
-    file="$RETVAL"
-  fi
-  RETVAL="${file:-/}"
-  printf '%s\n' "${file:-/}"
-}
-
-Path_dirName() {
-  local file="${1:-.}"
-  if String_notEq "$file" "/"; then
     file="./$file"
 
     String_stripEnd "${file}" "/" >/dev/null
@@ -44,7 +26,7 @@ Path_dirpath() {
   Path_filepath "$@" >/dev/null || return 1
   file="$RETVAL"
 
-  Path_dirName "$file" >/dev/null
+  Path_dirname "$file" >/dev/null
   file="$RETVAL"
 
   RETVAL="$file"
@@ -119,7 +101,7 @@ Path_filepath() {
     local dir=""
     local name=""
 
-    Path_dirName "$file" >/dev/null
+    Path_dirname "$file" >/dev/null
     dir="$RETVAL"
 
     Path_filename "$file" >/dev/null
