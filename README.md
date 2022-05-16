@@ -1,4 +1,4 @@
-![logo](https://cdn.jsdelivr.net/gh/b2ns/assets/images/libshell/logo.svg)
+<img src="https://cdn.jsdelivr.net/gh/b2ns/assets/images/libshell/logo.svg" alt="logo" style="width: 100%; height: 250px;">
 
 # libshell🚀
 
@@ -285,28 +285,28 @@ more details in the [doc](doc/String.md)
   It's a bash problem here.  
   In bash `()`, `$()` or `|` will use subshell to execute. too many subshell will slow down your script.
 
-```sh
-SECONDS=0
-for ((i = 0; i < 10000; i++)); do
-  # subshell used here
-  num="$(Math_random 0 10)"
-done
-echo "cost: ${SECONDS}s"
-# cost: 10s
-```
+  ```sh
+  SECONDS=0
+  for ((i = 0; i < 10000; i++)); do
+    # subshell used here
+    num="$(Math_random 0 10)"
+  done
+  echo "cost: ${SECONDS}s"
+  # cost: 10s
+  ```
 
-**workaroud**: use the special global variable **`RETVAL`** to get the return value from the function
+  **workaroud**: use the special global variable **`RETVAL`** to get the return value from the function
 
-```sh
-SECONDS=0
-for ((i = 0; i < 10000; i++)); do
-  # invoke function directly and redirect stdout to /dev/null
-  Math_random 0 10 >/dev/null
-  num="$RETVAL"
-done
-echo "cost: ${SECONDS}s"
-# cost: 0s
-```
+  ```sh
+  SECONDS=0
+  for ((i = 0; i < 10000; i++)); do
+    # invoke function directly and redirect stdout to /dev/null
+    Math_random 0 10 >/dev/null
+    num="$RETVAL"
+  done
+  echo "cost: ${SECONDS}s"
+  # cost: 0s
+  ```
 
 - **why xxx not included?**  
   libshell meant to be basic. Only basic and general use function will be included.
