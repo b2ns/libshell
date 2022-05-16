@@ -74,7 +74,7 @@ Array_filter() {
     RETVAL=("${res[@]}")
     printf '%s\n' "${res[@]}"
   else
-    RETVAL="${1:-}"
+    RETVAL=("${1:-}")
     printf '%s\n' "${1:-}"
   fi
 }
@@ -240,7 +240,7 @@ Array_map() {
     RETVAL=("${res[@]}")
     printf '%s\n' "${res[@]}"
   else
-    RETVAL="${1:-}"
+    RETVAL=("${1:-}")
     printf '%s\n' "${1:-}"
   fi
 }
@@ -367,7 +367,7 @@ Array_sort() {
     RETVAL=("${arr[@]}")
     printf '%s\n' "${arr[@]}"
   else
-    RETVAL="${1:-}"
+    RETVAL=("${1:-}")
     printf '%s\n' "${1:-}"
   fi
 }
