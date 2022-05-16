@@ -138,7 +138,6 @@ genDoc() {
     if String_notEmpty "$deprecatedInfo"; then
       outputText="$outputText\n\n$deprecatedInfo"
     fi
-    outputText="$outputText\n\n___"
 
     # @desc
     if [[ ${LIBSHELL_FUNC["${funcName}#desc"]+_} ]]; then

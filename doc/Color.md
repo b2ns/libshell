@@ -5,8 +5,4 @@
 
 #### Color
 
-___
-
 #### Color_print
-
-___

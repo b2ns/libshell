@@ -34,126 +34,64 @@
 
 #### String_at
 
-___
-
 #### String_capitalize
-
-___
 
 #### String_concat
 
-___
-
 #### String_endsWith
-
-___
 
 #### String_eq
 
-___
-
 #### String_includes
-
-___
 
 #### String_indexOf
 
-___
-
 #### String_isEmpty
-
-___
 
 #### String_length (deprecated)
 
 use ${#string} instead
 
-___
-
 #### String_match
-
-___
 
 #### String_notEmpty
 
-___
-
 #### String_notEq
-
-___
 
 #### String_padEnd
 
-___
-
 #### String_padStart
-
-___
 
 #### String_repeat
 
-___
-
 #### String_replace
-
-___
 
 #### String_replaceAll
 
-___
-
 #### String_reverse
-
-___
 
 #### String_search
 
-___
-
 #### String_slice
-
-___
 
 #### String_split
 
-___
-
 #### String_startsWith
-
-___
 
 #### String_stripEnd
 
-___
-
 #### String_stripStart
-
-___
 
 #### String_substr
 
-___
-
 #### String_toLowerCase
-
-___
 
 #### String_toUpperCase
 
-___
-
 #### String_trim
-
-___
 
 #### String_trimEnd
 
-___
-
 #### String_trimStart
 
-___
-
 #### String_uncapitalize
-
-___

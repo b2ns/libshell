@@ -13,40 +13,20 @@
 
 #### File_isDir
 
-___
-
 #### File_isEmpty
-
-___
 
 #### File_isExecutable
 
-___
-
 #### File_isExist
-
-___
 
 #### File_isFile
 
-___
-
 #### File_isReadable
-
-___
 
 #### File_isSame
 
-___
-
 #### File_isSymlink
-
-___
 
 #### File_isWritable
 
-___
-
 #### File_notEmpty
-
-___

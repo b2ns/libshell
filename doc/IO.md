@@ -8,20 +8,10 @@
 
 #### IO_error
 
-___
-
 #### IO_info
-
-___
 
 #### IO_log
 
-___
-
 #### IO_success
 
-___
-
 #### IO_warn
-
-___

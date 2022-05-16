@@ -13,40 +13,20 @@
 
 #### Path_dirname
 
-___
-
 #### Path_dirpath
-
-___
 
 #### Path_expandTilde
 
-___
-
 #### Path_extname
-
-___
 
 #### Path_filename
 
-___
-
 #### Path_filenoext
-
-___
 
 #### Path_filepath
 
-___
-
 #### Path_isAbs
-
-___
 
 #### Path_isRel
 
-___
-
 #### Path_pathnoext
-
-___

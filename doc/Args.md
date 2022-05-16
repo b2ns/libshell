@@ -9,8 +9,6 @@
 
 #### Args_define
 
-___
-
 > define command arguments options
 
 - **argName** \<*string*\> \- e\.g\.; "\-h \-\-help"
@@ -27,10 +25,10 @@ Args_define "-f --format" "Output format" "[json yaml toml xml csv]" "json"
 Args_define "-p --pwd" "Password is required" "<any>!"
 
 checkEqualCustom() {
- # if [ "$1" != "custom" ]; then
-   # echo "Expected 'custom', got '$1'"
-   # return 1
- # fi
+if [ "$1" != "custom" ]; then
+echo "Expected 'custom', got '$1'"
+return 1
+fi
 }
 Args_define "-c --custom" "Custom" checkEqualCustom
 
@@ -39,8 +37,6 @@ Args_define "-h --help" "Show help"
 ```
 
 #### Args_get
-
-___
 
 > get command arguments value passed in
 
@@ -55,8 +51,6 @@ Args_get "--job"
 ```
 
 #### Args_getInput
-
-___
 
 > get all input text other than command arguments value
 
@@ -73,8 +67,6 @@ Args_getInput
 
 #### Args_has
 
-___
-
 > check if command argument is passed
 
 - **argName** \<*string*\> e\.g\.; "\-j" or "\-\-job"
@@ -87,8 +79,6 @@ Args_has "--job"
 
 #### Args_help
 
-___
-
 > show help info based on what you have defined
 
 - **insertBefore** \<*string*\> insert text before this help info
@@ -100,8 +90,6 @@ Args_help "Usage: foo [options]" "more info here..."
 ```
 
 #### Args_parse
-
-___
 
 > parse command arguments
 

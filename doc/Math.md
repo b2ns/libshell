@@ -5,8 +5,6 @@
 
 #### Math_random
 
-___
-
 > generate a random number
 
 - **min** \<*number*\> (default 0)
@@ -20,8 +18,6 @@ Math_random -10 10
 ```
 
 #### Math_range
-
-___
 
 > generate a sequence of numbers
 

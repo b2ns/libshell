@@ -19,8 +19,6 @@
 
 #### Array_every
 
-___
-
 > check if all elements in array meets the condition
 
 - **array** \<*array*\>
@@ -43,8 +41,6 @@ Array_every "${arr[@]}" gt5
 
 #### Array_filter
 
-___
-
 > filter the array by condition
 
 - **array** \<*array*\>
@@ -63,8 +59,6 @@ Array_filter "${arr[@]}" gt5
 
 #### Array_find
 
-___
-
 > check if array has element match the regexp
 
 - **array** \<*array*\>
@@ -81,8 +75,6 @@ Array_find "${arr[@]}" "[a-z]+[0-9]+"
 ```
 
 #### Array_findIndex
-
-___
 
 > return the index of the first element match the regexp
 
@@ -103,47 +95,25 @@ output: -1
 
 #### Array_forEach
 
-___
-
 #### Array_includes
-
-___
 
 #### Array_indexOf
 
-___
-
 #### Array_isEmpty
-
-___
 
 #### Array_join
 
-___
-
 #### Array_length (deprecated)
-
-___
 
 #### Array_map
 
-___
-
 #### Array_notEmpty
-
-___
 
 #### Array_random
 
-___
-
 #### Array_reverse
 
-___
-
 #### Array_some
-
-___
 
 > check if array has element meets the condition
 
@@ -166,5 +136,3 @@ Array_some "${arr[@]}" gt5
 ```
 
 #### Array_sort
-
-___
