@@ -14,7 +14,7 @@ build() {
   local file=""
   for file in "$@"; do
     local libName=""
-    Path_filenoext "$file" >/dev/null
+    Path_basename "$file" 1 >/dev/null
     libName="$RETVAL"
 
     IO_info "Building ${libName}.md"
