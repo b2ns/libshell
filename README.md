@@ -237,7 +237,9 @@ Path_dirpath "../foo/bar.sh" # /abs/path/to/foo
 
 Path_dirname "../foo/bar.sh" # ../foo
 
-Path_join "/path/to/foo/" "../bar.sh" # /path/to/bar.sh
+Path_join "path/to/foo/" "../bar.sh" # path/to/bar.sh
+
+Path_resolve "path/to/foo/" "../bar.sh" # /abs/path/to/bar.sh
 ```
 
 more details in the [doc](doc/Path.md)

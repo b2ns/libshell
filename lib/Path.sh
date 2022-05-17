@@ -175,6 +175,36 @@ Path_join() {
   printf '%s\n' "${str:-.}"
 }
 
+Path_resolve() {
+  (($# == 0)) && {
+    RETVAL="$PWD"
+    printf '%s\n' "$PWD"
+    return 0
+  }
+
+  local -a args=("$@")
+  local -i len="$#"
+  local res=""
+  local -i i=""
+  for ((i = ((len - 1)); i >= 0; i--)); do
+    local item="${args[i]}"
+    Path_join "$item" "$res" >/dev/null
+    res="$RETVAL"
+
+    if Path_isAbs "$res"; then
+      RETVAL="$res"
+      printf '%s\n' "$res"
+      return 0
+    fi
+  done
+
+  Path_join "$PWD" "$res" >/dev/null
+  res="$RETVAL"
+
+  RETVAL="$res"
+  printf '%s\n' "$res"
+}
+
 __expandTilde__() {
   String_replace "$1" "#\~" "$HOME"
 }

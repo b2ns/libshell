@@ -312,3 +312,17 @@ Path_join() { #@test
   run Path_join
   assert_output "."
 }
+
+Path_resolve() { #@test
+  run Path_resolve "./foo.sh"
+  assert_output "$PWD/foo.sh"
+
+  run Path_resolve "path/to" "../foo.sh"
+  assert_output "$PWD/path/foo.sh"
+
+  run Path_resolve "path/to" "/foo" "bar.sh"
+  assert_output "/foo/bar.sh"
+
+  run Path_resolve
+  assert_output "$PWD"
+}
