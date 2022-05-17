@@ -17,10 +17,6 @@ files=(
   "__Path_filepath/__Path_filepath.ext"
   "[dir]:../__Path_filepath"
   "../__Path_filepath/__Path_filepath.ext"
-
-  "[dir]:__Path_pathnoext"
-  "__Path_pathnoext/__Path_pathnoext.ext"
-  "__Path_pathnoext/.__Path_pathnoext"
 )
 
 setup_file() {
@@ -192,35 +188,6 @@ Path_extname() { #@test
   assert_output ""
 }
 
-Path_filenoext() { #@test
-  run Path_filenoext "foo.sh"
-  assert_output "foo"
-
-  run Path_filenoext "./foo.test.sh"
-  assert_output "foo.test"
-
-  run Path_filenoext "."
-  assert_output "."
-
-  run Path_filenoext "./"
-  assert_output "."
-
-  run Path_filenoext ".."
-  assert_output ".."
-
-  run Path_filenoext "~"
-  assert_output "~"
-
-  run Path_filenoext "/"
-  assert_output "/"
-
-  run Path_filenoext "path/to/"
-  assert_output "to"
-
-  run Path_filenoext "path/.to"
-  assert_output ".to"
-}
-
 Path_filepath() { #@test
   run Path_filepath "$HOME/__Path_filepath"
   assert_output "$HOME/__Path_filepath"
@@ -341,18 +308,4 @@ Path_join() { #@test
 
   run Path_join
   assert_output "."
-}
-
-Path_pathnoext() { #@test
-  run Path_pathnoext "__Path_pathnoext"
-  assert_output "$(cd "__Path_pathnoext" && pwd)"
-
-  run Path_pathnoext "__Path_pathnoext/__Path_pathnoext.ext"
-  assert_output "$(cd "__Path_pathnoext" && pwd)/__Path_pathnoext"
-
-  run Path_pathnoext "__Path_pathnoext/.__Path_pathnoext"
-  assert_output "$(cd "__Path_pathnoext" && pwd)/.__Path_pathnoext"
-
-  run Path_pathnoext "$HOME/file/not/exist"
-  assert_failure
 }

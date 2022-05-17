@@ -71,22 +71,6 @@ Path_extname() {
   fi
 }
 
-Path_filenoext() {
-  local filename=""
-  local ext=""
-  Path_basename "$@" >/dev/null
-  filename="$RETVAL"
-
-  Path_extname "$filename" >/dev/null
-  ext="$RETVAL"
-
-  String_stripEnd "$filename" "$ext" >/dev/null
-  filename="$RETVAL"
-
-  RETVAL="$filename"
-  printf '%s\n' "$filename"
-}
-
 Path_filepath() {
   local file=""
 
@@ -203,20 +187,4 @@ __trimSlash__() {
 
   RETVAL="$str"
   printf '%s\n' "$str"
-}
-
-Path_pathnoext() {
-  local pathname=""
-  local ext=""
-  Path_filepath "$@" >/dev/null || return 1
-  pathname="$RETVAL"
-
-  Path_extname "$pathname" >/dev/null
-  ext="$RETVAL"
-
-  String_stripEnd "$pathname" "$ext" >/dev/null
-  pathname="$RETVAL"
-
-  RETVAL="$pathname"
-  printf '%s\n' "$pathname"
 }
