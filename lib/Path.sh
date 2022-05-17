@@ -33,10 +33,6 @@ Path_dirpath() {
   printf '%s\n' "$file"
 }
 
-Path_expandTilde() {
-  String_replace "$1" "#\~" "$HOME"
-}
-
 Path_extname() {
   local filename=""
   local res=""
@@ -86,7 +82,7 @@ Path_filenoext() {
 Path_filepath() {
   local file=""
 
-  Path_expandTilde "$1" >/dev/null
+  __expandTilde__ "$1" >/dev/null
   file="$RETVAL"
 
   if ! [[ -e "$file" ]]; then
@@ -140,4 +136,8 @@ Path_pathnoext() {
 
   RETVAL="$pathname"
   printf '%s\n' "$pathname"
+}
+
+__expandTilde__() {
+  String_replace "$1" "#\~" "$HOME"
 }

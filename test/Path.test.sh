@@ -109,11 +109,6 @@ Path_dirpath() { #@test
   assert_failure
 }
 
-Path_expandTilde() { #@test
-  run Path_expandTilde "~"
-  assert_output "$HOME"
-}
-
 Path_extname() { #@test
   run Path_extname "foo.sh"
   assert_output ".sh"
