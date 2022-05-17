@@ -63,6 +63,7 @@ Array_filter() {
     local fn="${args[$# - 1]}"
     unset "args[$# - 1]"
     local -i len="${#args[@]}"
+    local -a res=()
     local item=""
     local -i i
     for ((i = 0; i < len; i++)); do
