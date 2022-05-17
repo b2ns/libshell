@@ -281,6 +281,65 @@ Path_isRel() { #@test
   assert_failure
 }
 
+Path_join() { #@test
+  run Path_join "/path/to" "file.sh"
+  assert_output "/path/to/file.sh"
+
+  run Path_join "path/to/" "file.sh"
+  assert_output "path/to/file.sh"
+
+  run Path_join "./path/to/" "/file.sh"
+  assert_output "path/to/file.sh"
+
+  run Path_join ".////path////to/./././/." "./.file.sh"
+  assert_output "path/to/.file.sh"
+
+  run Path_join "/path/to/" "../file.sh"
+  assert_output "/path/file.sh"
+
+  run Path_join "path/to/" "../../file.sh"
+  assert_output "file.sh"
+
+  run Path_join "path/to/" "../foo/.."
+  assert_output "path"
+
+  run Path_join "/path/to/./" "../../../file.sh"
+  assert_output "/file.sh"
+
+  run Path_join "path/to" "../../../file.sh"
+  assert_output "../file.sh"
+
+  run Path_join "/path/to/.." "dir" "../.file.sh"
+  assert_output "/path/.file.sh"
+
+  run Path_join "/path/../to/" "dir" "../.file.sh"
+  assert_output "/to/.file.sh"
+
+  run Path_join "/path/to" "/../dir/../" "../.file.sh"
+  assert_output "/.file.sh"
+
+  run Path_join "/path/to/" ""
+  assert_output "/path/to"
+
+  run Path_join "" ".file.sh" ""
+  assert_output ".file.sh"
+
+  run Path_join "/" ""
+  assert_output "/"
+
+  run Path_join "./"
+  assert_output "."
+
+  run Path_join "../"
+  assert_output ".."
+
+  run Path_join "/.."
+  assert_output "/"
+
+  run Path_join
+  assert_output "."
+}
+
 Path_pathnoext() { #@test
   run Path_pathnoext "__Path_pathnoext"
   assert_output "$(cd "__Path_pathnoext" && pwd)"

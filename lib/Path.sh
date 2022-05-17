@@ -2,6 +2,7 @@
 
 import String
 import IO
+import Array
 
 Path_dirname() {
   local file="${1:-.}"
@@ -122,6 +123,81 @@ Path_isRel() {
   ! Path_isAbs "$@"
 }
 
+Path_join() {
+  (($# == 0)) && {
+    RETVAL="."
+    echo "."
+    return 0
+  }
+
+  local str=""
+  local -a arr=()
+
+  Array_filter "$@" String_notEmpty >/dev/null
+  arr=("${RETVAL[@]}")
+
+  Array_join "${arr[@]}" "/" >/dev/null
+  str="$RETVAL"
+
+  __trimSlash__ "$str" >/dev/null
+  str="$RETVAL"
+
+  String_replaceAll "$str" "\.\." "\\/\\/" >/dev/null
+  str="$RETVAL"
+
+  String_replaceAll "$str" "\./" "" >/dev/null
+  str="$RETVAL"
+
+  String_replaceAll "$str" "\\\/" "." >/dev/null
+  str="$RETVAL"
+
+  if String_endsWith "$str" "/."; then
+    String_stripEnd "$str" "/." >/dev/null
+    str="$RETVAL"
+  fi
+
+  while String_match "$str" "([^./]+/\.\./?)"; do
+    String_replaceAll "$str" "${BASH_REMATCH[1]}" "" >/dev/null
+    str="$RETVAL"
+
+    __trimSlash__ "$str" >/dev/null
+    str="$RETVAL"
+  done
+
+  if String_match "$str" "^/\.\."; then
+    String_replaceAll "$str" "\.\." "" >/dev/null
+    str="$RETVAL"
+  fi
+
+  __trimSlash__ "$str" >/dev/null
+  str="$RETVAL"
+
+  if String_notEq "/" "$str" && String_endsWith "/"; then
+    String_stripEnd "$str" "/" >/dev/null
+    str="$RETVAL"
+  fi
+
+  RETVAL="${str:-.}"
+  printf '%s\n' "${str:-.}"
+}
+
+__expandTilde__() {
+  String_replace "$1" "#\~" "$HOME"
+}
+
+__trimSlash__() {
+  local str="$1"
+  local tmp=""
+  while String_notEq "$tmp" "$str"; do
+    tmp="$str"
+    String_replaceAll "$str" "\/\/" "/" >/dev/null
+    str="$RETVAL"
+  done
+
+  RETVAL="$str"
+  printf '%s\n' "$str"
+}
+
 Path_pathnoext() {
   local pathname=""
   local ext=""
@@ -136,8 +212,4 @@ Path_pathnoext() {
 
   RETVAL="$pathname"
   printf '%s\n' "$pathname"
-}
-
-__expandTilde__() {
-  String_replace "$1" "#\~" "$HOME"
 }
