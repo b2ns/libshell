@@ -228,13 +228,16 @@ more details in the [doc](doc/Math.md)
 ```sh
 Path_filepath "../foo/bar.sh" # /abs/path/to/foo/bar.sh
 
-Path_filename "../foo/bar.sh" # bar.sh
+Path_basename "../foo/bar.sh" # bar.sh
+Path_basename "../foo/bar.sh" ".sh" # bar
 
 Path_extname "../foo/bar.sh" # .sh
 
 Path_dirpath "../foo/bar.sh" # /abs/path/to/foo
 
 Path_dirname "../foo/bar.sh" # ../foo
+
+Path_join "/path/to/foo/" "../bar.sh" # /path/to/bar.sh
 ```
 
 more details in the [doc](doc/Path.md)

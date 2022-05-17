@@ -31,6 +31,54 @@ teardown_file() {
   teardownFiles "${files[@]}"
 }
 
+Path_basename() { #@test
+  run Path_basename "foo.sh"
+  assert_output "foo.sh"
+
+  run Path_basename "foo.sh" ".sh"
+  assert_output "foo"
+
+  run Path_basename "./foo.sh"
+  assert_output "foo.sh"
+
+  run Path_basename "/foo.sh"
+  assert_output "foo.sh"
+
+  run Path_basename "../../path/to/foo.sh"
+  assert_output "foo.sh"
+
+  # shellcheck disable=SC2088
+  run Path_basename "~/path/to/foo.sh"
+  assert_output "foo.sh"
+
+  run Path_basename "."
+  assert_output "."
+
+  run Path_basename "./"
+  assert_output "."
+
+  run Path_basename ".."
+  assert_output ".."
+
+  run Path_basename "../"
+  assert_output ".."
+
+  run Path_basename "./../"
+  assert_output ".."
+
+  run Path_basename "~"
+  assert_output "~"
+
+  run Path_basename "/"
+  assert_output "/"
+
+  run Path_basename ""
+  assert_output "."
+
+  run Path_basename "path/to/"
+  assert_output "to"
+}
+
 Path_dirname() { #@test
   run Path_dirname "path/to/foo.sh"
   assert_output "path/to"
@@ -142,51 +190,6 @@ Path_extname() { #@test
 
   run Path_extname "path/.to/.foo"
   assert_output ""
-}
-
-Path_filename() { #@test
-  run Path_filename "foo.sh"
-  assert_output "foo.sh"
-
-  run Path_filename "./foo.sh"
-  assert_output "foo.sh"
-
-  run Path_filename "/foo.sh"
-  assert_output "foo.sh"
-
-  run Path_filename "../../path/to/foo.sh"
-  assert_output "foo.sh"
-
-  # shellcheck disable=SC2088
-  run Path_filename "~/path/to/foo.sh"
-  assert_output "foo.sh"
-
-  run Path_filename "."
-  assert_output "."
-
-  run Path_filename "./"
-  assert_output "."
-
-  run Path_filename ".."
-  assert_output ".."
-
-  run Path_filename "../"
-  assert_output ".."
-
-  run Path_filename "./../"
-  assert_output ".."
-
-  run Path_filename "~"
-  assert_output "~"
-
-  run Path_filename "/"
-  assert_output "/"
-
-  run Path_filename ""
-  assert_output "."
-
-  run Path_filename "path/to/"
-  assert_output "to"
 }
 
 Path_filenoext() { #@test

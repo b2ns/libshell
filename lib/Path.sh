@@ -4,6 +4,26 @@ import String
 import IO
 import Array
 
+Path_basename() {
+  local file="${1:-.}"
+  local ext="${2:-}"
+  if String_notEq "$file" "/"; then
+    String_stripEnd "${file}" "/" >/dev/null
+    file="$RETVAL"
+
+    String_stripStart "${file}" "*/" 1 >/dev/null
+    file="$RETVAL"
+  fi
+
+  if String_notEmpty "$ext"; then
+    String_stripEnd "$file" "$ext" >/dev/null
+    file="$RETVAL"
+  fi
+
+  RETVAL="$file"
+  printf '%s\n' "$file"
+}
+
 Path_dirname() {
   local file="${1:-.}"
   if String_notEq "$file" "/"; then
@@ -37,7 +57,7 @@ Path_dirpath() {
 Path_extname() {
   local filename=""
   local res=""
-  Path_filename "$@" >/dev/null
+  Path_basename "$@" >/dev/null
   filename="$RETVAL"
   if String_match "$filename" "[^./]+\.[^./]+$"; then
     String_stripStart "$filename" "*." 1 >/dev/null
@@ -51,23 +71,10 @@ Path_extname() {
   fi
 }
 
-Path_filename() {
-  local file="${1:-.}"
-  if String_notEq "$file" "/"; then
-    String_stripEnd "${file}" "/" >/dev/null
-    file="$RETVAL"
-
-    String_stripStart "${file}" "*/" 1 >/dev/null
-    file="$RETVAL"
-  fi
-  RETVAL="$file"
-  printf '%s\n' "$file"
-}
-
 Path_filenoext() {
   local filename=""
   local ext=""
-  Path_filename "$@" >/dev/null
+  Path_basename "$@" >/dev/null
   filename="$RETVAL"
 
   Path_extname "$filename" >/dev/null
@@ -101,7 +108,7 @@ Path_filepath() {
     Path_dirname "$file" >/dev/null
     dir="$RETVAL"
 
-    Path_filename "$file" >/dev/null
+    Path_basename "$file" >/dev/null
     name="$RETVAL"
 
     cd "$dir" || return 1
