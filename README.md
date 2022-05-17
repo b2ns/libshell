@@ -226,14 +226,10 @@ more details in the [doc](doc/Math.md)
 ### [Path](doc/Path.md)
 
 ```sh
-Path_filepath "../foo/bar.sh" # /abs/path/to/foo/bar.sh
-
 Path_basename "../foo/bar.sh" # bar.sh
 Path_basename "../foo/bar.sh" ".sh" # bar
 
 Path_extname "../foo/bar.sh" # .sh
-
-Path_dirpath "../foo/bar.sh" # /abs/path/to/foo
 
 Path_dirname "../foo/bar.sh" # ../foo
 

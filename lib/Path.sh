@@ -47,18 +47,6 @@ Path_dirname() {
   printf '%s\n' "${file:-/}"
 }
 
-Path_dirpath() {
-  local file=""
-  Path_filepath "$@" >/dev/null || return 1
-  file="$RETVAL"
-
-  Path_dirname "$file" >/dev/null
-  file="$RETVAL"
-
-  RETVAL="$file"
-  printf '%s\n' "$file"
-}
-
 Path_extname() {
   local file="$1"
   local ext=""
@@ -72,41 +60,6 @@ Path_extname() {
     RETVAL=""
     echo ""
   fi
-}
-
-Path_filepath() {
-  local file=""
-
-  __expandTilde__ "$1" >/dev/null
-  file="$RETVAL"
-
-  if ! [[ -e "$file" ]]; then
-    IO_error "$1 not exist" >&2
-    return 1
-  fi
-
-  local res=""
-  local pwd="$PWD"
-
-  if [[ -f "$file" ]]; then
-    local dir=""
-    local name=""
-
-    Path_dirname "$file" >/dev/null
-    dir="$RETVAL"
-
-    Path_basename "$file" >/dev/null
-    name="$RETVAL"
-
-    cd "$dir" || return 1
-    res="$PWD/$name"
-  elif [[ -d "$file" ]]; then
-    cd "$file" || return 1
-    res="$PWD"
-  fi
-  cd "$pwd" || return 1
-  RETVAL="$res"
-  printf '%s\n' "$res"
 }
 
 Path_isAbs() {
