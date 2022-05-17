@@ -1,8 +1,19 @@
 {
-  "name": "libshell",
+  "name": "@b2ns/libshell",
   "version": "1.0.0",
-  "description": "lib for shell",
-  "main": "index.js",
+  "description": "basic lib functions for (bash)shell",
+  "keywords": [
+    "shell",
+    "bash",
+    "lib",
+    "tool",
+    "util",
+    "function",
+    "command",
+    "color",
+    "string"
+  ],
+  "main": "libshell.sh",
   "scripts": {
     "lint": "shellcheck lib/*.sh libshell.sh",
     "fix": "shfmt -w -i 2 -ci lib/*.sh libshell.sh",
@@ -22,6 +33,11 @@
   },
   "repository": "git@github.com:b2ns/libshell.git",
   "author": "b2ns <eminemdsp@163.com>",
+  "files": [
+    "lib/",
+    "libshell.sh",
+    "bin/"
+  ],
   "license": "MIT",
   "devDependencies": {
     "bats": "^1.6.0",

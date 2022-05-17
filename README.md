@@ -68,10 +68,10 @@ export PATH="/path/to/libshell/bin:$PATH" # write in .bashrc or .zshrc
 source libshell
 
 # way 2: source from absolute path
-source /abs/path/to/libshell.sh
+source "/abs/path/to/libshell.sh"
 
 # way 3: source from relative path
-source $(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/rel/path/to/libshell.sh
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/rel/path/to/libshell.sh"
 
 # after source libshell you get a import function and all libs builtin
 # use IMPORT_ALL_LIBS=0 to only get the import function
@@ -92,7 +92,12 @@ import Array File Path String
 ### npm
 
 ```sh
-# TODO
+npm i @b2ns/libshell
+# or
+yarn add @b2ns/libshell
+
+# source libshell
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/node_modules/@b2ns/libshell/libshell.sh"
 ```
 
 ## api
