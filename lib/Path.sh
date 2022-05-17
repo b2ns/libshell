@@ -15,6 +15,11 @@ Path_basename() {
     file="$RETVAL"
   fi
 
+  if String_eq "$ext" "1"; then
+    Path_extname "$file" >/dev/null
+    ext="$RETVAL"
+  fi
+
   if String_notEmpty "$ext"; then
     String_stripEnd "$file" "$ext" >/dev/null
     file="$RETVAL"
@@ -55,16 +60,14 @@ Path_dirpath() {
 }
 
 Path_extname() {
-  local filename=""
-  local res=""
-  Path_basename "$@" >/dev/null
-  filename="$RETVAL"
-  if String_match "$filename" "[^./]+\.[^./]+$"; then
-    String_stripStart "$filename" "*." 1 >/dev/null
-    res=".$RETVAL"
+  local file="$1"
+  local ext=""
+  if String_match "$file" "[^./]+\.[^./]+$"; then
+    String_stripStart "$file" "*." 1 >/dev/null
+    ext=".$RETVAL"
 
-    RETVAL="$res"
-    printf '%s\n' "$res"
+    RETVAL="$ext"
+    printf '%s\n' "$ext"
   else
     RETVAL=""
     echo ""

@@ -34,6 +34,9 @@ Path_basename() { #@test
   run Path_basename "foo.sh" ".sh"
   assert_output "foo"
 
+  run Path_basename "foo.sh" 1
+  assert_output "foo"
+
   run Path_basename "./foo.sh"
   assert_output "foo.sh"
 
