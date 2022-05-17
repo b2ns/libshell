@@ -2,9 +2,9 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-declare scriptRoot=""
-scriptRoot="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "$scriptRoot/../libshell.sh"
+declare __dirname=""
+__dirname="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$__dirname/../libshell.sh"
 
 declare -gA LIBSHELL_FUNC=()
 declare -gA LIBSHELL_FUNC_TMP=()
@@ -21,7 +21,7 @@ build() {
 
     parse "$file"
 
-    genDoc "$scriptRoot/../doc/${libName}.md" "$libName"
+    genDoc "$__dirname/../doc/${libName}.md" "$libName"
   done
 
   IO_success "done!"
@@ -222,4 +222,4 @@ resetGlobal() {
 }
 
 # let's build it
-build "$scriptRoot/../lib/"*.sh
+build "$__dirname/../lib/"*.sh
