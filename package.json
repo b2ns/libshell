@@ -24,6 +24,7 @@
     "doc": "./build/buildDoc.sh",
     "checkOrder": "./build/checkFuncOrder.sh",
     "checkUndef": "./build/checkUndefinedVar.sh",
+    "postversion": "git push && git push --tags",
     "prepare": "husky install"
   },
   "lint-staged": {
