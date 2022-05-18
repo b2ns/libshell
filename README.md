@@ -124,7 +124,7 @@ if Args_has "-v"; then
   echo "Version: 1.0.0"
 fi
 
-if Args_has "-h"; then
+if Args_has "-h" || ($# == 0); then
   # get help info based on what you defined above
   Args_help
 fi
@@ -299,7 +299,7 @@ more details in the [doc](doc/String.md)
   # cost: 10s
   ```
 
-  **workaroud**: use the special global variable **`RETVAL`** to get the return value from the function
+  **workaround**: use the special global variable **`RETVAL`** to get the return value from the function
 
   ```sh
   SECONDS=0
