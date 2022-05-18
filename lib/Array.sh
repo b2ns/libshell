@@ -112,28 +112,7 @@ Array_find() {
 # output: -1
 # @end
 Array_findIndex() {
-  RETVAL=-1
-  if (($# >= 2)); then
-    local -a args=("$@")
-    local target="${args[$# - 1]}"
-    unset "args[$# - 1]"
-    local -i len="${#args[@]}"
-    local item=""
-    local -i i
-    for ((i = 0; i < len; i++)); do
-      item="${args[$i]}"
-      if [[ "$item" =~ $target ]]; then
-        RETVAL="$i"
-        echo "$i"
-        return 0
-      fi
-    done
-    echo -1
-    return 1
-  else
-    echo -1
-    return 1
-  fi
+  __findIndex__ "$@" String_match
 }
 
 Array_forEach() {
@@ -156,28 +135,7 @@ Array_includes() {
 }
 
 Array_indexOf() {
-  RETVAL=-1
-  if (($# >= 2)); then
-    local -a args=("$@")
-    local target="${args[$# - 1]}"
-    unset "args[$# - 1]"
-    local -i len="${#args[@]}"
-    local item=""
-    local -i i
-    for ((i = 0; i < len; i++)); do
-      item="${args[$i]}"
-      if [[ "$target" == "$item" ]]; then
-        RETVAL="$i"
-        echo "$i"
-        return 0
-      fi
-    done
-    echo -1
-    return 1
-  else
-    echo -1
-    return 1
-  fi
+  __findIndex__ "$@" String_eq
 }
 
 Array_isEmpty() {
@@ -383,5 +341,34 @@ __defaultComparator__() {
     ((a < b))
   else
     ((a == b))
+  fi
+}
+
+__findIndex__() {
+  local -a args=("$@")
+  local comparator="${args[$# - 1]}"
+  unset "args[$# - 1]"
+  local len="${#args[@]}"
+  RETVAL=-1
+
+  if ((len >= 2)); then
+    local target="${args[len - 1]}"
+    unset "args[len - 1]"
+    local -i arrLen="${#args[@]}"
+    local item=""
+    local -i i
+    for ((i = 0; i < arrLen; i++)); do
+      item="${args[$i]}"
+      if $comparator "$item" "$target"; then
+        RETVAL="$i"
+        echo "$i"
+        return 0
+      fi
+    done
+    echo -1
+    return 1
+  else
+    echo -1
+    return 1
   fi
 }
