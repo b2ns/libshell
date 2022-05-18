@@ -14,16 +14,6 @@ String_capitalize() {
   printf '%s\n' "$res"
 }
 
-String_concat() {
-  local res=""
-  local str=""
-  for str in "$@"; do
-    res="$res$str"
-  done
-  RETVAL="$res"
-  printf '%s\n' "$res"
-}
-
 String_endsWith() {
   local string="${1:-}"
   local suffix="${2:-}"

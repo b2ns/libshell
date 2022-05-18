@@ -24,11 +24,6 @@ String_capitalize() { #@test
   assert_output "Foo"
 }
 
-String_concat() { #@test
-  run String_concat "foo" "bar " "x" "/y" "/z"
-  assert_output "foobar x/y/z"
-}
-
 String_endsWith() { #@test
   run String_endsWith "foobar" "bar"
   assert_success
