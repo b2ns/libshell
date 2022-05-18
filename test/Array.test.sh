@@ -146,6 +146,7 @@ Array_some() { #@test
 }
 
 Array_sort() { #@test
+  local -a res=()
   local -a arr=(6 1 5 2 5 3 5 8)
   run Array_sort "${arr[@]}"
   # shellcheck disable=SC2154

@@ -22,13 +22,17 @@
     "fixcmd": "shfmt -w -i 2 -ci",
     "testcmd": "bats -T -j 16",
     "doc": "./build/buildDoc.sh",
+    "checkOrder": "./build/checkFuncOrder.sh",
+    "checkUndef": "./build/checkUndefinedVar.sh",
     "prepare": "husky install"
   },
   "lint-staged": {
     "*.sh": [
       "yarn lintcmd",
       "yarn fixcmd",
-      "./testOnlyStaged.sh"
+      "yarn checkOrder",
+      "yarn checkUndef",
+      "./build/testOnlyStaged.sh"
     ]
   },
   "repository": "git@github.com:b2ns/libshell.git",
