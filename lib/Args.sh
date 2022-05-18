@@ -38,7 +38,7 @@ declare -gi LIBSHELL_ARGS_HAS_PARSED=0
 # @end
 Args_define() {
   if ((LIBSHELL_ARGS_HAS_PARSED)); then
-    IO_error "Error: Args_define() cannot define options after Args_parse()" >&2
+    IO_error "Error: can't define options after calling Args_parse" >&2
     return 1
   fi
 
@@ -58,7 +58,7 @@ Args_define() {
     __validateDefineFlag__ "$singleFlag" || return 1
 
     # check duplicate flag
-    if __Args_defined__ "$singleFlag" 2>/dev/null; then
+    if __argsDefined__ "$singleFlag" 2>/dev/null; then
       IO_error "Error: duplicate flag defined: [$singleFlag]" >&2
       return 1
     fi
@@ -93,7 +93,8 @@ Args_define() {
 # Args_get "--job"
 # @end
 Args_get() {
-  __Args_defined__ "$1" || return 1
+  __warnParsingArgs__ || return 1
+  __argsDefined__ "$1" || return 1
 
   local allFlag="${LIBSHELL_ARGS_DEFINED_OPTIONS[$1]}"
   local value="${LIBSHELL_ARGS_OPTIONS[$allFlag]}"
@@ -114,6 +115,7 @@ Args_get() {
 # # output: "./file1 ../file2 path/to/file3"
 # @end
 Args_getInput() {
+  __warnParsingArgs__ || return 1
   RETVAL=("${LIBSHELL_ARGS_INPUT[@]}")
   printf '%s\n' "${LIBSHELL_ARGS_INPUT[@]}"
 }
@@ -321,7 +323,7 @@ Args_parse() {
       fi
 
       singleFlag="$arg"
-      if ! __Args_defined__ "$singleFlag"; then
+      if ! __argsDefined__ "$singleFlag"; then
         return 1
       fi
 
@@ -374,7 +376,7 @@ Args_parse() {
   LIBSHELL_ARGS_HAS_PARSED=1
 }
 
-__Args_defined__() {
+__argsDefined__() {
   if [[ ${LIBSHELL_ARGS_DEFINED_OPTIONS[$1]+_} ]]; then
     return 0
   else
@@ -399,6 +401,13 @@ __validateInputFlag__() {
     :
   else
     IO_error "Error: invalid flag input: [$1]" >&2
+    return 1
+  fi
+}
+
+__warnParsingArgs__() {
+  if ((LIBSHELL_ARGS_HAS_PARSED == 0)); then
+    IO_error "Error: call Args_parse to parse the arguments first" >&2
     return 1
   fi
 }
