@@ -46,7 +46,7 @@ checking() {
           continue
         fi
         if ! [[ ${definedVar["$varName"]+_} ]]; then
-          IO_error "$funcName: Variable '$varName' is not defined"
+          IO_error "$funcName: Variable '$varName' is not defined" >&2
           return 1
         fi
       fi

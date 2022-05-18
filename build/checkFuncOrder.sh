@@ -40,7 +40,7 @@ checking() {
         local preFuncName="${LIBSHELL_FUNCNAMES[-1]}"
 
         if [[ "$preFuncName" > "$funcName" ]]; then
-          IO_error "Function $preFuncName or $funcName is not in order."
+          IO_error "Function $preFuncName or $funcName is not in order." >&2
           return 1
         fi
       fi
