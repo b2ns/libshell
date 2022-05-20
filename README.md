@@ -92,6 +92,16 @@ import Array File Path String
 ### npm
 
 ```sh
+# if install in global
+npm -g i @b2ns/libshell
+# or
+yarn global add @b2ns/libshell
+
+# source libshell
+source libshell
+
+
+# if install in local
 npm i @b2ns/libshell
 # or
 yarn add @b2ns/libshell
