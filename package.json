@@ -1,6 +1,6 @@
 {
   "name": "@b2ns/libshell",
-  "version": "1.1.1",
+  "version": "1.1.0",
   "description": "basic lib functions for (bash)shell",
   "keywords": [
     "shell",
