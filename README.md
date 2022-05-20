@@ -4,8 +4,8 @@
 
 ![GitHub top language](https://img.shields.io/badge/bash-4EAA25?logo=GNU%20Bash&logoColor=white&color="brightgreen"&style=flat-square)
 ![GitHub top language](https://img.shields.io/github/languages/top/b2ns/libshell?color=brightgreen&style=flat-square)
-![GitHub repo file count (custom path)](https://img.shields.io/github/directory-file-count/b2ns/libshell/lib?label=libs&logo=libs&style=flat-square)
-![GitHub repo size](https://img.shields.io/github/repo-size/b2ns/libshell?style=flat-square)
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/b2ns/libshell/Publish?style=flat-square)
+![npm](https://img.shields.io/npm/dt/@b2ns/libshell?style=flat-square)
 ![GitHub package.json version](https://img.shields.io/github/package-json/v/b2ns/libshell?style=flat-square)
 ![GitHub](https://img.shields.io/github/license/b2ns/libshell?style=flat-square)
 
