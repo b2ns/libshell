@@ -1,4 +1,4 @@
-<img src="https://cdn.jsdelivr.net/gh/b2ns/assets/images/libshell/logo.svg" alt="logo" style="width: 100%; height: 250px;">
+<img src="https://cdn.jsdelivr.net/gh/b2ns/libshell/assets/logo.svg" alt="logo" style="width: 100%; height: 250px;">
 
 # libshell🚀
 
@@ -16,9 +16,10 @@ basic lib functions for (bash)shell script
 <!-- vim-markdown-toc GFM -->
 
 - [features](#features)
+- [download](#download)
+  - [from npm](#from-npm)
+  - [from github](#from-github)
 - [how to use](#how-to-use)
-  - [download and source it](#download-and-source-it)
-  - [npm](#npm)
 - [api](#api)
   - [Args](#args)
   - [Array](#array)
@@ -46,38 +47,50 @@ basic lib functions for (bash)shell script
 - well documented
 - should be fast
 
-## how to use
+## download
 
-### download and source it
-
-1. download libshell
+### from npm
 
 ```sh
-git clone https://github.com/b2ns/libshell
+# if install in global
+npm -g i @b2ns/libshell
+# or with yarn
+yarn global add @b2ns/libshell
+
+# source libshell directly in your script
+source libshell
+
+
+# if install in local project
+npm i @b2ns/libshell
+# or with yarn
+yarn add @b2ns/libshell
+
+# source libshell from node_modules
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/node_modules/@b2ns/libshell/libshell.sh"
 ```
 
-2. source libshell in your script
+### from github
+
+download the latest release [here](https://github.com/b2ns/libshell/tags)
+
+## how to use
 
 ```sh
 #!/usr/bin/env bash
 set -euo pipefail
 IFS=$'\n\t'
 
-# way 1(recommended): add libshell to PATH and source it directly from everywhere
-export PATH="/path/to/libshell/bin:$PATH" # write in .bashrc or .zshrc
 source libshell
+# or source like this if you don't install libshell to global
+# source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/rel/path/to/libshell.sh"
 
-# way 2: source from absolute path
-source "/abs/path/to/libshell.sh"
 
-# way 3: source from relative path
-source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/rel/path/to/libshell.sh"
-
-# after source libshell you get a import function and all libs builtin
-# use IMPORT_ALL_LIBS=0 to only get the import function
+# after source libshell you get a `import` function and all libs builtin
+# use IMPORT_ALL_LIBS=0 to only get the `import` function
 # IMPORT_ALL_LIBS=0 source libshell
 
-# use import to include your own script
+# use `import` to include your own script
 import /path/to/foo.sh
 import ./path/to/bar.sh
 import path/to/bar.sh
@@ -87,27 +100,11 @@ import /path/to/x.sh ./path/to/y.sh path/to/z.sh
 
 # import builtin lib(you only need this when you set IMPORT_ALL_LIBS to 0)
 import Array File Path String
-```
 
-### npm
-
-```sh
-# if install in global
-npm -g i @b2ns/libshell
-# or
-yarn global add @b2ns/libshell
-
-# source libshell
-source libshell
-
-
-# if install in local
-npm i @b2ns/libshell
-# or
-yarn add @b2ns/libshell
-
-# source libshell
-source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/node_modules/@b2ns/libshell/libshell.sh"
+# let's use builtin lib functions here
+basename="$(String_stripStart "/foo/bar/libshell.sh" "*/" 1)" # libshell.sh
+dirname="$(String_stripEnd "/foo/bar/libshell.sh" "/*")" # /foo/bar
+Color_print "hello world\n" "green" "italic" "bold" "bgBlack"
 ```
 
 ## api
