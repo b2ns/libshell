@@ -73,17 +73,6 @@ String_isEmpty() { #@test
   assert_success
 }
 
-String_length() { #@test
-  run String_length "foo"
-  assert_output 3
-
-  run String_length " foo "
-  assert_output 5
-
-  run String_length
-  assert_output 0
-}
-
 String_match() { #@test
   run String_match "foo12o bar" "^foo[0-9]+o"
   assert_success

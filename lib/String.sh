@@ -56,14 +56,6 @@ String_isEmpty() {
   [[ -z "${1:-}" ]]
 }
 
-# @deprecated use ${#string} instead
-String_length() {
-  local string="${1:-}"
-  local -i len="${#string}"
-  RETVAL="$len"
-  echo "$len"
-}
-
 String_match() {
   local string="${1:-}"
   local pattern="${2:-}"

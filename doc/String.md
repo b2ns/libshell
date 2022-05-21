@@ -7,7 +7,6 @@
 - [String_includes](#String_includes)
 - [String_indexOf](#String_indexOf)
 - [String_isEmpty](#String_isEmpty)
-- [String_length](#String_length)
 - [String_match](#String_match)
 - [String_notEmpty](#String_notEmpty)
 - [String_notEq](#String_notEq)
@@ -44,10 +43,6 @@
 #### String_indexOf
 
 #### String_isEmpty
-
-#### String_length (deprecated)
-
-use ${#string} instead
 
 #### String_match
 
