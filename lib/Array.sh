@@ -317,7 +317,7 @@ Array_some() {
     local fn="$RETVAL"
     local -i i
     for ((i = 0; i < ${#___array___[@]}; i++)); do
-      if $fn "${___array___[i]}" "$i"; then
+      if $fn "${___array___[i]}" "$i" &>/dev/null; then
         return 0
       fi
     done
