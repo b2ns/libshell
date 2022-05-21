@@ -35,7 +35,7 @@ checking() {
     fi
 
     if ((readingFuncBody)); then
-      if String_match "$line" "local[-giaArx ]* ([a-zA-Z_]+)"; then
+      if String_match "$line" "local[-aAfFgiIlnrtux ]* ([a-zA-Z_]+)"; then
         local varName="${BASH_REMATCH[1]}"
         definedVar["$varName"]=1
       elif String_match "$line" "[( ]+([a-zA-Z_]+)[+ ]?=[^=]+" ||

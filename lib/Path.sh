@@ -77,13 +77,15 @@ Path_join() {
     return 0
   }
 
+  local -a args=("$@")
   local str=""
   local -a arr=()
 
-  Array_filter "$@" String_notEmpty >/dev/null
+  Array_filter args String_notEmpty >/dev/null
+  # shellcheck disable=SC2034
   arr=("${RETVAL[@]}")
 
-  Array_join "${arr[@]}" "/" >/dev/null
+  Array_join arr "/" >/dev/null
   str="$RETVAL"
 
   __trimSlash__ "$str" >/dev/null

@@ -9,7 +9,6 @@
 - [Array_indexOf](#Array_indexOf)
 - [Array_isEmpty](#Array_isEmpty)
 - [Array_join](#Array_join)
-- [Array_length](#Array_length)
 - [Array_map](#Array_map)
 - [Array_notEmpty](#Array_notEmpty)
 - [Array_random](#Array_random)
@@ -22,20 +21,19 @@
 > check if all elements in array meets the condition
 
 - **array** \<*array*\>
-- **condition** \<*function*\>
+- **condition** \<*function*\> | \<string\>
 
 ```sh
 gt5() {
-  (($1 > 5)) && return 0
-  return 1
+  (($1 > 5))
 }
 
 arr=(6 7 8)
-Array_every "${arr[@]}" gt5
+Array_every arr gt5
 # assert success
 
 arr=(6 5 8)
-Array_every "${arr[@]}" gt5
+Array_every arr '(( $1 > 5 ))'
 # assert failure
 ```
 
@@ -44,33 +42,28 @@ Array_every "${arr[@]}" gt5
 > filter the array by condition
 
 - **array** \<*array*\>
-- **condition** \<*function*\>
+- **condition** \<*function*\> | \<string\>
 
 ```sh
-gt5() {
-  (($1 > 5)) && return 0
-  return 1
-}
-
 arr=(6 1 8)
-Array_filter "${arr[@]}" gt5
+Array_filter arr '(( $1 > 5 ))'
 # output: 6 8
 ```
 
 #### Array_find
 
-> check if array has element match the regexp
+> check if array has element satisfy the condition
 
 - **array** \<*array*\>
-- **regexp** \<*regexp*\>
+- **condition** \<*function*\> | \<string\>
 
 ```sh
 arr=("foo" "bar111" "baz")
-Array_find "${arr[@]}" "[a-z]+[0-9]+"
+Array_find arr '[[ $1 =~ [a-z]+[0-9]+ ]]'
 # assert success
 
 arr=("foo" "bar" "baz")
-Array_find "${arr[@]}" "[a-z]+[0-9]+"
+Array_find arr '[[ $1 =~ [a-z]+[0-9]+ ]]'
 # assert failure
 ```
 
@@ -85,11 +78,11 @@ Array_find "${arr[@]}" "[a-z]+[0-9]+"
 
 ```sh
 arr=("foo" "bar111" "baz")
-Array_find "${arr[@]}" "[a-z]+[0-9]+"
+Array_find arr '[[ $1 =~ [a-z]+[0-9]+ ]]'
 # output: 1
 
 arr=("foo" "bar" "baz")
-Array_find "${arr[@]}" "[a-z]+[0-9]+"
+Array_find arr '[[ $1 =~ [a-z]+[0-9]+ ]]'
 output: -1
 ```
 
@@ -102,8 +95,6 @@ output: -1
 #### Array_isEmpty
 
 #### Array_join
-
-#### Array_length (deprecated)
 
 #### Array_map
 
@@ -118,20 +109,19 @@ output: -1
 > check if array has element meets the condition
 
 - **array** \<*array*\>
-- **condition** \<*function*\>
+- **condition** \<*function*\> | \<string\>
 
 ```sh
 gt5() {
-  (($1 > 5)) && return 0
-  return 1
+  (($1 > 5))
 }
 
 arr=(1 2 6)
-Array_some "${arr[@]}" gt5
+Array_some arr gt5
 # assert success
 
 arr=(1 2 3)
-Array_some "${arr[@]}" gt5
+Array_some arr '(($1 > 5))'
 # assert failure
 ```
 

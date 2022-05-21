@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-# check bash version 4.2+
-if ((${BASH_VERSINFO[0]:-0} < 4)) || ((BASH_VERSINFO[0] == 4 && BASH_VERSINFO[1] < 2)); then
-  echo "libshell requires bash version 4.2 or higher"
+# check bash version 4.3+
+if ((${BASH_VERSINFO[0]:-0} < 4)) || ((BASH_VERSINFO[0] == 4 && BASH_VERSINFO[1] < 3)); then
+  echo "libshell requires bash version 4.3 or higher"
   exit 1
 fi
 

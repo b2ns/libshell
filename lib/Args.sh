@@ -187,8 +187,7 @@ Args_help() {
       [[ "$a" == "$b" ]]
     fi
   }
-  LIBSHELL_COMPARATOR=sortMethod Array_sort "${keys[@]}" >/dev/null
-  keys=("${RETVAL[@]}")
+  Array_sort keys sortMethod
 
   local key=""
   for key in "${keys[@]}"; do

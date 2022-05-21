@@ -2,7 +2,6 @@
 
 - [String_at](#String_at)
 - [String_capitalize](#String_capitalize)
-- [String_concat](#String_concat)
 - [String_endsWith](#String_endsWith)
 - [String_eq](#String_eq)
 - [String_includes](#String_includes)
@@ -35,8 +34,6 @@
 #### String_at
 
 #### String_capitalize
-
-#### String_concat
 
 #### String_endsWith
 

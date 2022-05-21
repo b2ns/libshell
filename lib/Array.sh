@@ -3,37 +3,31 @@
 import Math
 import String
 
-declare -g LIBSHELL_COMPARATOR="${LIBSHELL_COMPARATOR:-__defaultComparator__}"
-
 # @desc check if all elements in array meets the condition
 # @param array <array>
-# @param condition <function>
+# @param condition <function> | <string>
 
 # @example
 # gt5() {
-#   (($1 > 5)) && return 0
-#   return 1
+#   (($1 > 5))
 # }
 #
 # arr=(6 7 8)
-# Array_every "${arr[@]}" gt5
+# Array_every arr gt5
 # # assert success
 #
 # arr=(6 5 8)
-# Array_every "${arr[@]}" gt5
+# Array_every arr '(( $1 > 5 ))'
 # # assert failure
 # @end
 Array_every() {
   if (($# >= 2)); then
-    local -a args=("$@")
-    local fn="${args[$# - 1]}"
-    unset "args[$# - 1]"
-    local -i len="${#args[@]}"
-    local item=""
+    local -n ___array___="$1"
+    __arrayLambdaFunc__ "$2"
+    local fn="$RETVAL"
     local -i i
-    for ((i = 0; i < len; i++)); do
-      item="${args[$i]}"
-      if ! ($fn "$item" "$i"); then
+    for ((i = 0; i < ${#___array___[@]}; i++)); do
+      if ! $fn "${___array___[i]}" "$i" &>/dev/null; then
         return 1
       fi
     done
@@ -45,31 +39,23 @@ Array_every() {
 
 # @desc filter the array by condition
 # @param array <array>
-# @param condition <function>
+# @param condition <function> | <string>
 
 # @example
-# gt5() {
-#   (($1 > 5)) && return 0
-#   return 1
-# }
-#
 # arr=(6 1 8)
-# Array_filter "${arr[@]}" gt5
+# Array_filter arr '(( $1 > 5 ))'
 # # output: 6 8
 # @end
 Array_filter() {
   if (($# >= 2)); then
-    local -a args=("$@")
-    local fn="${args[$# - 1]}"
-    unset "args[$# - 1]"
-    local -i len="${#args[@]}"
+    local -n ___array___="$1"
+    __arrayLambdaFunc__ "$2"
+    local fn="$RETVAL"
     local -a res=()
-    local item=""
     local -i i
-    for ((i = 0; i < len; i++)); do
-      item="${args[$i]}"
-      if ($fn "$item" "$i"); then
-        res+=("$item")
+    for ((i = 0; i < ${#___array___[@]}; i++)); do
+      if $fn "${___array___[i]}" "$i" &>/dev/null; then
+        res+=("${___array___[i]}")
       fi
     done
     RETVAL=("${res[@]}")
@@ -77,24 +63,25 @@ Array_filter() {
   else
     RETVAL=("")
     printf '%s\n' ""
+    return 1
   fi
 }
 
-# @desc check if array has element match the regexp
+# @desc check if array has element satisfy the condition
 # @param array <array>
-# @param regexp <regexp>
+# @param condition <function> | <string>
 
 # @example
 # arr=("foo" "bar111" "baz")
-# Array_find "${arr[@]}" "[a-z]+[0-9]+"
+# Array_find arr '[[ $1 =~ [a-z]+[0-9]+ ]]'
 # # assert success
 #
 # arr=("foo" "bar" "baz")
-# Array_find "${arr[@]}" "[a-z]+[0-9]+"
+# Array_find arr '[[ $1 =~ [a-z]+[0-9]+ ]]'
 # # assert failure
 # @end
 Array_find() {
-  Array_findIndex "$@"
+  Array_findIndex "$@" >/dev/null
 }
 
 # @desc return the index of the first element match the regexp
@@ -104,56 +91,80 @@ Array_find() {
 
 # @example
 # arr=("foo" "bar111" "baz")
-# Array_find "${arr[@]}" "[a-z]+[0-9]+"
+# Array_find arr '[[ $1 =~ [a-z]+[0-9]+ ]]'
 # # output: 1
 #
 # arr=("foo" "bar" "baz")
-# Array_find "${arr[@]}" "[a-z]+[0-9]+"
+# Array_find arr '[[ $1 =~ [a-z]+[0-9]+ ]]'
 # output: -1
 # @end
 Array_findIndex() {
-  __findIndex__ "$@" String_match
+  if (($# >= 2)); then
+    local -n ___array___="$1"
+    __arrayLambdaFunc__ "$2"
+    local fn="$RETVAL"
+    local -i i
+    for ((i = 0; i < ${#___array___[@]}; i++)); do
+      if $fn "${___array___[i]}" "$i" &>/dev/null; then
+        RETVAL="$i"
+        echo "$i"
+        return 0
+      fi
+    done
+    RETVAL=-1
+    echo -1
+    return 1
+  else
+    RETVAL=-1
+    echo -1
+    return 1
+  fi
 }
 
 Array_forEach() {
   if (($# >= 2)); then
-    local -a args=("$@")
-    local fn="${args[$# - 1]}"
-    unset "args[$# - 1]"
-    local -i len="${#args[@]}"
-    local item=""
+    local -n ___array___="$1"
+    __arrayLambdaFunc__ "$2"
+    local fn="$RETVAL"
     local -i i
-    for ((i = 0; i < len; i++)); do
-      item="${args[$i]}"
-      ($fn "$item" "$i")
+    for ((i = 0; i < ${#___array___[@]}; i++)); do
+      $fn "${___array___[i]}" "$i"
     done
   fi
 }
 
 Array_includes() {
-  Array_indexOf "$@"
+  Array_indexOf "$@" >/dev/null
 }
 
 Array_indexOf() {
-  __findIndex__ "$@" String_eq
+  if (($# >= 1)); then
+    local target="${2:-}"
+    Array_findIndex "$1" '[[ "$1" == "'"$target"'" ]]'
+  else
+    RETVAL=-1
+    echo -1
+    return 1
+  fi
 }
 
 Array_isEmpty() {
-  ((${#@} == 0))
+  if (($# >= 1)); then
+    local -n ___array___="$1"
+    ((${#___array___[@]} == 0))
+  else
+    return 1
+  fi
 }
 
 Array_join() {
-  if (($# >= 3)); then
-    local -a args=("$@")
-    local delimiter="${args[$# - 1]}"
-    unset "args[$# - 1]"
-    local -i len="${#args[@]}"
+  if (($# >= 1)); then
+    local -n ___array___="$1"
+    local delimiter="${2:-}"
     local result=""
-    local str=""
     local -i i
-    for ((i = 0; i < len; i++)); do
-      str="${args[$i]}"
-      result="$result$delimiter$str"
+    for ((i = 0; i < ${#___array___[@]}; i++)); do
+      result="$result$delimiter${___array___[i]}"
     done
 
     String_stripStart "$result" "$delimiter" >/dev/null
@@ -162,34 +173,27 @@ Array_join() {
     RETVAL="$result"
     printf '%s\n' "$result"
   else
-    RETVAL="${1:-}"
-    printf '%s\n' "${1:-}"
+    RETVAL=""
+    printf '%s\n' ""
   fi
-}
-
-# @deprecated
-Array_length() {
-  local -i len="$#"
-  RETVAL="$len"
-  echo "$len"
 }
 
 Array_map() {
   if (($# >= 2)); then
-    local -a args=("$@")
-    local fn="${args[$# - 1]}"
-    unset "args[$# - 1]"
-    local -i len="${#args[@]}"
+    local -n ___array___="$1"
+    __arrayLambdaFunc__ "$2"
+    local fn="$RETVAL"
+
     local -a res=()
     local val=""
     local item=""
     local -i i
-    for ((i = 0; i < len; i++)); do
-      item="${args[$i]}"
-      RETVAL="__reset_retval__"
+    for ((i = 0; i < ${#___array___[@]}; i++)); do
+      item="${___array___[i]}"
+      RETVAL="___reset_retval___"
       $fn "$item" "$i" >/dev/null
       # check if fn use the RETVAL to return value
-      if [[ "$RETVAL" != "__reset_retval__" ]]; then
+      if [[ "$RETVAL" != "___reset_retval___" ]]; then
         val="$RETVAL"
       else
         val="$($fn "$item" "$i")"
@@ -223,48 +227,46 @@ Array_random() {
 }
 
 Array_reverse() {
-  local -a arr=("$@")
-  local -i i=0
-  local -i j=$(($# - 1))
-  while ((i < j)); do
-    local tmp="${arr[$i]}"
-    arr[$i]="${arr[$j]}"
-    arr[$j]="$tmp"
-    ((i++, j--))
-  done
-  RETVAL=("${arr[@]}")
-  printf '%s\n' "${arr[@]}"
+  if (($# >= 1)); then
+    local -n ___array___="$1"
+    local len=${#___array___[@]}
+    local -i i=0
+    local -i j=$((len - 1))
+    while ((i < j)); do
+      local tmp="${___array___[i]}"
+      ___array___[$i]="${___array___[j]}"
+      ___array___[$j]="$tmp"
+      i=$((i + 1))
+      j=$((j - 1))
+    done
+  fi
 }
 
 # @desc check if array has element meets the condition
 # @param array <array>
-# @param condition <function>
+# @param condition <function> | <string>
 
 # @example
 # gt5() {
-#   (($1 > 5)) && return 0
-#   return 1
+#   (($1 > 5))
 # }
 #
 # arr=(1 2 6)
-# Array_some "${arr[@]}" gt5
+# Array_some arr gt5
 # # assert success
 #
 # arr=(1 2 3)
-# Array_some "${arr[@]}" gt5
+# Array_some arr '(($1 > 5))'
 # # assert failure
 # @end
 Array_some() {
   if (($# >= 2)); then
-    local -a args=("$@")
-    local fn="${args[$# - 1]}"
-    unset "args[$# - 1]"
-    local -i len="${#args[@]}"
-    local item=""
+    local -n ___array___="$1"
+    __arrayLambdaFunc__ "$2"
+    local fn="$RETVAL"
     local -i i
-    for ((i = 0; i < len; i++)); do
-      item="${args[$i]}"
-      if ($fn "$item" "$i"); then
+    for ((i = 0; i < ${#___array___[@]}; i++)); do
+      if $fn "${___array___[i]}" "$i"; then
         return 0
       fi
     done
@@ -275,9 +277,12 @@ Array_some() {
 }
 
 Array_sort() {
-  if (($# >= 2)); then
-    local -a arr=("$@")
-    local -i len="$#"
+  if (($# >= 1)); then
+    local -n ___array___="$1"
+    __arrayLambdaFunc__ "${2:-__defaultComparator__}"
+    local comparator="$RETVAL"
+
+    local -i len="${#___array___[@]}"
     local -i step=1
 
     while ((step < len)); do
@@ -294,40 +299,34 @@ Array_sort() {
         local -i j="$rStart"
 
         while ((i <= lEnd)) && ((j <= rEnd)); do
-          if $LIBSHELL_COMPARATOR "${arr[i]}" ">" "${arr[j]}"; then
-            tmpArr+=("${arr[j]}")
+          if $comparator "${___array___[i]}" ">" "${___array___[j]}"; then
+            tmpArr+=("${___array___[j]}")
             j=$((j + 1))
           else
-            tmpArr+=("${arr[i]}")
+            tmpArr+=("${___array___[i]}")
             i=$((i + 1))
           fi
         done
 
         while ((i <= lEnd)); do
-          tmpArr+=("${arr[i]}")
+          tmpArr+=("${___array___[i]}")
           i=$((i + 1))
         done
 
         while ((j <= rEnd)); do
-          tmpArr+=("${arr[j]}")
+          tmpArr+=("${___array___[j]}")
           j=$((j + 1))
         done
 
         local k=0
         for ((k = 0; k < ${#tmpArr[@]}; k++)); do
-          arr[k + lStart]="${tmpArr[k]}"
+          ___array___[k + lStart]="${tmpArr[k]}"
         done
 
         lStart=$((lStart + 2 * step))
       done
       step=$((step * 2))
     done
-
-    RETVAL=("${arr[@]}")
-    printf '%s\n' "${arr[@]}"
-  else
-    RETVAL=("${1:-}")
-    printf '%s\n' "${1:-}"
   fi
 }
 
@@ -344,31 +343,12 @@ __defaultComparator__() {
   fi
 }
 
-__findIndex__() {
-  local -a args=("$@")
-  local comparator="${args[$# - 1]}"
-  unset "args[$# - 1]"
-  local len="${#args[@]}"
-  RETVAL=-1
-
-  if ((len >= 2)); then
-    local target="${args[len - 1]}"
-    unset "args[len - 1]"
-    local -i arrLen="${#args[@]}"
-    local item=""
-    local -i i
-    for ((i = 0; i < arrLen; i++)); do
-      item="${args[$i]}"
-      if $comparator "$item" "$target"; then
-        RETVAL="$i"
-        echo "$i"
-        return 0
-      fi
-    done
-    echo -1
-    return 1
-  else
-    echo -1
-    return 1
+__arrayLambdaFunc__() {
+  RETVAL="$1"
+  if ! type -t "$1" &>/dev/null; then
+    eval '___array_lambda_func___() {
+      '"$1"'
+    }'
+    RETVAL="___array_lambda_func___"
   fi
 }

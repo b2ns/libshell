@@ -41,7 +41,7 @@ basic lib functions for (bash)shell script
 ## features
 
 - meant to be basic, small and easy to use
-- pure bash(4.2+), no magic, no external dependences
+- pure bash(4.3+), no magic, no external dependences
 - ECMAScript(Javascript) style like api
 - well tested
 - well documented
@@ -161,22 +161,24 @@ more details in the [doc](doc/Args.md)
 ```sh
 arr=("foo" "bar" "baz")
 
-Array_isEmpty "${arr[@]}"
+Array_isEmpty arr
 
-Array_includes "${arr[@]}" "bar"
+Array_includes arr "bar"
 
-Array_indexOf "${arr[@]}" "bar" # 1
+Array_indexOf arr "bar" # 1
 
-Array_join "${arr[@]}" "/" # foo/bar/baz
+Array_join arr "/" # foo/bar/baz
 
 arr2=(2 5 1 3 4)
 
-Array_forEach "${arr2[@]}" echo # "2 0" "5 1" "1 2" "3 3" "4 4"
+Array_forEach arr2 echo # "2 0" "5 1" "1 2" "3 3" "4 4"
+Array_forEach arr2 'echo "$1-$2"' # "2-0" "5-1" "1-2" "3-3" "4-4"
 
-double(){ echo "$(($1 * 2))"; }
-Array_map "${arr2[@]}" double # 2 10 2 6 8
+Array_map arr2 'echo "$(($1 * 2))"' # 2 10 2 6 8
 
-Array_sort "${arr2[@]}" # 1 2 3 4 5
+Array_reverse arr2 # 4 3 1 5 2
+
+Array_sort arr2 # 1 2 3 4 5
 ```
 
 more details in the [doc](doc/Array.md)
