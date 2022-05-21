@@ -149,7 +149,11 @@ String_reverse() { #@test
 }
 
 String_search() { #@test
-  skip TODO
+  run String_search "foo123bar" "[0-9]+"
+  assert_output 3
+
+  run String_search "foobar" "[0-9]+"
+  assert_output -1
 }
 
 String_slice() { #@test

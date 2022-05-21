@@ -159,7 +159,15 @@ String_reverse() {
 }
 
 String_search() {
-  echo TODO
+  RETVAL=-1
+  (($# < 2)) && echo -1
+  local string="$1"
+  local pattern="$2"
+  if String_match "$string" "$pattern"; then
+    String_indexOf "$string" "${BASH_REMATCH[0]}"
+  else
+    echo -1
+  fi
 }
 
 String_slice() {
