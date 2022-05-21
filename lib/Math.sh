@@ -1,5 +1,48 @@
 #!/usr/bin/env bash
 
+# @desc get the absolute value of a number
+# @param number <number>
+# @return <number>
+
+# example
+# Math_abs -1
+# # output: 1
+# end
+Math_abs() {
+  if (($1 < 0)); then
+    local -i num=$((0 - $1))
+    RETVAL="$num"
+    echo "$num"
+  else
+    RETVAL="$1"
+    echo "$1"
+  fi
+}
+
+Math_max() {
+  local -i max="${1-}"
+  local -i num=""
+  for num in "$@"; do
+    if ((num > max)); then
+      max="$num"
+    fi
+  done
+  RETVAL="$max"
+  echo "$max"
+}
+
+Math_min() {
+  local -i min="${1-}"
+  local -i num=""
+  for num in "$@"; do
+    if ((num < min)); then
+      min="$num"
+    fi
+  done
+  RETVAL="$min"
+  echo "$min"
+}
+
 # @desc generate a random number
 # @param min <number> (default 0)
 # @param max <number> (default 100)
