@@ -127,6 +127,31 @@ Array_notEmpty() { #@test
   assert_success
 }
 
+Array_pop() { #@test
+  local -a arr=(1 2 3 4)
+  run Array_pop arr
+  assert_output 4
+
+  local -a arr=(1 2 3 4)
+  Array_pop arr
+  assert_equal "${#arr[@]}" 3
+
+  local -a arr=()
+  run Array_pop arr
+  assert_output ""
+}
+
+Array_push() { #@test
+  local -a arr=()
+  run Array_push arr "foo"
+  assert_output "foo"
+
+  local -a arr=(1 2 3)
+  Array_push arr 4
+  assert_equal "${#arr[@]}" 4
+  assert_equal "${arr[3]}" 4
+}
+
 Array_random() { #@test
   run Array_random 2 5 10
   # shellcheck disable=SC2154
@@ -142,6 +167,21 @@ Array_reverse() { #@test
   assert_equal "${arr[0]}" 3
   assert_equal "${arr[1]}" 2
   assert_equal "${arr[2]}" 1
+}
+
+Array_shift() { #@test
+  local -a arr=(1 2 3 4)
+  run Array_shift arr
+  assert_output 1
+
+  local -a arr=(1 2 3 4)
+  Array_shift arr
+  assert_equal "${#arr[@]}" 3
+  assert_equal "${arr[0]}" 2
+
+  local -a arr=()
+  run Array_shift arr
+  assert_output ""
 }
 
 Array_some() { #@test
@@ -173,4 +213,64 @@ Array_sort() { #@test
     fi
   '
   assert_equal "${arr[*]}" "9 7 5 5 5 3 2 1"
+}
+
+Array_splice() { #@test
+  local -a arr=(1 2 3 4)
+  run Array_splice arr 2
+  assert_line -n 0 3
+  assert_line -n 1 4
+
+  local -a arr=(1 2 3 4)
+  Array_splice arr 1
+  assert_equal "${#arr[@]}" 1
+
+  local -a arr=(1 2 3 4)
+  Array_splice arr 99
+  assert_equal "${#arr[@]}" 3
+
+  local -a arr=(1 2 3 4)
+  Array_splice arr -2
+  assert_equal "${#arr[@]}" 2
+
+  local -a arr=(1 2 3 4)
+  Array_splice arr -99
+  assert_equal "${#arr[@]}" 0
+
+  local -a arr=(1 2 3 4)
+  Array_splice arr 2 1
+  assert_equal "${#arr[@]}" 3
+  assert_equal "${arr[2]}" 4
+
+  local -a arr=(1 2 3 4)
+  Array_splice arr 1 2
+  assert_equal "${#arr[@]}" 2
+  assert_equal "${arr[1]}" 4
+
+  local -a arr=(1 2 3 4)
+  Array_splice arr 1 0 5 6 7
+  assert_equal "${#arr[@]}" 7
+  assert_equal "${arr[1]}" 5
+  assert_equal "${arr[2]}" 6
+  assert_equal "${arr[3]}" 7
+  assert_equal "${arr[4]}" 2
+
+  local -a arr=(1 2 3 4)
+  Array_splice arr 2 1 5 6 7
+  assert_equal "${#arr[@]}" 6
+  assert_equal "${arr[2]}" 5
+  assert_equal "${arr[3]}" 6
+  assert_equal "${arr[4]}" 7
+  assert_equal "${arr[5]}" 4
+}
+
+Array_unshift() { #@test
+  local -a arr=()
+  run Array_unshift arr "foo"
+  assert_output "foo"
+
+  local -a arr=(1 2 3)
+  Array_unshift arr 4
+  assert_equal "${#arr[@]}" 4
+  assert_equal "${arr[0]}" 4
 }

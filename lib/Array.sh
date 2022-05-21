@@ -212,6 +212,37 @@ Array_notEmpty() {
   ! Array_isEmpty "$@"
 }
 
+Array_pop() {
+  if (($# >= 1)); then
+    local -n ___array___="$1"
+    local -i len=${#___array___[@]}
+    if ((len)); then
+      local last="${___array___[len - 1]}"
+      unset '___array___[len - 1]'
+      RETVAL="$last"
+      printf '%s\n' "$last"
+    else
+      RETVAL=""
+      echo ""
+    fi
+  else
+    RETVAL=""
+    echo ""
+  fi
+}
+
+Array_push() {
+  if (($# >= 2)); then
+    local -n ___array___="$1"
+    ___array___+=("$2")
+    RETVAL="$2"
+    printf '%s\n' "$2"
+  else
+    RETVAL=""
+    echo ""
+  fi
+}
+
 Array_random() {
   local -a res=()
   local -i size="${1:-10}"
@@ -229,7 +260,7 @@ Array_random() {
 Array_reverse() {
   if (($# >= 1)); then
     local -n ___array___="$1"
-    local len=${#___array___[@]}
+    local -i len=${#___array___[@]}
     local -i i=0
     local -i j=$((len - 1))
     while ((i < j)); do
@@ -239,6 +270,26 @@ Array_reverse() {
       i=$((i + 1))
       j=$((j - 1))
     done
+  fi
+}
+
+Array_shift() {
+  if (($# >= 1)); then
+    local -n ___array___="$1"
+    local -i len=${#___array___[@]}
+    if ((len)); then
+      local first="${___array___[0]}"
+      unset '___array___[0]'
+      ___array___=("${___array___[@]}")
+      RETVAL="$first"
+      printf '%s\n' "$first"
+    else
+      RETVAL=""
+      echo ""
+    fi
+  else
+    RETVAL=""
+    echo ""
   fi
 }
 
@@ -327,6 +378,42 @@ Array_sort() {
       done
       step=$((step * 2))
     done
+  fi
+}
+
+Array_splice() {
+  if (($# >= 2)); then
+    local -n ___array___="$1"
+    local -i len=${#___array___[@]}
+    local -i start="$2"
+    ((start >= len)) && start=$((len - 1))
+    ((start < -len)) && start=0
+    ((start < 0)) && start=$((len + start))
+    local -i restCount="$((len - start))"
+    local -i deleteCount="${3:-$restCount}"
+    ((deleteCount > restCount)) && deleteCount="$restCount"
+    local -a insertItems=("${@:4}")
+    local -a headItems=("${___array___[@]:0:start}")
+    local -a deleteItems=("${___array___[@]:start:deleteCount}")
+    local -a tailItems=("${___array___[@]:start+deleteCount}")
+    ___array___=("${headItems[@]}" "${insertItems[@]}" "${tailItems[@]}")
+    RETVAL=("${deleteItems[@]}")
+    printf '%s\n' "${deleteItems[@]}"
+  else
+    RETVAL=("")
+    printf '%s\n' ""
+  fi
+}
+
+Array_unshift() {
+  if (($# >= 2)); then
+    local -n ___array___="$1"
+    ___array___=("$2" "${___array___[@]}")
+    RETVAL="$2"
+    printf '%s\n' "$2"
+  else
+    RETVAL=""
+    echo ""
   fi
 }
 
