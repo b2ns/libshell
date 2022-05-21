@@ -31,8 +31,6 @@ basic lib functions for (bash)shell script
   - [String](#string)
 - [FAQ](#faq)
 - [build with](#build-with)
-- [TODO](#todo)
-- [contribute](#contribute)
 - [acknowledgments](#acknowledgments)
 - [links](#links)
 
@@ -176,9 +174,15 @@ Array_forEach arr2 'echo "$1-$2"' # "2-0" "5-1" "1-2" "3-3" "4-4"
 
 Array_map arr2 'echo "$(($1 * 2))"' # 2 10 2 6 8
 
+Array_push arr2 9 # 2 5 1 3 4 9
+
+Array_pop arr2 # 2 5 1 3
+
 Array_reverse arr2 # 4 3 1 5 2
 
 Array_sort arr2 # 1 2 3 4 5
+
+Array_splice arr2 1 1 # 2 1 3 4
 ```
 
 more details in the [doc](doc/Array.md)
@@ -202,9 +206,13 @@ more details in the [doc](doc/Color.md)
 
 ```sh
 File_isDir "foo/bar/"
+
 File_isFile "foo/bar/baz.sh"
+
 File_isExist "foo/bar/baz.sh"
+
 File_isSymlink "foo/bar/baz.sh"
+
 File_isEmpty "foo/bar/baz.sh"
 ```
 
@@ -214,9 +222,13 @@ more details in the [doc](doc/File.md)
 
 ```sh
 IO_log "log"
+
 IO_info "info"
+
 IO_warn "warn"
+
 IO_error "error"
+
 # also accept color format arguments
 IO_success "success" "#0f0" "bold"
 ```
@@ -226,7 +238,14 @@ more details in the [doc](doc/IO.md)
 ### [Math](doc/Math.md)
 
 ```sh
+Math_abs -1 # 1
+
+Math_max 3 2 1 5 # 5
+
+Math_min 3 2 1 5 # 1
+
 Math_random 1 100
+
 Math_range 1 10 2
 ```
 
@@ -330,14 +349,6 @@ more details in the [doc](doc/String.md)
 - linter: [shellcheck](https://github.com/koalaman/shellcheck)
 - fixer: [shfmt](https://github.com/mvdan/sh)
 - unit test: [bats](https://github.com/bats-core/bats-core)
-
-## TODO
-- [ ] add more Math function
-- [ ] use nameref in Array ?
-- [ ] Args support define command
-- [ ] add Assert module ?
-
-## contribute
 
 ## acknowledgments
 
