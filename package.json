@@ -41,6 +41,7 @@
   },
   "repository": "git@github.com:b2ns/libshell.git",
   "author": "b2ns <eminemdsp@163.com>",
+  "homepage": "https://github.com/b2ns/libshell",
   "files": [
     "lib/",
     "libshell.sh",
