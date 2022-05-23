@@ -19,6 +19,14 @@ Math_abs() {
   fi
 }
 
+# @desc get the maximum
+# @param numbers <array>
+# @return <number>
+
+# example
+# Math_max 1 2 3
+# # output: 3
+# end
 Math_max() {
   local -i max="${1-}"
   local -i num=""
@@ -31,6 +39,14 @@ Math_max() {
   echo "$max"
 }
 
+# @desc get the minimum
+# @param numbers <array>
+# @return <number>
+
+# example
+# Math_min 1 2 3
+# # output: 1
+# end
 Math_min() {
   local -i min="${1-}"
   local -i num=""

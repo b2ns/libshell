@@ -25,12 +25,14 @@ Args_define "-f --format" "Output format" "[json yaml toml xml csv]" "json"
 Args_define "-p --pwd" "Password is required" "<any>!"
 
 checkEqualCustom() {
-if [ "$1" != "custom" ]; then
+if [[ "$1" != "custom" ]]; then
 echo "Expected 'custom', got '$1'"
 return 1
 fi
 }
 Args_define "-c --custom" "Custom" checkEqualCustom
+# or use a string as lambda function
+# Args_define "-c --custom" "Custom" '[[ "$1" != "custom" ]] && echo "Expected custom, got $1";return 1'
 
 Args_define "-v -V --version" "Show version"
 Args_define "-h --help" "Show help"

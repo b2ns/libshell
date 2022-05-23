@@ -11,10 +11,15 @@
 - [Array_join](#Array_join)
 - [Array_map](#Array_map)
 - [Array_notEmpty](#Array_notEmpty)
+- [Array_pop](#Array_pop)
+- [Array_push](#Array_push)
 - [Array_random](#Array_random)
 - [Array_reverse](#Array_reverse)
+- [Array_shift](#Array_shift)
 - [Array_some](#Array_some)
 - [Array_sort](#Array_sort)
+- [Array_splice](#Array_splice)
+- [Array_unshift](#Array_unshift)
 
 #### Array_every
 
@@ -100,9 +105,15 @@ output: -1
 
 #### Array_notEmpty
 
+#### Array_pop
+
+#### Array_push
+
 #### Array_random
 
 #### Array_reverse
+
+#### Array_shift
 
 #### Array_some
 
@@ -126,3 +137,7 @@ Array_some arr '(($1 > 5))'
 ```
 
 #### Array_sort
+
+#### Array_splice
+
+#### Array_unshift

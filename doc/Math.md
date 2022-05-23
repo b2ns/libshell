@@ -1,7 +1,34 @@
 ### Math
 
+- [Math_abs](#Math_abs)
+- [Math_max](#Math_max)
+- [Math_min](#Math_min)
 - [Math_random](#Math_random)
 - [Math_range](#Math_range)
+
+#### Math_abs
+
+> get the absolute value of a number
+
+- **number** \<*number*\>
+
++ **@return** \<*number*\>
+
+#### Math_max
+
+> get the maximum
+
+- **numbers** \<*array*\>
+
++ **@return** \<*number*\>
+
+#### Math_min
+
+> get the minimum
+
+- **numbers** \<*array*\>
+
++ **@return** \<*number*\>
 
 #### Math_random
 
