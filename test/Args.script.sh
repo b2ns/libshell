@@ -4,7 +4,7 @@ IFS=$'\n\t'
 source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/../libshell.sh"
 
 checkEqualCustom() {
-  if [ "$1" != "custom" ]; then
+  if [[ "$1" != "custom" ]]; then
     echo "Expected 'custom', got '$1'"
     return 1
   fi
@@ -19,6 +19,7 @@ Args_define "-l --level" "Level of parse" "<num>" 3
 Args_define "-f --format" "Output format" "[json yaml toml xml csv]" "json"
 Args_define "-p --pwd" "Password is required" "<any>!"
 Args_define "-c --custom" "Custom" checkEqualCustom
+Args_define "--custom2" "Custom2" '[[ "$1" != "custom2" ]] && echo "Expected custom2, got $1";return 1'
 Args_define "-v -V --version" "Show version"
 Args_define "-h --help" "Show help"
 Args_define "--show-input-file"

@@ -26,12 +26,14 @@ declare -gi LIBSHELL_ARGS_HAS_PARSED=0
 # Args_define "-p --pwd" "Password is required" "<any>!"
 
 # checkEqualCustom() {
-# if [ "$1" != "custom" ]; then
+# if [[ "$1" != "custom" ]]; then
 # echo "Expected 'custom', got '$1'"
 # return 1
 # fi
 # }
 # Args_define "-c --custom" "Custom" checkEqualCustom
+# # or use a string as lambda function
+# # Args_define "-c --custom" "Custom" '[[ "$1" != "custom" ]] && echo "Expected custom, got $1";return 1'
 
 # Args_define "-v -V --version" "Show version"
 # Args_define "-h --help" "Show help"
@@ -339,7 +341,7 @@ Args_parse() {
       if ((readingFlagValue)); then
 
         # check value type
-        if String_match "$valueType" "^(<|\[)"; then
+        if ! String_match "$valueType" "^\[( |\[)" && String_match "$valueType" "^(<|\[)"; then
           if (String_match "$valueType" "^\[.+\]$" && (String_isEmpty "$arg" || ! String_match "$valueType" "(\[| )$arg( |\])")) ||
             (String_match "$valueType" "<int" && ! String_match "$arg" "^-?([1-9][0-9]*|0)$") ||
             (String_match "$valueType" "<float" && ! String_match "$arg" "^-?([1-9][0-9]*|0)\.[0-9]+$") ||
@@ -348,6 +350,8 @@ Args_parse() {
             return 1
           fi
         else
+          __argsLambdaFunc__ "$valueType"
+          valueType="$RETVAL"
           $valueType "$arg" || return 1
         fi
 
@@ -408,5 +412,17 @@ __warnParsingArgs__() {
   if ((LIBSHELL_ARGS_HAS_PARSED == 0)); then
     IO_error "Error: call Args_parse to parse the arguments first" >&2
     return 1
+  fi
+}
+
+__argsLambdaFunc__() {
+  # shellcheck disable=SC2178
+  RETVAL="$1"
+  if ! type -t "$1" &>/dev/null; then
+    eval '___args_lambda_func___() {
+      '"$1"'
+    }'
+    # shellcheck disable=SC2178
+    RETVAL="___args_lambda_func___"
   fi
 }
