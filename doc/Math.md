@@ -14,6 +14,11 @@
 
 + **@return** \<*number*\>
 
+```sh
+Math_abs -1
+# output: 1
+```
+
 #### Math_max
 
 > get the maximum
@@ -22,6 +27,11 @@
 
 + **@return** \<*number*\>
 
+```sh
+Math_max 1 2 3
+# output: 3
+```
+
 #### Math_min
 
 > get the minimum
@@ -29,6 +39,11 @@
 - **numbers** \<*array*\>
 
 + **@return** \<*number*\>
+
+```sh
+Math_min 1 2 3
+# output: 1
+```
 
 #### Math_random
 

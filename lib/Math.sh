@@ -4,10 +4,10 @@
 # @param number <number>
 # @return <number>
 
-# example
+# @example
 # Math_abs -1
 # # output: 1
-# end
+# @end
 Math_abs() {
   if (($1 < 0)); then
     local -i num=$((0 - $1))
@@ -23,10 +23,10 @@ Math_abs() {
 # @param numbers <array>
 # @return <number>
 
-# example
+# @example
 # Math_max 1 2 3
 # # output: 3
-# end
+# @end
 Math_max() {
   local -i max="${1-}"
   local -i num=""
@@ -43,10 +43,10 @@ Math_max() {
 # @param numbers <array>
 # @return <number>
 
-# example
+# @example
 # Math_min 1 2 3
 # # output: 1
-# end
+# @end
 Math_min() {
   local -i min="${1-}"
   local -i num=""
