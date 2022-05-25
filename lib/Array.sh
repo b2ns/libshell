@@ -40,6 +40,7 @@ Array_every() {
 # @desc filter the array by condition
 # @param array <array>
 # @param condition <function> | <string>
+# @return array <array>
 
 # @example
 # arr=(6 1 8)
@@ -121,6 +122,17 @@ Array_findIndex() {
   fi
 }
 
+# @desc execute the function for each element in array
+# @param array <array>
+# @param function <function> | <string>
+
+# @example
+# arr=(6 7 8)
+# Array_forEach arr 'echo "$2: $1"'
+# # output: 0: 6
+# # output: 1: 7
+# # output: 2: 8
+# @end
 Array_forEach() {
   if (($# >= 2)); then
     local -n ___array___="$1"
@@ -133,10 +145,29 @@ Array_forEach() {
   fi
 }
 
+# @desc check if array has a certain element
+# @param array <array>
+# @param element <string>
+
+# @example
+# arr=(1 2 3)
+# Array_includes arr 2
+# # assert success
+# @end
 Array_includes() {
   Array_indexOf "$@" >/dev/null
 }
 
+# @desc get the first index of the element
+# @param array <array>
+# @param element <string>
+# @return index <int> or -1 when not found
+
+# @example
+# arr=(1 2 3)
+# Array_indexOf arr 2
+# # output: 1
+# @end
 Array_indexOf() {
   if (($# >= 1)); then
     local target="${2:-}"
@@ -148,6 +179,14 @@ Array_indexOf() {
   fi
 }
 
+# @desc check if array is empty
+# @param array <array>
+
+# @example
+# arr=()
+# Array_isEmpty arr
+# # assert success
+# @end
 Array_isEmpty() {
   if (($# >= 1)); then
     local -n ___array___="$1"
@@ -157,6 +196,20 @@ Array_isEmpty() {
   fi
 }
 
+# @desc join array elements with a delimiter
+# @param array <array>
+# @param delimiter <string>
+# @return joined string <string>
+
+# @example
+# arr=(1 2 3)
+# Array_join arr ","
+# # output: 1,2,3
+#
+# arr=(1 2 3)
+# Array_join arr
+# # output: 123
+# @end
 Array_join() {
   if (($# >= 1)); then
     local -n ___array___="$1"
@@ -178,6 +231,24 @@ Array_join() {
   fi
 }
 
+# @desc create a new array with the results of calling a provided function on every element in this array
+# @param array <array>
+# @param function <function> | <string>
+# @return array <array>
+
+# @example
+# double() {
+# echo $(($1 * 2))
+# }
+#
+# arr=(1 2 3)
+# Array_map arr double
+# # output: 2 4 6
+#
+# arr=(1 2 3)
+# Array_map arr 'echo $(( $1 * 3 ))'
+# # output: 3 6 9
+# @end
 Array_map() {
   if (($# >= 2)); then
     local -n ___array___="$1"
@@ -208,6 +279,14 @@ Array_map() {
   fi
 }
 
+# @desc check if array is not empty
+# @param array <array>
+
+# @example
+# arr=(1 2 3)
+# Array_notEmpty arr
+# # assert success
+# @end
 Array_notEmpty() {
   ! Array_isEmpty "$@"
 }

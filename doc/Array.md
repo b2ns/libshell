@@ -49,6 +49,8 @@ Array_every arr '(( $1 > 5 ))'
 - **array** \<*array*\>
 - **condition** \<*function*\> | \<string\>
 
++ **@return** array \<*array*\>
+
 ```sh
 arr=(6 1 8)
 Array_filter arr '(( $1 > 5 ))'
@@ -93,17 +95,112 @@ output: -1
 
 #### Array_forEach
 
+> execute the function for each element in array
+
+- **array** \<*array*\>
+- **function** \<*function*\> | \<string\>
+
+```sh
+arr=(6 7 8)
+Array_forEach arr 'echo "$2: $1"'
+# output: 0: 6
+# output: 1: 7
+# output: 2: 8
+```
+
 #### Array_includes
+
+> check if array has a certain element
+
+- **array** \<*array*\>
+- **element** \<*string*\>
+
+```sh
+arr=(1 2 3)
+Array_includes arr 2
+# assert success
+```
 
 #### Array_indexOf
 
+> get the first index of the element
+
+- **array** \<*array*\>
+- **element** \<*string*\>
+
++ **@return** index \<*int*\> or \-1 when not found
+
+```sh
+arr=(1 2 3)
+Array_indexOf arr 2
+# output: 1
+```
+
 #### Array_isEmpty
+
+> check if array is empty
+
+- **array** \<*array*\>
+
+```sh
+arr=()
+Array_isEmpty arr
+# assert success
+```
 
 #### Array_join
 
+> join array elements with a delimiter
+
+- **array** \<*array*\>
+- **delimiter** \<*string*\>
+
++ **@return** joined string \<*string*\>
+
+```sh
+arr=(1 2 3)
+Array_join arr ","
+# output: 1,2,3
+
+arr=(1 2 3)
+Array_join arr
+# output: 123
+```
+
 #### Array_map
 
+> create a new array with the results of calling a provided function on every element in this array
+
+- **array** \<*array*\>
+- **function** \<*function*\> | \<string\>
+
++ **@return** array \<*array*\>
+
+```sh
+double() {
+ # echo $(($1 * 2))
+}
+
+arr=(1 2 3)
+Array_map arr double
+# output: 2 4 6
+
+arr=(1 2 3)
+Array_map arr 'echo $(( $1 * 3 ))'
+# output: 3 6 9
+```
+
 #### Array_notEmpty
+
+> check if array is not empty
+
+- **array** \<*array*\>
+
+```sh
+arr=(1 2 3)
+Array_notEmpty arr
+# assert success
+```
 
 #### Array_pop
 
