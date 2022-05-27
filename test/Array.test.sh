@@ -144,12 +144,18 @@ Array_pop() { #@test
 Array_push() { #@test
   local -a arr=()
   run Array_push arr "foo"
-  assert_output "foo"
+  assert_output 1
+
+  local -a arr=("foo" "bar")
+  run Array_push arr
+  assert_output 2
 
   local -a arr=(1 2 3)
-  Array_push arr 4
-  assert_equal "${#arr[@]}" 4
+  Array_push arr 4 5 6
+  assert_equal "${#arr[@]}" 6
   assert_equal "${arr[3]}" 4
+  assert_equal "${arr[4]}" 5
+  assert_equal "${arr[5]}" 6
 }
 
 Array_random() { #@test
@@ -267,10 +273,12 @@ Array_splice() { #@test
 Array_unshift() { #@test
   local -a arr=()
   run Array_unshift arr "foo"
-  assert_output "foo"
+  assert_output 1
 
   local -a arr=(1 2 3)
-  Array_unshift arr 4
-  assert_equal "${#arr[@]}" 4
+  Array_unshift arr 4 5 6
+  assert_equal "${#arr[@]}" 6
   assert_equal "${arr[0]}" 4
+  assert_equal "${arr[1]}" 5
+  assert_equal "${arr[2]}" 6
 }

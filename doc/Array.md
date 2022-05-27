@@ -178,7 +178,7 @@ Array_join arr
 
 ```sh
 double() {
- # echo $(($1 * 2))
+echo $(($1 * 2))
 }
 
 arr=(1 2 3)
@@ -204,13 +204,75 @@ Array_notEmpty arr
 
 #### Array_pop
 
+> remove the last element of the array
+
+- **array** \<*array*\>
+
++ **@return** removed element \<*string*\>
+
+```sh
+arr=(1 2 3)
+Array_pop arr
+# output: 3
+```
+
 #### Array_push
+
+> add one or more elements to the end of an array, and return the new length of the array
+
+- **array** \<*array*\>
+- **elements** \<*any*\>
+
++ **@return** length of the array \<*int*\>
+
+```sh
+arr=(1 2 3)
+Array_push arr 4 5 6
+# output: 6
+# arr: 1 2 3 4 5 6
+```
 
 #### Array_random
 
+> generate a random array
+
+- **size** \<*int*\> the size of the array (default 100)
+- **min** \<*int*\> the min value of the random number (default 0)
+- **max** \<*int*\> the max value of the random number (default 100)
+
++ **@return** a random array \<*array*\>
+
+```sh
+Array_random 100 0 100
+```
+
 #### Array_reverse
 
+> reverse the order of the elements of an array in place
+
+- **array** \<*array*\>
+
++ **@return** reversed array \<*array*\>
+
+```sh
+arr=(1 2 3)
+Array_reverse arr
+# output: 3 2 1
+```
+
 #### Array_shift
+
+> remove the first element of the array
+
+- **array** \<*array*\>
+
++ **@return** removed element \<*string*\>
+
+```sh
+arr=(1 2 3)
+Array_shift arr
+# output: 1
+```
 
 #### Array_some
 
@@ -235,6 +297,63 @@ Array_some arr '(($1 > 5))'
 
 #### Array_sort
 
+> sort the elements of an array in place
+
+- **array** \<*array*\>
+- **comparator** \<*function*\> | \<string\>
+
++ **@return** sorted array \<*array*\>
+
+```sh
+arr=(7 1 5 2 5 3 5 8)
+Array_sort arr
+# output: 1 2 3 5 5 5 7 8
+
+arr=(7 1 5 2 5 3 5 8)
+Array_sort arr '
+  local a="$1"
+  local op="$2"
+  local b="$3"
+  if [[ "$op" == ">" ]]; then
+    ((a < b))
+  elif [[ "$op" == "<" ]]; then
+    ((a > b))
+  else
+    ((a == b))
+  fi
+'
+# output: 8 7 5 5 5 5 3 2 1
+```
+
 #### Array_splice
 
+> change the contents of an array by removing or replacing existing elements and/or adding new elements in place
+
+- **array** \<*array*\>
+- **start** \<*int*\>
+- **deleteCount** \<*int*\>
+- **items** \<*string*\>
+
++ **@return** changed array \<*array*\>
+
+```sh
+arr=(1 2 3 4)
+Array_splice arr 1 2
+# output: 2 3
+```
+
 #### Array_unshift
+
+> add one or more elements to the beginning of an array, and return the new length of the array
+
+- **array** \<*array*\>
+- **elements** \<*any*\>
+
++ **@return** length of the array \<*int*\>
+
+```sh
+arr=(1 2 3)
+Array_unshift arr 4 5 6
+# output: 6
+# arr: 4 5 6 1 2 3
+```

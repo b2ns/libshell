@@ -291,6 +291,15 @@ Array_notEmpty() {
   ! Array_isEmpty "$@"
 }
 
+# @desc remove the last element of the array
+# @param array <array>
+# @return removed element <string>
+
+# @example
+# arr=(1 2 3)
+# Array_pop arr
+# # output: 3
+# @end
 Array_pop() {
   if (($# >= 1)); then
     local -n ___array___="$1"
@@ -310,21 +319,41 @@ Array_pop() {
   fi
 }
 
+# @desc add one or more elements to the end of an array, and return the new length of the array
+# @param array <array>
+# @param elements <any>
+# @return length of the array <int>
+
+# @example
+# arr=(1 2 3)
+# Array_push arr 4 5 6
+# # output: 6
+# # arr: 1 2 3 4 5 6
+# @end
 Array_push() {
-  if (($# >= 2)); then
+  if (($# >= 1)); then
     local -n ___array___="$1"
-    ___array___+=("$2")
-    RETVAL="$2"
-    printf '%s\n' "$2"
+    ___array___+=("${@:2}")
+    RETVAL="${#___array___[@]}"
+    printf '%s\n' "${#___array___[@]}"
   else
     RETVAL=""
     echo ""
   fi
 }
 
+# @desc generate a random array
+# @param size <int> the size of the array (default 100)
+# @param min <int> the min value of the random number (default 0)
+# @param max <int> the max value of the random number (default 100)
+# @return a random array <array>
+
+# @example
+# Array_random 100 0 100
+# @end
 Array_random() {
   local -a res=()
-  local -i size="${1:-10}"
+  local -i size="${1:-100}"
   local -i min="${2:-0}"
   local -i max="${3:-100}"
   local -i i
@@ -336,6 +365,15 @@ Array_random() {
   printf '%s\n' "${res[@]}"
 }
 
+# @desc reverse the order of the elements of an array in place
+# @param array <array>
+# @return reversed array <array>
+
+# @example
+# arr=(1 2 3)
+# Array_reverse arr
+# # output: 3 2 1
+# @end
 Array_reverse() {
   if (($# >= 1)); then
     local -n ___array___="$1"
@@ -349,9 +387,22 @@ Array_reverse() {
       i=$((i + 1))
       j=$((j - 1))
     done
+    RETVAL=("${___array___[@]}")
+    printf '%s\n' "${___array___[@]}"
   fi
+  RETVAL=("")
+  printf '%s\n' ""
 }
 
+# @desc remove the first element of the array
+# @param array <array>
+# @return removed element <string>
+
+# @example
+# arr=(1 2 3)
+# Array_shift arr
+# # output: 1
+# @end
 Array_shift() {
   if (($# >= 1)); then
     local -n ___array___="$1"
@@ -406,6 +457,31 @@ Array_some() {
   fi
 }
 
+# @desc sort the elements of an array in place
+# @param array <array>
+# @param comparator <function> | <string>
+# @return sorted array <array>
+
+# @example
+# arr=(7 1 5 2 5 3 5 8)
+# Array_sort arr
+# # output: 1 2 3 5 5 5 7 8
+#
+# arr=(7 1 5 2 5 3 5 8)
+# Array_sort arr '
+#   local a="$1"
+#   local op="$2"
+#   local b="$3"
+#   if [[ "$op" == ">" ]]; then
+#     ((a < b))
+#   elif [[ "$op" == "<" ]]; then
+#     ((a > b))
+#   else
+#     ((a == b))
+#   fi
+# '
+# # output: 8 7 5 5 5 5 3 2 1
+# @end
 Array_sort() {
   if (($# >= 1)); then
     local -n ___array___="$1"
@@ -457,9 +533,25 @@ Array_sort() {
       done
       step=$((step * 2))
     done
+    RETVAL=("${___array___[@]}")
+    printf '%s\n' "${___array___[@]}"
   fi
+  RETVAL=("")
+  printf '%s\n' ""
 }
 
+# @desc change the contents of an array by removing or replacing existing elements and/or adding new elements in place
+# @param array <array>
+# @param start <int>
+# @param deleteCount <int>
+# @param items <string>
+# @return changed array <array>
+
+# @example
+# arr=(1 2 3 4)
+# Array_splice arr 1 2
+# # output: 2 3
+# @end
 Array_splice() {
   if (($# >= 2)); then
     local -n ___array___="$1"
@@ -484,12 +576,23 @@ Array_splice() {
   fi
 }
 
+# @desc add one or more elements to the beginning of an array, and return the new length of the array
+# @param array <array>
+# @param elements <any>
+# @return length of the array <int>
+
+# @example
+# arr=(1 2 3)
+# Array_unshift arr 4 5 6
+# # output: 6
+# # arr: 4 5 6 1 2 3
+# @end
 Array_unshift() {
-  if (($# >= 2)); then
+  if (($# >= 1)); then
     local -n ___array___="$1"
-    ___array___=("$2" "${___array___[@]}")
-    RETVAL="$2"
-    printf '%s\n' "$2"
+    ___array___=("${@:2}" "${___array___[@]}")
+    RETVAL="${#___array___[@]}"
+    printf '%s\n' "${#___array___[@]}"
   else
     RETVAL=""
     echo ""
