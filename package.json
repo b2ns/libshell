@@ -9,6 +9,7 @@
     "tool",
     "util",
     "function",
+    "import",
     "command",
     "color",
     "string"
