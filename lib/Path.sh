@@ -4,6 +4,22 @@ import String
 import IO
 import Array
 
+# @desc get basename of the given path
+# @param path <string>
+# @param extname <string> | <number> provide 1 if you dont know the extension name
+# @return basename <string>
+
+# @example
+# Path_basename "~/path/to/foo.sh"
+# # output: foo.sh
+#
+# Path_basename "~/path/to/foo.sh" ".sh"
+# # output: foo
+#
+# # if you dont know the extension name, you can use the following
+# Path_basename "~/path/to/foo.sh" 1
+# # output: foo
+# @end
 Path_basename() {
   local file="${1:-.}"
   local ext="${2:-}"

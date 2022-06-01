@@ -10,6 +10,25 @@
 
 #### Path_basename
 
+> get basename of the given path
+
+- **path** \<*string*\>
+- **extname** \<*string*\> | \<number\> provide 1 if you dont know the extension name
+
++ **@return** basename \<*string*\>
+
+```sh
+Path_basename "~/path/to/foo.sh"
+# output: foo.sh
+
+Path_basename "~/path/to/foo.sh" ".sh"
+# output: foo
+
+# if you dont know the extension name, you can use the following
+Path_basename "~/path/to/foo.sh" 1
+# output: foo
+```
+
 #### Path_dirname
 
 #### Path_extname
