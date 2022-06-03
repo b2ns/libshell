@@ -222,4 +222,8 @@ resetGlobal() {
 }
 
 # let's build it
-build "$__dirname/../lib/"*.sh
+if (($# == 0)); then
+  build "$__dirname/../lib/"*.sh
+else
+  build "$@"
+fi
