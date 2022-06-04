@@ -45,6 +45,17 @@ Path_basename() {
   printf '%s\n' "$file"
 }
 
+# @desc get dirname of the given path
+# @param path <string>
+# @return dirname <string>
+
+# @example
+# Path_dirname "~/path/to/foo.sh"
+# # output: ~/path/to
+#
+# Path_dirname "../foo.sh"
+# # output: ..
+# @end
 Path_dirname() {
   local file="${1:-.}"
   if String_notEq "$file" "/"; then

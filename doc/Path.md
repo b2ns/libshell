@@ -31,6 +31,20 @@ Path_basename "~/path/to/foo.sh" 1
 
 #### Path_dirname
 
+> get dirname of the given path
+
+- **path** \<*string*\>
+
++ **@return** dirname \<*string*\>
+
+```sh
+Path_dirname "~/path/to/foo.sh"
+# output: ~/path/to
+
+Path_dirname "../foo.sh"
+# output: ..
+```
+
 #### Path_extname
 
 #### Path_isAbs
