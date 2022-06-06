@@ -74,6 +74,14 @@ Path_dirname() {
   printf '%s\n' "${file:-/}"
 }
 
+# @desc get extension of the given path
+# @param path <string>
+# @return extension name <string>
+
+# @example
+# Path_extname "~/path/to/foo.sh"
+# # output: .sh
+# @end
 Path_extname() {
   local file="$1"
   local ext=""

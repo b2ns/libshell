@@ -47,6 +47,17 @@ Path_dirname "../foo.sh"
 
 #### Path_extname
 
+> get extension of the given path
+
+- **path** \<*string*\>
+
++ **@return** extension name \<*string*\>
+
+```sh
+Path_extname "~/path/to/foo.sh"
+# output: .sh
+```
+
 #### Path_isAbs
 
 #### Path_isRel
