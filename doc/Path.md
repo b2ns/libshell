@@ -60,7 +60,25 @@ Path_extname "~/path/to/foo.sh"
 
 #### Path_isAbs
 
+> check if the given path is absolute
+
+- **path** \<*string*\>
+
+```sh
+Path_isAbs "/path/to/foo.sh"
+# assert success
+```
+
 #### Path_isRel
+
+> check if the given path is relative
+
+- **path** \<*string*\>
+
+```sh
+Path_isRel "./path/to/foo.sh"
+# assert success
+```
 
 #### Path_join
 

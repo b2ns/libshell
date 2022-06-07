@@ -97,10 +97,24 @@ Path_extname() {
   fi
 }
 
+# @desc check if the given path is absolute
+# @param path <string>
+
+# @example
+# Path_isAbs "/path/to/foo.sh"
+# # assert success
+# @end
 Path_isAbs() {
   String_startsWith "$1" "/"
 }
 
+# @desc check if the given path is relative
+# @param path <string>
+
+# @example
+# Path_isRel "./path/to/foo.sh"
+# # assert success
+# @end
 Path_isRel() {
   ! Path_isAbs "$@"
 }
