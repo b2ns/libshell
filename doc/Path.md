@@ -82,4 +82,16 @@ Path_isRel "./path/to/foo.sh"
 
 #### Path_join
 
+> join the given paths
+
+- **paths** \<*string*\>
+
+```sh
+Path_join "/path/to/" "./foo.sh"
+# output: /path/to/foo.sh
+
+Path_join "path/to/" "../foo.sh"
+# output: path/foo.sh
+```
+
 #### Path_resolve

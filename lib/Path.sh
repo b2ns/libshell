@@ -119,6 +119,16 @@ Path_isRel() {
   ! Path_isAbs "$@"
 }
 
+# @desc join the given paths
+# @param paths <string>
+
+# @example
+# Path_join "/path/to/" "./foo.sh"
+# # output: /path/to/foo.sh
+#
+# Path_join "path/to/" "../foo.sh"
+# # output: path/foo.sh
+# @end
 Path_join() {
   (($# == 0)) && {
     RETVAL="."
