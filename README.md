@@ -50,19 +50,23 @@ basic lib functions for (bash)shell script
 ### from npm
 
 ```sh
-# if install in global
+# install in global
 npm -g i @b2ns/libshell
 # or with yarn
 yarn global add @b2ns/libshell
+# or with pnpm
+pnpm add -g @b2ns/libshell
 
 # source libshell directly in your script
 source libshell
 
 
-# if install in local project
+# install in local project
 npm i @b2ns/libshell
 # or with yarn
 yarn add @b2ns/libshell
+# or with pnpm
+pnpm add @b2ns/libshell
 
 # source libshell from node_modules
 source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/node_modules/@b2ns/libshell/libshell.sh"
