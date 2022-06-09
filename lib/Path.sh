@@ -228,10 +228,6 @@ Path_resolve() {
   printf '%s\n' "$res"
 }
 
-__expandTilde__() {
-  String_replace "$1" "#\~" "$HOME"
-}
-
 __trimSlash__() {
   local str="$1"
   local tmp=""
