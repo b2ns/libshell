@@ -86,6 +86,8 @@ Path_isRel "./path/to/foo.sh"
 
 - **paths** \<*string*\>
 
++ **@return** joined path \<*string*\>
+
 ```sh
 Path_join "/path/to/" "./foo.sh"
 # output: /path/to/foo.sh
@@ -95,3 +97,14 @@ Path_join "path/to/" "../foo.sh"
 ```
 
 #### Path_resolve
+
+> resolve the given paths into an absolute path
+
+- **paths** \<*string*\>
+
++ **@return** an absolute path \<*string*\>
+
+```sh
+Path_resolve "path/to" "../foo.sh"
+# output: $PWD/path/foo.sh
+```

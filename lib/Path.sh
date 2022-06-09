@@ -121,6 +121,7 @@ Path_isRel() {
 
 # @desc join the given paths
 # @param paths <string>
+# @return joined path <string>
 
 # @example
 # Path_join "/path/to/" "./foo.sh"
@@ -189,6 +190,14 @@ Path_join() {
   printf '%s\n' "${str:-.}"
 }
 
+# @desc resolve the given paths into an absolute path
+# @param paths <string>
+# @return an absolute path <string>
+
+# @example
+# Path_resolve "path/to" "../foo.sh"
+# # output: $PWD/path/foo.sh
+# @end
 Path_resolve() {
   (($# == 0)) && {
     RETVAL="$PWD"
