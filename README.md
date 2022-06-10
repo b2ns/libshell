@@ -9,8 +9,6 @@
 ![GitHub package.json version](https://img.shields.io/github/package-json/v/b2ns/libshell?style=flat-square)
 ![GitHub](https://img.shields.io/github/license/b2ns/libshell?style=flat-square)
 
-**warning⚠: not stable now, api may change, use at your owen risk.**
-
 basic lib functions for (bash)shell script
 
 <!-- vim-markdown-toc GFM -->
@@ -133,7 +131,7 @@ if Args_has "-v"; then
   echo "Version: 1.0.0"
 fi
 
-if Args_has "-h" || ($# == 0); then
+if Args_has "-h" || (($# == 0)); then
   # get help info based on what you defined above
   Args_help
 fi
