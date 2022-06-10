@@ -191,7 +191,7 @@ Color() {
       String_stripStart "$text" "*\e[*m" 1 >/dev/null
       suffix="$RETVAL"
 
-      String_stripEnd "$text" "$suffix" >/dev/null
+      String_slice "$text" 0 $((0 - ${#suffix})) >/dev/null
       prefix="$RETVAL"
 
       RETVAL="\e[${codeStart}m${prefix}\e[${codeStart}m${suffix}\e[${codeEnd}m"
