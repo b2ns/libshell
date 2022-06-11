@@ -1,6 +1,18 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC2178,SC2128
 
+# @desc get the char at the given index
+# @param string <string>
+# @param index <int>
+# @return char <char>
+
+# @example
+# String_at "abc" 1
+# # output: b
+#
+# String_at "abc" -1
+# # output: c
+# @end
 String_at() {
   local string="${1:-}"
   local -i position="${2:-0}"

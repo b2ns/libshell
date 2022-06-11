@@ -32,6 +32,21 @@
 
 #### String_at
 
+> get the char at the given index
+
+- **string** \<*string*\>
+- **index** \<*int*\>
+
++ **@return** char \<*char*\>
+
+```sh
+String_at "abc" 1
+# output: b
+
+String_at "abc" -1
+# output: c
+```
+
 #### String_capitalize
 
 #### String_endsWith
