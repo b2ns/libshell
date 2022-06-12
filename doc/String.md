@@ -49,6 +49,17 @@ String_at "abc" -1
 
 #### String_capitalize
 
+> capitalize the first letter of the given string
+
+- **string** \<*string*\>
+
++ **@return** capitalized string \<*string*\>
+
+```sh
+String_capitalize "foo"
+# output: "Foo"
+```
+
 #### String_endsWith
 
 #### String_eq

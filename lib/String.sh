@@ -19,6 +19,14 @@ String_at() {
   String_substr "$string" "$position" 1
 }
 
+# @desc capitalize the first letter of the given string
+# @param string <string>
+# @return capitalized string <string>
+
+# @example
+# String_capitalize "foo"
+# # output: "Foo"
+# @end
 String_capitalize() {
   local string="${1:-}"
   local res="${string^}"
