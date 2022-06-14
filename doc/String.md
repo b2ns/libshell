@@ -62,7 +62,33 @@ String_capitalize "foo"
 
 #### String_endsWith
 
+> check if the given string ends with the specific suffix
+
+- **string** \<*string*\>
+- **suffix** \<*string*\>
+
+```sh
+String_endsWith "foobar" "bar"
+# assert success
+
+String_endsWith "foobar" "ba"
+# assert failure
+```
+
 #### String_eq
+
+> check if the given strings are equal
+
+- **string1** \<*string*\>
+- **string2** \<*string*\>
+
+```sh
+String_eq "foobar" "foobar"
+# assert success
+
+String_eq "foobar" "foo"
+# assert failure
+```
 
 #### String_includes
 

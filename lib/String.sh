@@ -34,12 +34,34 @@ String_capitalize() {
   printf '%s\n' "$res"
 }
 
+# @desc check if the given string ends with the specific suffix
+# @param string <string>
+# @param suffix <string>
+
+# @example
+# String_endsWith "foobar" "bar"
+# # assert success
+#
+# String_endsWith "foobar" "ba"
+# # assert failure
+# @end
 String_endsWith() {
   local string="${1:-}"
   local suffix="${2:-}"
   [[ "$string" == *"$suffix" ]]
 }
 
+# @desc check if the given strings are equal
+# @param string1 <string>
+# @param string2 <string>
+
+# @example
+# String_eq "foobar" "foobar"
+# # assert success
+#
+# String_eq "foobar" "foo"
+# # assert failure
+# @end
 String_eq() {
   local string1="${1:-}"
   local string2="${2:-}"
