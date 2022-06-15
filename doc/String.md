@@ -92,6 +92,19 @@ String_eq "foobar" "foo"
 
 #### String_includes
 
+> check if the given stirng includes the specific substring
+
+- **string** \<*string*\>
+- **substring** \<*string*\>
+
+```sh
+String_includes "foobar" "oob"
+# assert success
+
+String_includes "foobar" "baz"
+# assert failure
+```
+
 #### String_indexOf
 
 #### String_isEmpty

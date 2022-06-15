@@ -68,6 +68,17 @@ String_eq() {
   [[ "$string1" == "$string2" ]]
 }
 
+# @desc check if the given stirng includes the specific substring
+# @param string <string>
+# @param substring <string>
+
+# @example
+# String_includes "foobar" "oob"
+# # assert success
+#
+# String_includes "foobar" "baz"
+# # assert failure
+# @end
 String_includes() {
   local string="${1:-}"
   local substring="${2:-}"
