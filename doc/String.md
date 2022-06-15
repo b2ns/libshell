@@ -107,6 +107,21 @@ String_includes "foobar" "baz"
 
 #### String_indexOf
 
+>  get the index of the first occurrence of the specific substring
+
+- **string** \<*string*\>
+- **substring** \<*string*\>
+
++ **@return** index \<*int*\>
+
+```sh
+String_indexOf "foo barbar" "bar"
+# output: 4
+
+String_indexOf "foo bar" "baz"
+# output: -1
+```
+
 #### String_isEmpty
 
 #### String_match

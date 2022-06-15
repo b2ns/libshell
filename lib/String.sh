@@ -85,6 +85,18 @@ String_includes() {
   [[ "$string" == *"$substring"* ]]
 }
 
+# @desc  get the index of the first occurrence of the specific substring
+# @param string <string>
+# @param substring <string>
+# @return index <int>
+
+# @example
+# String_indexOf "foo barbar" "bar"
+# # output: 4
+#
+# String_indexOf "foo bar" "baz"
+# # output: -1
+# @end
 String_indexOf() {
   RETVAL=-1
   (($# < 2)) && echo -1
