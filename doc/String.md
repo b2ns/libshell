@@ -124,6 +124,18 @@ String_indexOf "foo bar" "baz"
 
 #### String_isEmpty
 
+> check if the given stirng is empty
+
+- **string** \<*string*\>
+
+```sh
+String_isEmpty ""
+# assert success
+
+String_isEmpty "foo"
+# assert failure
+```
+
 #### String_match
 
 #### String_notEmpty

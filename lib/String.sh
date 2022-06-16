@@ -117,6 +117,16 @@ String_indexOf() {
   fi
 }
 
+# @desc check if the given stirng is empty
+# @param string <string>
+
+# @example
+# String_isEmpty ""
+# # assert success
+#
+# String_isEmpty "foo"
+# # assert failure
+# @end
 String_isEmpty() {
   [[ -z "${1:-}" ]]
 }
