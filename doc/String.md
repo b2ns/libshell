@@ -138,6 +138,19 @@ String_isEmpty "foo"
 
 #### String_match
 
+> check if the given stirng match the specific pattern
+
+- **string** \<*string*\>
+- **pattern** \<*regexp*\>
+
+```sh
+String_match "foo12o bar" "^foo[0-9]+o"
+# assert success
+
+String_match "foo1 bar" "^foo$"
+# assert failure
+```
+
 #### String_notEmpty
 
 #### String_notEq

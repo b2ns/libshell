@@ -131,6 +131,17 @@ String_isEmpty() {
   [[ -z "${1:-}" ]]
 }
 
+# @desc check if the given stirng match the specific pattern
+# @param string <string>
+# @param pattern <regexp>
+
+# @example
+# String_match "foo12o bar" "^foo[0-9]+o"
+# # assert success
+#
+# String_match "foo1 bar" "^foo$"
+# # assert failure
+# @end
 String_match() {
   local string="${1:-}"
   local pattern="${2:-}"
