@@ -153,6 +153,18 @@ String_match "foo1 bar" "^foo$"
 
 #### String_notEmpty
 
+> check if the given stirng is not empty
+
+- **string** \<*string*\>
+
+```sh
+String_notEmpty "foo"
+# assert success
+
+String_notEmpty ""
+# assert failure
+```
+
 #### String_notEq
 
 #### String_padEnd

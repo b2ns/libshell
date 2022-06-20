@@ -148,6 +148,16 @@ String_match() {
   [[ "$string" =~ $pattern ]]
 }
 
+# @desc check if the given stirng is not empty
+# @param string <string>
+
+# @example
+# String_notEmpty "foo"
+# # assert success
+#
+# String_notEmpty ""
+# # assert failure
+# @end
 String_notEmpty() {
   [[ -n "${1:-}" ]]
 }
