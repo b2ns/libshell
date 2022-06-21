@@ -162,6 +162,17 @@ String_notEmpty() {
   [[ -n "${1:-}" ]]
 }
 
+# @desc check if the given stirngs are not equal
+# @param string1 <string>
+# @param string2 <string>
+
+# @example
+# String_notEq "foo" "fox"
+# # assert success
+#
+# String_notEq "foo" "foo"
+# # assert failure
+# @end
 String_notEq() {
   local string1="${1:-}"
   local string2="${2:-}"

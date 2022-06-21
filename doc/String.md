@@ -167,6 +167,19 @@ String_notEmpty ""
 
 #### String_notEq
 
+> check if the given stirngs are not equal
+
+- **string1** \<*string*\>
+- **string2** \<*string*\>
+
+```sh
+String_notEq "foo" "fox"
+# assert success
+
+String_notEq "foo" "foo"
+# assert failure
+```
+
 #### String_padEnd
 
 #### String_padStart
