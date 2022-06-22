@@ -182,6 +182,22 @@ String_notEq "foo" "foo"
 
 #### String_padEnd
 
+> pads the current string with a given string at the end
+
+- **string** \<*string*\>
+- **targetLength** \<*int*\>
+- **padString** \<*string*\> (default " ")
+
++ **@return** padded string \<*string*\>
+
+```sh
+String_padEnd "foo" 5
+# output: "foo  "
+
+String_padEnd "foo" 6 "-"
+# output: "foo---"
+```
+
 #### String_padStart
 
 #### String_repeat
