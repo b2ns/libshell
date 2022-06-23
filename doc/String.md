@@ -200,6 +200,22 @@ String_padEnd "foo" 6 "-"
 
 #### String_padStart
 
+> pads the current string with a given string at the beginning
+
+- **string** \<*string*\>
+- **targetLength** \<*int*\>
+- **padString** \<*string*\> (default " ")
+
++ **@return** padded string \<*string*\>
+
+```sh
+String_padStart "foo" 5
+# output: "  foo"
+
+String_padStart "foo" 6 "-"
+# output: "---foo"
+```
+
 #### String_repeat
 
 #### String_replace

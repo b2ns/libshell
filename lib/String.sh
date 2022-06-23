@@ -210,6 +210,19 @@ String_padEnd() {
   fi
 }
 
+# @desc pads the current string with a given string at the beginning
+# @param string <string>
+# @param targetLength <int>
+# @param padString <string> (default " ")
+# @return padded string <string>
+
+# @example
+# String_padStart "foo" 5
+# # output: "  foo"
+#
+# String_padStart "foo" 6 "-"
+# # output: "---foo"
+# @end
 String_padStart() {
   if (($# >= 2)); then
     local string="$1"
