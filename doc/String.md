@@ -218,6 +218,18 @@ String_padStart "foo" 6 "-"
 
 #### String_repeat
 
+> repeat the given string n times
+
+- **string** \<*string*\>
+- **count** \<*int*\>
+
++ **@return** new string \<*string*\>
+
+```sh
+String_repeat "a" 3
+# output: aaa
+```
+
 #### String_replace
 
 #### String_replaceAll

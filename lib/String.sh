@@ -241,6 +241,15 @@ String_padStart() {
   fi
 }
 
+# @desc repeat the given string n times
+# @param string <string>
+# @param count <int>
+# @return new string <string>
+
+# @example
+# String_repeat "a" 3
+# # output: aaa
+# @end
 String_repeat() {
   local string="${1:-}"
   local -i count="${2:-1}"
