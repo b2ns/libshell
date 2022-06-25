@@ -262,6 +262,20 @@ String_repeat() {
   printf '%s\n' "$res"
 }
 
+# @desc replace the subStr of the given string with newSubStr
+# @param string <string>
+# @param subStr <string>
+# @param newSubStr <string>
+# @return new string <string>
+
+# @example
+# String_replace "foo bar" "bar" "baz"
+# # output: foo baz
+# String_replace " foo bar" "bar" ""
+# # output: " foo "
+# String_replace "foo bar foobar" "bar" "baz"
+# # output: foo baz foobar
+# @end
 String_replace() {
   if (($# >= 3)); then
     local res="${1/$2/$3}"

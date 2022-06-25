@@ -232,6 +232,23 @@ String_repeat "a" 3
 
 #### String_replace
 
+> replace the subStr of the given string with newSubStr
+
+- **string** \<*string*\>
+- **subStr** \<*string*\>
+- **newSubStr** \<*string*\>
+
++ **@return** new string \<*string*\>
+
+```sh
+String_replace "foo bar" "bar" "baz"
+# output: foo baz
+String_replace " foo bar" "bar" ""
+# output: " foo "
+String_replace "foo bar foobar" "bar" "baz"
+# output: foo baz foobar
+```
+
 #### String_replaceAll
 
 #### String_reverse
