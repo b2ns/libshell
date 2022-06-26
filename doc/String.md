@@ -251,6 +251,19 @@ String_replace "foo bar foobar" "bar" "baz"
 
 #### String_replaceAll
 
+> replace all the subStr of the given string with newSubStr
+
+- **string** \<*string*\>
+- **subStr** \<*string*\>
+- **newSubStr** \<*string*\>
+
++ **@return** new string \<*string*\>
+
+```sh
+String_replaceAll "foo bar foobar" "bar" "baz"
+# output: foo baz foobaz
+```
+
 #### String_reverse
 
 #### String_search

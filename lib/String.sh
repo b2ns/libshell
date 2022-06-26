@@ -288,6 +288,16 @@ String_replace() {
   fi
 }
 
+# @desc replace all the subStr of the given string with newSubStr
+# @param string <string>
+# @param subStr <string>
+# @param newSubStr <string>
+# @return new string <string>
+
+# @example
+# String_replaceAll "foo bar foobar" "bar" "baz"
+# # output: foo baz foobaz
+# @end
 String_replaceAll() {
   if (($# >= 3)); then
     local res="${1//$2/$3}"
