@@ -266,6 +266,17 @@ String_replaceAll "foo bar foobar" "bar" "baz"
 
 #### String_reverse
 
+> reverse the given string
+
+- **string** \<*string*\>
+
++ **@return** reversed string \<*string*\>
+
+```sh
+String_reverse "abcd"
+# output: dcba
+```
+
 #### String_search
 
 #### String_slice

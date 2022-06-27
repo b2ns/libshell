@@ -310,6 +310,14 @@ String_replaceAll() {
   fi
 }
 
+# @desc reverse the given string
+# @param string <string>
+# @return reversed string <string>
+
+# @example
+# String_reverse "abcd"
+# # output: dcba
+# @end
 String_reverse() {
   local string="${1:-}"
   local -i index=""
