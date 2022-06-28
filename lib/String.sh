@@ -332,6 +332,18 @@ String_reverse() {
   printf '%s\n' "$res"
 }
 
+# @desc  get the index of the first occurrence of the specific pattern
+# @param string <string>
+# @param pattern <regexp>
+# @return index <int>
+
+# @example
+# String_search "foo123bar" "[0-9]+"
+# # output: 3
+#
+# String_search "foobar" "[0-9]+"
+# # output: -1
+# @end
 String_search() {
   RETVAL=-1
   (($# < 2)) && echo -1

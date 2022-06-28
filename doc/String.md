@@ -279,6 +279,21 @@ String_reverse "abcd"
 
 #### String_search
 
+>  get the index of the first occurrence of the specific pattern
+
+- **string** \<*string*\>
+- **pattern** \<*regexp*\>
+
++ **@return** index \<*int*\>
+
+```sh
+String_search "foo123bar" "[0-9]+"
+# output: 3
+
+String_search "foobar" "[0-9]+"
+# output: -1
+```
+
 #### String_slice
 
 #### String_split
