@@ -385,6 +385,18 @@ String_slice() {
   fi
 }
 
+# @desc divides the given string into an array of substrings
+# @param string <string>
+# @param delmiter <string> (optional)
+# @return array of substrings <array>
+
+# @example
+# String_split "foo"
+# # output: "f" "o" "o"
+#
+# String_split "f/ o /o" "/"
+# # output: "f" " o " "o"
+# @end
 String_split() {
   local string="${1:-}"
   local delmiter="${2:-}"

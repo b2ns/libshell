@@ -322,6 +322,21 @@ String_slice "foobar" -1
 
 #### String_split
 
+> divides the given string into an array of substrings
+
+- **string** \<*string*\>
+- **delmiter** \<*string*\> (optional)
+
++ **@return** array of substrings \<*array*\>
+
+```sh
+String_split "foo"
+# output: "f" "o" "o"
+
+String_split "f/ o /o" "/"
+# output: "f" " o " "o"
+```
+
 #### String_startsWith
 
 #### String_stripEnd
