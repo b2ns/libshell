@@ -243,8 +243,10 @@ String_repeat "a" 3
 ```sh
 String_replace "foo bar" "bar" "baz"
 # output: foo baz
+
 String_replace " foo bar" "bar" ""
 # output: " foo "
+
 String_replace "foo bar foobar" "bar" "baz"
 # output: foo baz foobar
 ```
@@ -279,7 +281,7 @@ String_reverse "abcd"
 
 #### String_search
 
->  get the index of the first occurrence of the specific pattern
+> get the index of the first occurrence of the specific pattern
 
 - **string** \<*string*\>
 - **pattern** \<*regexp*\>
@@ -295,6 +297,28 @@ String_search "foobar" "[0-9]+"
 ```
 
 #### String_slice
+
+> extracts a section of the given string
+
+- **string** \<*string*\>
+- **beginIndex** \<*int*\>
+- **endIndex** \<*int*\> (optional)
+
++ **@return** new string \<*string*\>
+
+```sh
+String_slice "foobar" 0 3
+# output: foo
+
+String_slice "foobar" 0 -1
+# output: fooba
+
+String_slice "foobar" 3
+# output: bar
+
+String_slice "foobar" -1
+# output: r
+```
 
 #### String_split
 

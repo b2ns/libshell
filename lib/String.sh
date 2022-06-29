@@ -271,8 +271,10 @@ String_repeat() {
 # @example
 # String_replace "foo bar" "bar" "baz"
 # # output: foo baz
+#
 # String_replace " foo bar" "bar" ""
 # # output: " foo "
+#
 # String_replace "foo bar foobar" "bar" "baz"
 # # output: foo baz foobar
 # @end
@@ -332,7 +334,7 @@ String_reverse() {
   printf '%s\n' "$res"
 }
 
-# @desc  get the index of the first occurrence of the specific pattern
+# @desc get the index of the first occurrence of the specific pattern
 # @param string <string>
 # @param pattern <regexp>
 # @return index <int>
@@ -356,6 +358,25 @@ String_search() {
   fi
 }
 
+# @desc extracts a section of the given string
+# @param string <string>
+# @param beginIndex <int>
+# @param endIndex <int> (optional)
+# @return new string <string>
+
+# @example
+# String_slice "foobar" 0 3
+# # output: foo
+#
+# String_slice "foobar" 0 -1
+# # output: fooba
+#
+# String_slice "foobar" 3
+# # output: bar
+#
+# String_slice "foobar" -1
+# # output: r
+# @end
 String_slice() {
   if (($# >= 3)); then
     String_substr "$1" "$2" "$(($3 - $2))"
