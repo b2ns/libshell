@@ -424,6 +424,17 @@ String_split() {
   printf '%s\n' "${array[@]}"
 }
 
+# @desc check if the given string starts with the specific prefix
+# @param string <string>
+# @param prefix <string>
+
+# @example
+# String_startsWith "foobar" "foo"
+# # assert success
+#
+# String_startsWith "foobar" "oo"
+# # assert failure
+# @end
 String_startsWith() {
   local string="${1:-}"
   local prefix="${2:-}"

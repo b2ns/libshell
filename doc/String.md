@@ -339,6 +339,19 @@ String_split "f/ o /o" "/"
 
 #### String_startsWith
 
+> check if the given string starts with the specific prefix
+
+- **string** \<*string*\>
+- **prefix** \<*string*\>
+
+```sh
+String_startsWith "foobar" "foo"
+# assert success
+
+String_startsWith "foobar" "oo"
+# assert failure
+```
+
 #### String_stripEnd
 
 #### String_stripStart
