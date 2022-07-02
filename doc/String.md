@@ -354,6 +354,20 @@ String_startsWith "foobar" "oo"
 
 #### String_stripEnd
 
+> remove the match pattern from the end
+
+- **string** \<*string*\>
+- **pattern** \<*string*\>
+- **greedy** \<*int*\> (default 0)
+
+```sh
+String_stripEnd "path/to/foo.sh" "/*"
+# output: path/to
+
+String_stripEnd "path/to/foo.sh" "/*" 1
+# output: path
+```
+
 #### String_stripStart
 
 #### String_substr

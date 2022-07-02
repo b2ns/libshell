@@ -441,6 +441,18 @@ String_startsWith() {
   [[ "$string" == "$prefix"* ]]
 }
 
+# @desc remove the match pattern from the end
+# @param string <string>
+# @param pattern <string>
+# @param greedy <int> (default 0)
+
+# @example
+# String_stripEnd "path/to/foo.sh" "/*"
+# # output: path/to
+#
+# String_stripEnd "path/to/foo.sh" "/*" 1
+# # output: path
+# @end
 String_stripEnd() {
   local string="${1:-}"
   local pattern="${2:-}"
