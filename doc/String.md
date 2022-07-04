@@ -370,6 +370,20 @@ String_stripEnd "path/to/foo.sh" "/*" 1
 
 #### String_stripStart
 
+> remove the match pattern from the start
+
+- **string** \<*string*\>
+- **pattern** \<*string*\>
+- **greedy** \<*int*\> (default 0)
+
+```sh
+String_stripStart "path/to/foo.sh" "*/"
+# output: to/foo.sh
+
+String_stripStart "path/to/foo.sh" "*/" 1
+# output: foo.sh
+```
+
 #### String_substr
 
 #### String_toLowerCase

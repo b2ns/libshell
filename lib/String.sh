@@ -468,6 +468,18 @@ String_stripEnd() {
   fi
 }
 
+# @desc remove the match pattern from the start
+# @param string <string>
+# @param pattern <string>
+# @param greedy <int> (default 0)
+
+# @example
+# String_stripStart "path/to/foo.sh" "*/"
+# # output: to/foo.sh
+#
+# String_stripStart "path/to/foo.sh" "*/" 1
+# # output: foo.sh
+# @end
 String_stripStart() {
   local string="${1:-}"
   local pattern="${2:-}"
