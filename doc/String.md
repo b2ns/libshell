@@ -386,6 +386,25 @@ String_stripStart "path/to/foo.sh" "*/" 1
 
 #### String_substr
 
+> extracts a given number of characters from the string
+
+- **string** \<*string*\>
+- **beginIndex** \<*int*\>
+- **length** \<*int*\> (optional)
+
++ **@return** new string \<*string*\>
+
+```sh
+String_substr "foobar" 1 3
+# output: oob
+
+String_substr "foobar" 0 -1
+# output: fooba
+
+String_substr "foobar" -1
+# output: r
+```
+
 #### String_toLowerCase
 
 #### String_toUpperCase

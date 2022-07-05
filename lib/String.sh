@@ -495,6 +495,22 @@ String_stripStart() {
   fi
 }
 
+# @desc extracts a given number of characters from the string
+# @param string <string>
+# @param beginIndex <int>
+# @param length <int> (optional)
+# @return new string <string>
+
+# @example
+# String_substr "foobar" 1 3
+# # output: oob
+#
+# String_substr "foobar" 0 -1
+# # output: fooba
+#
+# String_substr "foobar" -1
+# # output: r
+# @end
 String_substr() {
   if (($# >= 3)); then
     local res="${1:($2):$3}"
