@@ -407,6 +407,17 @@ String_substr "foobar" -1
 
 #### String_toLowerCase
 
+> transform to lower case
+
+- **string** \<*string*\>
+
++ **@return** lower case string \<*string*\>
+
+```sh
+String_toLowerCase "FOO"
+# output: foo
+```
+
 #### String_toUpperCase
 
 #### String_trim

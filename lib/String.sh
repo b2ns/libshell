@@ -526,6 +526,14 @@ String_substr() {
   fi
 }
 
+# @desc transform to lower case
+# @param string <string>
+# @return lower case string <string>
+
+# @example
+# String_toLowerCase "FOO"
+# # output: foo
+# @end
 String_toLowerCase() {
   local string="${1:-}"
   local res="${string,,}"
