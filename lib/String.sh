@@ -541,6 +541,14 @@ String_toLowerCase() {
   printf '%s\n' "$res"
 }
 
+# @desc transform to upper case
+# @param string <string>
+# @return upper case string <string>
+
+# @example
+# String_toLowerCase "foo"
+# # output: FOO
+# @end
 String_toUpperCase() {
   local string="${1:-}"
   local res="${string^^}"

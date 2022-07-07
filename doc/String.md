@@ -420,6 +420,17 @@ String_toLowerCase "FOO"
 
 #### String_toUpperCase
 
+> transform to upper case
+
+- **string** \<*string*\>
+
++ **@return** upper case string \<*string*\>
+
+```sh
+String_toLowerCase "foo"
+# output: FOO
+```
+
 #### String_trim
 
 #### String_trimEnd
