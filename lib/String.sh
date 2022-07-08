@@ -556,6 +556,18 @@ String_toUpperCase() {
   printf '%s\n' "$res"
 }
 
+# @desc removes the match pattern from both ends of a string
+# @param string <string>
+# @param pattern <optional>
+# @return trimed string <string>
+
+# @example
+# String_trim "  foo bar   "
+# # output: foo bar
+#
+# String_trim "__foo__bar___" "_"
+# # output: foo__bar
+# @end
 String_trim() {
   local string="${1:-}"
   local pattern="${2:- }"

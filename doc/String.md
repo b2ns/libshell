@@ -433,6 +433,21 @@ String_toLowerCase "foo"
 
 #### String_trim
 
+> removes the match pattern from both ends of a string
+
+- **string** \<*string*\>
+- **pattern** \<*optional*\>
+
++ **@return** trimed string \<*string*\>
+
+```sh
+String_trim "  foo bar   "
+# output: foo bar
+
+String_trim "__foo__bar___" "_"
+# output: foo__bar
+```
+
 #### String_trimEnd
 
 #### String_trimStart
