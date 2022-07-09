@@ -450,6 +450,21 @@ String_trim "__foo__bar___" "_"
 
 #### String_trimEnd
 
+> removes the match pattern from the end of a string
+
+- **string** \<*string*\>
+- **pattern** \<*optional*\>
+
++ **@return** trimed string \<*string*\>
+
+```sh
+String_trimEnd " foo bar   "
+# output: " foo bar"
+
+String_trimEnd " foo--bar---" "-"
+# output: " foo--bar"
+```
+
 #### String_trimStart
 
 #### String_uncapitalize

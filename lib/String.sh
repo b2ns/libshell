@@ -576,6 +576,18 @@ String_trim() {
   String_trimEnd "$tmp" "$pattern"
 }
 
+# @desc removes the match pattern from the end of a string
+# @param string <string>
+# @param pattern <optional>
+# @return trimed string <string>
+
+# @example
+# String_trimEnd " foo bar   "
+# # output: " foo bar"
+#
+# String_trimEnd " foo--bar---" "-"
+# # output: " foo--bar"
+# @end
 String_trimEnd() {
   local string="${1:-}"
   local pattern="${2:- }"
