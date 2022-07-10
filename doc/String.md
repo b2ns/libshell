@@ -370,7 +370,7 @@ String_stripEnd "path/to/foo.sh" "/*" 1
 
 #### String_stripStart
 
-> remove the match pattern from the start
+> remove the match pattern from the beginning
 
 - **string** \<*string*\>
 - **pattern** \<*string*\>
@@ -466,5 +466,20 @@ String_trimEnd " foo--bar---" "-"
 ```
 
 #### String_trimStart
+
+> removes the match pattern from the beginning of a string
+
+- **string** \<*string*\>
+- **pattern** \<*optional*\>
+
++ **@return** trimed string \<*string*\>
+
+```sh
+String_trimStart "   foo bar "
+# output: "foo bar "
+
+String_trimStart "---foo--bar" "-"
+# output: "foo--bar "
+```
 
 #### String_uncapitalize

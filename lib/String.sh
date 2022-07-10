@@ -468,7 +468,7 @@ String_stripEnd() {
   fi
 }
 
-# @desc remove the match pattern from the start
+# @desc remove the match pattern from the beginning
 # @param string <string>
 # @param pattern <string>
 # @param greedy <int> (default 0)
@@ -601,6 +601,18 @@ String_trimEnd() {
   printf '%s\n' "$res"
 }
 
+# @desc removes the match pattern from the beginning of a string
+# @param string <string>
+# @param pattern <optional>
+# @return trimed string <string>
+
+# @example
+# String_trimStart "   foo bar "
+# # output: "foo bar "
+#
+# String_trimStart "---foo--bar" "-"
+# # output: "foo--bar "
+# @end
 String_trimStart() {
   local string="${1:-}"
   local pattern="${2:- }"
