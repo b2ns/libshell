@@ -483,3 +483,14 @@ String_trimStart "---foo--bar" "-"
 ```
 
 #### String_uncapitalize
+
+> uncapitalize the first letter of the given string
+
+- **string** \<*string*\>
+
++ **@return** uncapitalized string \<*string*\>
+
+```sh
+String_uncapitalize "FOO"
+# output: "fOO"
+```

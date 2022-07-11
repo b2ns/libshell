@@ -626,6 +626,14 @@ String_trimStart() {
   printf '%s\n' "$res"
 }
 
+# @desc uncapitalize the first letter of the given string
+# @param string <string>
+# @return uncapitalized string <string>
+
+# @example
+# String_uncapitalize "FOO"
+# # output: "fOO"
+# @end
 String_uncapitalize() {
   local string="${1:-}"
   local res="${string,}"
