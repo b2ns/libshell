@@ -11,8 +11,6 @@
 
 basic lib functions for (bash)shell script
 
-<!-- vim-markdown-toc GFM -->
-
 - [features](#features)
 - [download](#download)
   - [from npm](#from-npm)
@@ -31,8 +29,6 @@ basic lib functions for (bash)shell script
 - [build with](#build-with)
 - [acknowledgments](#acknowledgments)
 - [links](#links)
-
-<!-- vim-markdown-toc -->
 
 ## features
 
@@ -347,7 +343,6 @@ more details in the [doc](doc/String.md)
 
 ## build with
 
-- editor: [neovim](https://github.com/neovim/neovim)
 - linter: [shellcheck](https://github.com/koalaman/shellcheck)
 - fixer: [shfmt](https://github.com/mvdan/sh)
 - unit test: [bats](https://github.com/bats-core/bats-core)
