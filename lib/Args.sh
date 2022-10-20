@@ -189,7 +189,7 @@ Args_help() {
       [[ "$a" == "$b" ]]
     fi
   }
-  Array_sort keys sortMethod
+  Array_sort keys sortMethod >/dev/null
 
   local key=""
   for key in "${keys[@]}"; do
