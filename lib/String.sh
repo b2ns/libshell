@@ -458,10 +458,12 @@ String_stripEnd() {
   local pattern="${2:-}"
   local -i greedy="${3:-0}"
   if ((greedy)); then
+    # shellcheck disable=SC2295
     local res="${string%%$pattern}"
     RETVAL="$res"
     printf '%s\n' "$res"
   else
+    # shellcheck disable=SC2295
     local res="${string%$pattern}"
     RETVAL="$res"
     printf '%s\n' "$res"
@@ -485,10 +487,12 @@ String_stripStart() {
   local pattern="${2:-}"
   local -i greedy="${3:-0}"
   if ((greedy)); then
+    # shellcheck disable=SC2295
     local res="${string##$pattern}"
     RETVAL="$res"
     printf '%s\n' "$res"
   else
+    # shellcheck disable=SC2295
     local res="${string#$pattern}"
     RETVAL="$res"
     printf '%s\n' "$res"

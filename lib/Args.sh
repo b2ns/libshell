@@ -336,7 +336,7 @@ Args_parse() {
         readingFlagValue=1
       fi
 
-      unset LIBSHELL_ARGS_REQUIRED_OPTIONS["$allFlag"]
+      unset 'LIBSHELL_ARGS_REQUIRED_OPTIONS[$allFlag]'
     else
       if ((readingFlagValue)); then
 
@@ -375,7 +375,6 @@ Args_parse() {
     return 1
   done
 
-  #shellcheck disable=SC2178
   LIBSHELL_ARGS_HAS_PARSED=1
 }
 
